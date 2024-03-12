@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+
+<head>
+    {% load google_analytics %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="n" content="1">
+    <link rel="icon" href="{% static 'public/images/favicon.ico' %}">
+    <title>Fullz</title>
+
+    {% if site_config.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+    <!-- Google tag (gtag.js) -->
+     
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="n" content="1">
+    <title>dumps</title>
+    <link href="{% static 'public/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/justified-nav.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/elem.css' %}" rel="stylesheet">
+
+    <link href="{% static 'public/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/bootstrap-toggle.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/slider.css' %}" rel="stylesheet">
+    <script src="{% static 'public/js/jquery.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'public/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <script src="{% static 'public/js/date.js' %}"></script>
+    <script src="{% static 'public/js/moment-with-locales.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'public/js/passgen.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-toggle.min.js' %}"></script>
+    <script src="{% static 'public/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-slider.js' %}"></script>
+
+    <style>
+        .nav-right li a {
+            padding-top: 6px !important;
+            padding-bottom: 6px !important;
+        }
+    </style>
+    <style type="text/css">
+        @font-face {
+            font-family: Roboto;
+            src: url("chrome-extension://mcgbeeipkmelnpldkobichboakdfaeon/css/Roboto-Regular.ttf");
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" style="width:90%;max-width:1700px;">
+
+        <div class="masthead" style="">
+            <div role="navigation"
+                style="float: right;margin-top: 0px; white-space: nowrap; width: min-content;width: -moz-min-content;width: -webkit-min-content;display: -ms-grid;-ms-grid-columns: min-content;">
+                <ul class="nav nav-justified nav-right">
+
+                    <li>
+                        <a href="{% url 'tasklist' %}" style="color:green;"> <b>Lottery</b> <span
+                                class="glyphicon glyphicon-usd" aria-hidden="true"></span></a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="openMyGift" data-toggle="modal" data-target="#myModalDetailsMG"><span
+                                    class="glyphicon glyphicon-gift" aria-hidden="true"
+                                    style="color: orangered;"></span> My Gift </span></a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"
+                                aria-hidden="true"></span><b>
+                                Logout</b></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="text-muted"
+                style="margin-top: -20px;padding-bottom:10px;float: none;width: auto;overflow: visible;">
+                <h3 class="text-muted">Welcome <i>{{ request.user }}</i> <span style="font-size: 16px;">[<a href="/profile/">profile</a>]</span></h3>
+{% if user.is_authenticated %}
+    <b>Balance:</b> {{ user.balance.balance }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+{% else %}
+<b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+
+{% endif %}
+
+                <link rel="shortcut icon" type="image/png">
+<b>Crab Rating:</b> 
+<a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
+    {% if not user.balance or user.balance.balance is None %}
+        <!-- No image for no balance -->
+    {% elif user.balance.balance < 1 %}
+        <!-- No crab image for 0 rating -->
+    {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+        <img src="{% static 'public/images/crab_rate.png' %}" alt="1 crab">
+    {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+        {% for i in '01'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="2 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+        {% for i in '012'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="3 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+        {% for i in '0123'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="4 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+        {% for i in '01234'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="5 crabs">
+        {% endfor %}
+    {% else %}
+        {% for i in '012345'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
+        {% endfor %}
+    {% endif %}
+</a> 
+[ <a href="#" class="open_cr">details</a> ]<br>
+
+
+                <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
+                        style="color: red;"></span>$<br></span>
+
+                <span style="display:none;"> en https://bclub.cm/</span>
+                <b>Current server time:</b> <span id="current_time"></span>
+
+                <script>
+                    // Get the current time
+                    var currentTime = new Date();
+
+                    // Get the hours, minutes, and seconds
+                    var h = currentTime.getHours();
+                    var m = currentTime.getMinutes();
+                    var s = currentTime.getSeconds();
+
+                    // Add leading zeros to the hours, minutes, and seconds if they are less than 10
+                    h = (h < 10 ? "0" : "") + h;
+                    m = (m < 10 ? "0" : "") + m;
+                    s = (s < 10 ? "0" : "") + s;
+
+                    // Update the HTML element with the current time
+                    document.getElementById("current_time").innerHTML = h + ":" + m + ":" + s;
+                </script>
+            </div>
+            <div role="navigation">
+                <ul class="nav nav-justified">
+                    <li id="menu-home"><a href="{% url 'dashboard' %}">News</a></li>
+                    <li id="menu-dumps-search"><a href="{% url 'dumps' %}"
+                            style="background-image: -webkit-linear-gradient(top, #ABDDFC 0%, #ABDDFC 100%);">Dumps</a>
+                    </li>
+                    <li id="menu-cc-search"><a href="{% url 'cvv' %}"
+                            style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
+                    </li>
+                    <li id="menu-fullz-search" class=" active"><a href="{% url 'fullz' %}"
+                            style="background-image: -webkit-linear-gradient(top, #bbfcff 0%, #bbfcff 100%);">Fullz</a>
+                    </li>
+                    <li id="menu-wholesale" style="min-width:110px;"><a href="{% url 'wholesale' %}">Wholesale</a></li>
+                    <li id="menu-cart">
+                        <a href="{% url 'cart' %}">Cart <span class="badge" id="count_cart_items">{{ request.session.cart_item_count|default:0 }}</span></a>
+                    </li>                    <li id="menu-orders"><a href="/orders">Orders</a></li>
+                    <li id="menu-auction"><a href="/auction"
+                            style="color: white; background-image: -webkit-linear-gradient(top, #FB786B 0%, #FB786B 100%);">Auction
+                            <span class="badge" id="count_bids"></span></a></li>
+                    <li id="menu-checker"><a href="/tools" style="background-color:#FFFFCC">Tools <span class="label label-danger" id="last_update_mybins_menu" style="display: initial;">new</span></a></li>
+                    <li id="menu-tickets"><a href="/tickets/">Tickets <span class="badge" id="count_tickets"></span></a>
+                    </li>
+                    <li id="menu-logs" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-expanded="false">Help<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+
+                        </ul>
+                    </li>
+                    <li id="menu-profile"><a href="/profile"><span class="glyphicon glyphicon-cog"
+                                aria-hidden="true"></span></a></li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="alert alert-danger alert-danger-page fade in" style="display:none;margin-top:10px;" tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id="pageDanger"></p>
+        </div>
+        <div class="alert alert-block alert-success alert-success-page fade in" style="display:none;margin-top:10px;"
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id="pageSuccess"></p>
+        </div>
+        <div class="alert alert-block alert-info alert-info-page fade in" style="display:none;margin-top:30px;"
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id="pageInfo"></p>
+        </div>
+
+
+        <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;">
+            <div class="panel-body">
+                <div class="col-sm-16">
+
+                    <form onclick="myFunction()" id="searchForm">
+                        <table class="table table-bordered" onclick="myFunction()">
+                            <tbody>
+                                <tr>
+                                    <td style="width:25%">
+
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="first_name">First Name</label></td>
+                                                    <td>
+                                                        <input type="text" class="form-control" placeholder=""
+                                                            name="first_name" id="first_name">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="last_name">Last Name</label></td>
+                                                    <td>
+                                                        <input type="text" class="form-control" placeholder=""
+                                                            name="last_name" id="last_name">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="state">State</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="state"
+                                                            id="state">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr style="">
+                                                    <td><label for="own_rent">Own / Rent</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="own_rent"
+                                                            id="own_rent">
+                                                            <option value="*">- all -</option>
+                                                            <option value="0">Own</option>
+                                                            <option value="1">Rent</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="phone">Phone</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="phone" id="phone">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="email">Email</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="email" id="email">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td style="width:25%">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td><label for="ssn">SSN</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="ssn" id="ssn">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="dob">DOB</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="dob" id="dob">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="dob">MMN</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="mmn" id="mmn">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="dl_num">Drivers Number</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="dl_num" id="dl_num">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="dl_state">DL State</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="dl_state"
+                                                            id="dl_state">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="account_number">Account Number</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="account_number"
+                                                            id="account_number">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="routing_number">Routing Number</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="routing_number"
+                                                            id="routing_number">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <!-- 
+                <td style="width:25%">
+                    <table class="table">
+                        
+                    </table>
+                </td>
+                -->
+                                    <td style="width:25%">
+                                        <span id="base_info"></span>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr style="">
+                                                    <td style="min-width: 100px;"><label for="base">Base</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="base" id="base">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr style="">
+                                                    <td style="min-width: 100px;"><label
+                                                            for="country_iso2">Country</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="country_iso2"
+                                                            id="country_iso2">
+                                                            <option value="US">United States</option>
+                                                            <option value="CA">Canada</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr style="" rowspan="2">
+
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="discount">Discounted</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="discount" id="discount">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">
+                                        <button type="button" onclick="myFunction()" id="makeReset"
+                                            class="btn btn-default">Clear</button>
+                                        &nbsp;
+                                        <button class="btn btn-primary" onclick="myFunction()" type="button"><span
+                                                class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">
+                                        <span style="color: red;font-weight: bold;">Fulls information is a set of
+                                            personal data that cannot be replaced or refunded after the purchase. Please
+                                            refrain from buying fulls If you're not ready to take the loss due to
+                                            discrepancies, changed or incorrect information on file, including a person
+                                            moving to another address, driver's license replaced, etc. We cannot control
+                                            these changed, thus purchases like that will not be refunded.</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div id="dataTable">
+
+
+                        <style>
+                            .yes {
+                                color: green;
+                            }
+
+                            .no {
+                                color: red;
+                            }
+                        </style>
+
+                        <div class="buttonsCart" style="margin-bottom: 10px;">
+                            <span class="batchAddDiv" style="display: none;">
+                                <button class="btn btn-primary" onclick="addToCartSelected();"><span
+                                        class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add
+                                    selected item(s) to the cart (<span class="s_count">0</span>)</button> &nbsp;
+                            </span>
+                            <span class="cartDiv" style="display: none;">
+                                <a href="/cart/" class="btn btn-success"><span class="glyphicon glyphicon-ok"
+                                        aria-hidden="true"></span> Checkout (<span class="c_count">0</span> item(s))</a>
+                            </span>
+                        </div>
+
+                        <table class="table table-bordered table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" onclick="selectAll(this.checked);"></td>
+                                    <th>Person</th>
+                                    <th>Object</th>
+                                    <th>Extra</th>
+                                    <th>Base</th>
+                                    <th>Price</th>
+                                    <th>Cart</th>
+                                </tr>
+                            </tbody>
+                            <tbody id="itemsBody">
+
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498323"
+                                            onclick="checkSelected();" id="checkbox_33498323"></td>
+                                    <td>
+                                        Name: SHANTEL ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, NY, Queens Village
+
+                                        , 11427-2923
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (NY): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498323"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498323)" id="button_cart_33498323"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498320"
+                                            onclick="checkSelected();" id="checkbox_33498320"></td>
+                                    <td>
+                                        Name: DONALD ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, OR, Wilsonville
+
+                                        , 97070-8662
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (AL): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498320"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498320)" id="button_cart_33498320"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498317"
+                                            onclick="checkSelected();" id="checkbox_33498317"></td>
+                                    <td>
+                                        Name: BECKY ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, NM, Santa Cruz
+
+                                        , 87567-0475
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (AL): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498317"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498317)" id="button_cart_33498317"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498290"
+                                            onclick="checkSelected();" id="checkbox_33498290"></td>
+                                    <td>
+                                        Name: HEATHER ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, MD, Havre De Grace
+
+                                        , 21078-2511
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (MD): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498290"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498290)" id="button_cart_33498290"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498281"
+                                            onclick="checkSelected();" id="checkbox_33498281"></td>
+                                    <td>
+                                        Name: PATRICK ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, NY, Albany
+
+                                        , 12203-1936
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (NY): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498281"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498281)" id="button_cart_33498281"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498269"
+                                            onclick="checkSelected();" id="checkbox_33498269"></td>
+                                    <td>
+                                        Name: FRANK ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, OH, Dayton
+
+                                        , 45415-2353
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (OH): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498269"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498269)" id="button_cart_33498269"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498266"
+                                            onclick="checkSelected();" id="checkbox_33498266"></td>
+                                    <td>
+                                        Name: KIARA ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, MS, Newhebron
+
+                                        , 39140-3762
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (MS): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498266"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498266)" id="button_cart_33498266"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498248"
+                                            onclick="checkSelected();" id="checkbox_33498248"></td>
+                                    <td>
+                                        Name: JAMES ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, SC, Cayce
+
+                                        , 29033-3306
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (SC): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498248"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498248)" id="button_cart_33498248"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498230"
+                                            onclick="checkSelected();" id="checkbox_33498230"></td>
+                                    <td>
+                                        Name: LAURA ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, WI, Sheboygan
+
+                                        , 53081-2650
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (WI): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498230"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498230)" id="button_cart_33498230"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498224"
+                                            onclick="checkSelected();" id="checkbox_33498224"></td>
+                                    <td>
+                                        Name: CALVIN ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, TX, Big Spring
+
+                                        , 79720-7970
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (TX): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498224"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498224)" id="button_cart_33498224"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498221"
+                                            onclick="checkSelected();" id="checkbox_33498221"></td>
+                                    <td>
+                                        Name: SANDY ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, TX, Abernathy
+
+                                        , 79311-0281
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (TX): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498221"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498221)" id="button_cart_33498221"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498215"
+                                            onclick="checkSelected();" id="checkbox_33498215"></td>
+                                    <td>
+                                        Name: MATTHEW ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, KS, Junction City
+
+                                        , 66441-4305
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (KS): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498215"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498215)" id="button_cart_33498215"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498212"
+                                            onclick="checkSelected();" id="checkbox_33498212"></td>
+                                    <td>
+                                        Name: PHILIP ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, WA, Puyallup
+
+                                        , 98374-3578
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (WA): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498212"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498212)" id="button_cart_33498212"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498194"
+                                            onclick="checkSelected();" id="checkbox_33498194"></td>
+                                    <td>
+                                        Name: JASON ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, VA, Sandston
+
+                                        , 23150-1009
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (VA): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498194"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498194)" id="button_cart_33498194"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498191"
+                                            onclick="checkSelected();" id="checkbox_33498191"></td>
+                                    <td>
+                                        Name: DARIUS ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, FL, Miami
+
+                                        , 33142-4056
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (FL): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498191"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498191)" id="button_cart_33498191"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498188"
+                                            onclick="checkSelected();" id="checkbox_33498188"></td>
+                                    <td>
+                                        Name: FIKRET ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, IA, Wdm
+
+                                        , 50266-1247
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (IA): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498188"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498188)" id="button_cart_33498188"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498185"
+                                            onclick="checkSelected();" id="checkbox_33498185"></td>
+                                    <td>
+                                        Name: EMMA ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, PA, Pottstown
+
+                                        , 19464-5218
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (PA): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498185"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498185)" id="button_cart_33498185"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498170"
+                                            onclick="checkSelected();" id="checkbox_33498170"></td>
+                                    <td>
+                                        Name: CYNTHIA ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, NJ, Sicklerville
+
+                                        , 08081-2142
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (NJ): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498170"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498170)" id="button_cart_33498170"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498158"
+                                            onclick="checkSelected();" id="checkbox_33498158"></td>
+                                    <td>
+                                        Name: JONATHAN ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, MD, Suitland
+
+                                        , 20746-3828
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (MD): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498158"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498158)" id="button_cart_33498158"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498146"
+                                            onclick="checkSelected();" id="checkbox_33498146"></td>
+                                    <td>
+                                        Name: MATTHEW ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, WA, Snohomish
+
+                                        , 98290-4792
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (WA): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498146"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498146)" id="button_cart_33498146"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498137"
+                                            onclick="checkSelected();" id="checkbox_33498137"></td>
+                                    <td>
+                                        Name: BEATRICE ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, CA, Fremont
+
+                                        , 94538-1978
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (CA): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498137"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498137)" id="button_cart_33498137"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498134"
+                                            onclick="checkSelected();" id="checkbox_33498134"></td>
+                                    <td>
+                                        Name: CAROL ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, OH, East Liberty
+
+                                        , 43319-9476
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (OH): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498134"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498134)" id="button_cart_33498134"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498122"
+                                            onclick="checkSelected();" id="checkbox_33498122"></td>
+                                    <td>
+                                        Name: STEVEN ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, IL, Chicago
+
+                                        , 60620-3525
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (IL): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498122"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498122)" id="button_cart_33498122"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498119"
+                                            onclick="checkSelected();" id="checkbox_33498119"></td>
+                                    <td>
+                                        Name: EMANUEL ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, NY, Bohemia
+
+                                        , 11716-3107
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (NY): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498119"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498119)" id="button_cart_33498119"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="33498092"
+                                            onclick="checkSelected();" id="checkbox_33498092"></td>
+                                    <td>
+                                        Name: VICTORIA ***<br>
+                                        city/zip: <img src="{% static 'public/static/images/US.png' %}"
+                                            title="United States"> United
+                                        States, MD, Glen Burnie
+
+                                        , 21061-4733
+                                        <br>
+                                        full address: <span class="yes">yes</span> <br>
+                                        phone: <span class="yes">yes</span> <br>
+                                        email: <span class="yes">yes</span>
+                                    </td>
+                                    <td>
+                                        Own/Rent: <span class="no">no</span> <br>
+                                        Years At Residence: <span class="no">no</span> <br>
+                                        Income Type: <span class="no">no</span> <br>
+                                        Employer: <span class="no">no</span> <br>
+                                        Occupation: <span class="no">no</span> <br>
+                                        Years Employed: <span class="no">no</span> <br>
+                                        Work Phone: <span class="no">no</span> <br>
+                                        Net Monthly Income: <span class="no">no</span> <br>
+                                    </td>
+                                    <td>
+                                        Credit Card: <span class="no">no</span> <br>
+                                        Checking Account: <span class="no">no</span> <br>
+                                        SSN: <span class="yes">yes</span> <br>
+                                        DOB: <span class="yes">yes</span> <br>
+                                        MMN: <span class="no">no</span> <br>
+                                        Driver License (MD): <span class="yes">yes</span> <br>
+                                        Account: <span class="no">no</span> <br>
+                                        Routing: <span class="no">no</span>
+                                    </td>
+                                    <td style="font-size:8pt;">1231_FULLZ_SSN_DOB_DLN_STATE_ZIP</td>
+                                    <td>
+
+                                        9.95 $
+
+                                    </td>
+                                    <td id="td_cart_33498092"><button class="btn" title="add to cart"
+                                            onclick="addToCart(33498092)" id="button_cart_33498092"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                        <div class="buttonsCart" style="margin-top: 0px;">
+                            <span class="batchAddDiv" style="display: none;">
+                                <button class="btn btn-primary" onclick="addToCartSelected();"><span
+                                        class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add
+                                    selected item(s) to the cart (<span class="s_count">0</span>)</button> &nbsp;
+                            </span>
+                            <span class="cartDiv" style="display: none;">
+                                <a href="/cart/" class="btn btn-success"><span class="glyphicon glyphicon-ok"
+                                        aria-hidden="true"></span> Checkout (<span class="c_count">0</span> item(s))</a>
+                            </span>
+                        </div>
+
+
+                        <nav class="pull-right">
+                            <ul class="pagination" test="1">
+                                <li class="active"><a href="?page=1">1</a></li>
+                                <li><a href="?page=2">2</a></li>
+                                <li><a href="?page=3">3</a></li>
+                                <li><a href="?page=4">4</a></li>
+                                <li><a href="?page=2" title="next"><span aria-hidden="true">»</span><span
+                                            class="sr-only">next</span></a></li>
+                                <li><a href="?page=253052" title="last"><span aria-hidden="true">»»</span><span
+                                            class="sr-only">last</span></a></li>
+                            </ul>
+                        </nav>
+
+
+                        <script>
+
+                            var csrf = 'LKuVGg82esHBnIq1dgrVPwMz47PXqsTM';
+                            function selectAll(action) {
+                                $('.item_checkboxes').prop('checked', action);
+                                checkSelected();
+                            }
+                            function getSelectedArray(only_arr) {
+                                ids = $("#itemsBody input:checkbox:checked").map(function () {
+                                    return $(this).val();
+                                }).get();
+                                if (!only_arr)
+                                    return ids.join(";");
+                                else
+                                    return ids
+                            }
+                            function checkSelected() {
+                                var ids = getSelectedArray(true);
+                                if (ids.length > 0) {
+                                    $('.s_count').html(ids.length);
+                                    $('.batchAddDiv').show();
+                                    return true;
+                                } else {
+                                    $('.batchAddDiv').hide();
+                                    return false;
+                                }
+                            }
+                            function addToCart(id) {
+                                var post_array = {
+                                    'action': 'add_items',
+                                    'type': 'fullz',
+                                    'ids': id,
+                                    'csrfmiddlewaretoken': csrf
+                                };
+                                submitRequest(post_array, [id]);
+                            }
+                            function addToCartSelected() {
+                                var ids = getSelectedArray(true);
+                                if (ids.length == 0) {
+                                    showMessage('page', 'danger', 'selected items not found');
+                                    return false;
+                                }
+                                var post_array = {
+                                    'action': 'add_items',
+                                    'type': 'fullz',
+                                    'ids': ids.join(';'),
+                                    'csrfmiddlewaretoken': csrf
+                                };
+                                submitRequest(post_array, ids);
+                            }
+                            function submitRequest(post_array, ids) {
+                                var l = ids.length;
+                                for (var i = 0; i < l; i++)
+                                    $('#button_cart_' + ids[i]).attr('disabled', 'disabled');
+
+                                $.post('/cart/', post_array, function (data) {
+                                    if (data && data.status == 'fail') {
+                                        showMessage('page', 'danger', data.message);
+                                    }
+                                    $.each(data.error_ids, function (key, item) {
+                                        $('#td_cart_' + item[0]).html(item[1]).css('color', 'red');
+                                        $('#checkbox_' + item[0]).attr('checked', false);
+                                    });
+                                    $.each(data.success_ids, function (key, item) {
+                                        $('#td_cart_' + item[0]).html(item[1]).css('color', 'green');
+                                        $('#checkbox_' + item[0]).attr('checked', false);
+                                    });
+
+                                    if (data.total_items_count['count'] > 0) {
+                                        $('.cartDiv').show();
+                                        $('.c_count').html(data.total_items_count['count']);
+                                        $('#count_cart_items').html(data.total_items_count['count']);
+                                    } else {
+                                        $('.cartDiv').hide();
+                                        $('#count_cart_items').html('');
+                                    }
+                                    checkSelected();
+                                }, 'json').error(function () {
+                                    showMessage('page', 'danger', 'timeout error, please try again');
+                                    for (var i = 0; i < l; i++)
+                                        $('#button_cart_' + ids[i]).removeAttr('disabled');
+                                }).always(function () {
+                                    //
+                                });
+                                return true;
+                            }
+                        </script>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <hr>
+        <footer>
+            <center><a href="{% url 'tasklist' %}">Earn money with us!</a></center>
+            <p>© 2021 Crabs on Security </p>
+        </footer>
+
+        <div class="modal fade" id="myModalCR" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">Crab Rating</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-bordered" style="width:100%;max-width:400px;">
+                                        <tbody>
+                                            <tr>
+                                                <th>Total Deposits: </th>
+                                                <td><a href="#">{{ user.balance.balance }} $</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Refunds: </th>
+                                                <td><a href="#">0.00 $</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Crab Points: </th>
+                                                <td>{{ user.balance.balance }} - 0.00 = {{ user.balance.balance }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <span style="font-size:15pt;">Your crab rating:</span> &nbsp;<span style="font-size:17pt;">
+                                        {% if user.balance.balance < 1 %}
+                                            0
+                                        {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+                                            1
+                                        {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+                                            2
+                                        {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+                                            3
+                                        {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+                                            4
+                                        {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+                                            5
+                                        {% else %}
+                                            super
+                                        {% endif %}
+                                    </span> <br>
+                                    Next level is <b>1 crab</b> (1.00 points left)
+                                </div>
+                                <div class="col-md-12">
+                                    <i>We count only deposits and refunds from <u>last 60 days</u><br>
+                                        The rating is recalculated every 30 minutes</i><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th>Crab Points</th>
+                                                <th>Rating</th>
+                                                <th>Discounts</th>
+                                                <th>Other</th>
+                                            </tr>
+                                            <tr id="crab00_tr" {% if user.balance.balance < 1 %}class="success"{% endif %}>
+                                                <td>&lt; 1</td>
+                                                <td>0 crabs</td>
+                                                <td> - </td>
+                                                <td> wait period 3 hours </td>
+                                            </tr>
+                                            <tr id="crab1_tr" {% if user.balance.balance >= 1 and user.balance.balance < 1001 %}class="success"{% endif %}>
+                                                <td>1 - 1000</td>
+                                                <td>1 crab</td>
+                                                <td> 3% </td>
+                                                <td> wait period 2 hours </td>
+                                            </tr>
+                                            <tr id="crab2_tr" {% if user.balance.balance >= 1001 and user.balance.balance < 2001 %}class="success"{% endif %}>
+                                                <td>1001 - 2000</td>
+                                                <td>2 crabs</td>
+                                                <td> 5% </td>
+                                                <td> wait period 1 hour </td>
+                                            </tr>
+                                            <tr id="crab3_tr" {% if user.balance.balance >= 2001 and user.balance.balance < 3001 %}class="success"{% endif %}>
+                                                <td>2001 - 3000</td>
+                                                <td>3 crabs</td>
+                                                <td> 7% </td>
+                                                <td> - </td>
+                                            </tr>
+                                            <tr id="crab4_tr" {% if user.balance.balance >= 3001 and user.balance.balance < 4001 %}class="success"{% endif %}>
+                                                <td>3001 - 4000</td>
+                                                <td>4 crabs</td>
+                                                <td> 9% </td>
+                                                <td> - </td>
+                                            </tr>
+                                            <tr id="crab5_tr" {% if user.balance.balance >= 4001 and user.balance.balance < 6001 %}class="success"{% endif %}>
+                                                <td>4001 - 6000</td>
+                                                <td>5 crabs</td>
+                                                <td> 12% </td>
+                                                <td> - </td>
+                                            </tr>
+                                            <tr id="crab6_tr" {% if user.balance.balance >= 6001 %}class="success"{% endif %}>
+                                                <td>&gt; 6001</td>
+                                                <td>super crab</td>
+                                                <td> 15% </td>
+                                                <td> VIP status </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalDetailsC" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalDetailsCTitle">Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalDanger"></p>
+                        </div>
+                        <div id="cr_details_data" style="max-height:400px;overflow:auto;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalDetailsMG" tabindex="-1" role="dialog" aria-hidden="false">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalDetailsMGTitle">Terms for receiving a free daily dump!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalDanger"></p>
+                        </div>
+                        <div id="mg_data" style="max-height:400px;overflow:auto;">
+                            <ul>
+                                <li>you made a purchase in the last 24 hours</li>
+                                <li>you made a deposit within the last 24 hours</li>
+                                <li>you don't have any outstanding credits/loans</li>
+                                <li>minimum of $100 in combined deposits </li>
+                            </ul>
+                            <span style="font-weight: bold;font-size: 12px;">Disclaimer:<p>
+                                    - Daily free dump is an expiring, randomly picked dump from the older databases.
+                                    There's no guarantee It will work and not region locked in your area. Creating a
+                                    ticket complaining about a free dump will void an ability to receive any future
+                                    daily gifts in my shop.</p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-success" id="go_to_my_orders"
+                            onclick="window.location.href = '/orders';" style="display: none;">Go to My Orders</button>
+                        <button type="button" class="btn btn-primary" id="receive_gift" onclick="ReceiveGift();">Click
+                            here to receive your gift.</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalLoan" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalLoanTitle">Loan request</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalDanger"></p>
+                        </div>
+                        <div class="alert alert-success alert-success-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalSuccess"></p>
+                        </div>
+                        <div id="loan_data"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /container -->
+
+
+
+    <link href="/static/css/select2/select2.css" rel="stylesheet">
+    <link href="/static/css/select2/select2-bootstrap.css" rel="stylesheet">
+    <script src="/static/js/select2/select2.min.js"></script>
+
+    <script>
+        function myFunction() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Your account is inactive. For activation you need to top up your balance!!!',
+                footer: '<a href="{% url 'tasklist' %}">topup your balance</a>',
+            })
+        }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            var menuID = document.getElementById("menu-home");
+            if (menuID)
+                menuID.className = menuID.className + " active";
+
+
+            /*String.prototype.capitalise = function() {
+                return this.charAt(0).toUpperCase() + this.slice(1);
+            };*/
+
+            startTime();
+            getLiveData();
+
+            $('.open_cr').click(function () {
+                $('#myModalCR').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+            $('.open_in').click(function () {
+                $('#AcoountInfo').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+
+            $('.open_request_loan').click(function () {
+                $('#myModalLoan').modal('show');
+                $('#loan_data').html('data is loading, please wait ...');
+
+                // $.get("get_loan/index.php", function (data) {
+                //     if(data.status && data.status == 'success') {
+                //         $('#loan_data').html(data.html);
+                //     } else {
+                //         showMessage('modal', 'danger', data.message);
+                //     }
+                // }, 'json').error(function () {
+                //     showMessage('modal', 'danger', 'timeout error, please try again');
+                // }).always(function() {
+                //     //
+                // });
+
+                return false;
+            });
+
+        });
+
+        if (window.parent.frames.length > 0) {
+            // $.get("check_iframe/index.php", function (data) {
+            //     //
+            // }, 'json').error(function () {
+            //     //
+            // }).always(function() {
+            //     //
+            // });
+        }
+
+        var currentHour = 23;
+        var timeoutArray = [];
+        var userBalance = 0.000000;
+
+        function getRatingDetails(action) {
+            $('#myModalDetailsC').modal('show');
+            $('#cr_details_data').html('data is loading, please wait ...');
+
+            // $.post("get_crab_rating/index.php", {
+            //     csrfmiddlewaretoken: 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            //     action: action
+            // }, function (data) {
+            //     $('#cr_details_data').html(data);
+            // }).error(function () {
+            //     showMessage('modal', 'danger', 'timeout error, please try again');
+            // }).always(function() {
+            //     //
+            // });
+
+            return false;
+        }
+
+        function checkTime(i) {
+            return (i < 10) ? "0" + i : i;
+        }
+
+        function startTime() {
+            var today = new Date();
+            today.setHours(currentHour);
+            var h = today.getHours();
+            var m = checkTime(today.getMinutes());
+            var s = checkTime(today.getSeconds());
+            if (m == 59 && s == 59)
+                currentHour++;
+            if (currentHour > 23)
+                currentHour = 0;
+            document.getElementById('current_time').innerHTML = h + ":" + m + ":" + s;
+            setTimeout(function () {
+                startTime()
+            }, 1000);
+        }
+
+
+        function firstUpperCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showMessage(where, type, message, messageID, timeout) {
+            var divClass = (where == 'page') ? 'alert-' + type + '-page' : 'alert-' + type + '-modal';
+            messageID = (messageID == undefined) ? where + firstUpperCase(type) : messageID;
+
+            if (timeout != false && (timeout == undefined || timeout < 1)) {
+                timeout = 5000;
+            }
+
+            var elementMessage = (where == 'page') ? '#' : '.';
+
+            if ($('.' + divClass).is(':visible')) {
+                if (timeout != false && timeoutArray[type] != undefined) {
+                    clearTimeout(timeoutArray[type]);
+                    timeoutArray[type] = undefined;
+                    delete timeoutArray[type];
+                }
+                $(elementMessage + messageID).append('<br>' + message);
+            } else {
+                $(elementMessage + messageID).html(message);
+            }
+
+            $('.' + divClass).show().focus();
+
+            if (timeout != false)
+                timeoutArray[type] = setTimeout(function () {
+                    $('.' + divClass).hide('slow');
+                }, timeout);
+
+            return false;
+        }
+
+        function getLiveData() {
+            // $.getJSON('get_live_data/index.php', function (data) {
+            //     if(data.info)
+            //         showMessage('page', 'info', data.info, undefined, false);
+            //     if(data.count_cart_items > 0)
+            //         $('#count_cart_items').html(data.count_cart_items);
+            //     if(data.count_tickets > 0)
+            //         if(data.waiting_tickets !== undefined)
+            //             $('#count_tickets').html(data.waiting_tickets + '/' + data.count_tickets);
+            //         else
+            //             $('#count_tickets').html(data.count_tickets);
+            //     //if(data.count_pendings > 0)
+            //     if(data.count_payoffs > 0)
+            //         $('#count_payoffs').html(data.count_payoffs);
+            //     if(data.remain_amount)
+            //         $('#remain_amount').html(data.remain_amount);
+            //     if (data.bid_total>0) {
+            //         $('#count_bids').html(data.bid_active + '/' + data.bid_total);
+            //     }
+            //     if(data.current_loan) {
+            //         $('#current_loan').html(data.current_loan);
+            //         $('#current_loan_block').css("display","initial");
+            //     } else {
+            //         $('#request_loan_block').css("display","initial");
+            //     }
+            // }).error(function () {
+            //     //
+            // }).always(function () {
+            //     //
+            // });
+        }
+
+        function ReceiveGift() {
+            $('#receive_gift').prop('disabled', true);
+            var post_array = {
+                'action': 'receive_gift',
+                'type': 'dumps',
+                'ids': '0',
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post('cart/index.php', post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //         $('#go_to_my_orders').show();
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#receive_gift').prop('disabled', false);
+            // });
+            return true;
+        }
+
+        function GetMyLoan() {
+            $('#get_my_loan').prop('disabled', true);
+            $loan_amount = $('.active [name="options"]').attr('loan')
+            var post_array = {
+                'action': 'get_my_loan',
+                'loan_amount': $loan_amount,
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post(/get_loan/, post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#get_my_loan').prop('disabled', false);
+            // });
+            return true;
+        }
+    </script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        var csrfToken = '{{ csrf_token }}';
+        var cartItemCount = {{ request.session.cart_item_count|default:0 }};
+    </script>
+    <script src="{% static 'public/js/cart.js' %}"></script>
+</body>
+
+</html>

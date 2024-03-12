@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Successful</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .success-message {
+            border: 2px solid #28a745;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #e6ffe6;
+        }
+        
+        .amount {
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your content here -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="success-message text-center mt-5">
+                    <h2 class="text-success">Transaction Successful!</h2>
+                    <p>Amount added to your balance: <span class="amount">{{ amount }}</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Back to cart -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center mt-5">
+                <a href="{% url 'cart' %}" class="btn btn-primary">Back to cart</a>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    {% load google_analytics %}
+
+    {% if context.site_config.google_analytics_id %}
+    <script async
+        src="https://www.googletagmanager.com/gtag/js?id={{ context.site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ context.site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+    <!-- Google tag (gtag.js) -->
+     
+
+    <meta name='robots' content='index, follow' />
+    <!-- <meta charset="utf-8"> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+       <meta name="author" content="Brian Krebs">
+    <meta name="msvalidate.01" content="F0B9ADC94E660AD71487AA4C28E5262C" />
+    <meta name="author" content="Brian Krebs">
+
+    <meta name="keywords" content='briansclub,brainsclub cm,briansclub cc,briansclub review,brianclub cm login,brainclub,cc dumps,cvv online,cvv shop online,cvv dumps,buy cc,cc shop,fresh dumps,buy dumps online, dumps,dumps shop,buy dumps, dumps with pin,buy ssn,briansclub sign in,briansclub official site,is briansclub legit,new briansclub,briansclub forum,bclub,blub cm,bclub tkbriansclub onion,briansclub onion link,brians club login,brians club,sites to buy cvv'    >
+<meta name="description" content='Briansclub Rigester new account creat account or add a tiket to get your old account back'>
+<title>Register »Account</title>
+    <style>
+        .errorlist {
+            color: red;
+            font-weight: bold;
+        }
+
+        #password-strength-bar {
+            height: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'public/static/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'public/static/css/signin.css' %}" rel="stylesheet">
+
+    <script src="{% static 'public/static/js/jquery.min.js' %}"></script>
+    <script src="{% static 'public/static/js/bootstrap.min.js' %}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="{% static 'public/static/css/strength-meter.min.css' %}" media="all" rel="stylesheet" type="text/css" />
+    <script src="{% static 'public/static/js/strength-meter.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'public/static/js/bootstrapValidator.min.js' %}" type="text/javascript"></script>
+    <link rel="icon" href="{% static 'public/images/favicon.ico' %}">
+    <style>
+        #id_password {
+            width: 418px;
+            margin-right: 10px;
+        }
+
+        .input-group-addon {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <noscript>
+        <div class="alert alert-danger fade in" style='text-align: center;font-size:15pt;' tabindex="-1">
+            <p>Please enable Javascript to continue.</p>
+        </div>
+    </noscript>
+
+    <div class="container">
+
+        <form class="form-signin" action="" id="thisForm" method="post" role="form" style="max-width:450px;">
+            {{ form.non_field_errors }}
+            {% for field in form %}
+            <p>
+                {{ field.errors }}
+
+            </p>
+            {% endfor %}
+            <!-- {{ form.alt_pass }} -->
+
+            <input type="hidden" name="_token" value="5jj9OmWhr5kTaOCqJ86Zc8MWLFSUKRC4xAR0E3wV">
+            <h1 class="form-signin-heading">Registration briansclub</h1>
+            <div class="form-group"><label class="control-label" for="id_username">Login</label><input
+                    class="form-control" id="id_username" maxlength="32" name="username" placeholder="brian"
+                    required="required" title="" type="text" /></div>
+            <div class="form-group">
+                <label class="control-label" for="id_password1">Password <small style="font-size: 8px;padding: 10px;"> (Minimum 8 characters, at least 1 letter and 1 number)</small> </label>
+                <input class="form-control" id="id_password1" maxlength="64" name="password1" placeholder="Password"
+                    required="required" title="" type="password" />
+                <div id="password-strength-bar"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="id_password2">Confirm Password</label>
+                <input class="form-control" id="id_password2" maxlength="64" name="password2"
+                    placeholder="Confirm Password" required="required" title="" type="password" />
+                <div id="password-match-bar"></div>
+            </div>
+
+            <style>
+                #password-strength-bar,
+                #password-match-bar {
+                    height: 10px;
+                    margin-top: 5px;
+                    border-radius: 5px;
+                    transition: width 0.5s ease-in-out;
+                }
+
+                #password-match-bar {}
+            </style>
+
+            <script>
+                // Get the password input fields and the password strength and match bars
+                var passwordInput = document.getElementById("id_password1");
+                var passwordConfirmInput = document.getElementById("id_password2");
+                var passwordStrengthBar = document.getElementById("password-strength-bar");
+                var passwordMatchBar = document.getElementById("password-match-bar");
+
+                // Define the colors for the password strength and match bars
+                var weakColor = "#dc3545"; // red
+                var mediumColor = "#ffc107"; // yellow
+                var strongColor = "#28a745"; // green
+                var matchColor = "#28a745"; // green
+                var noMatchColor = "#dc3545"; // red
+
+                // Define the minimum password length and the minimum number of characters required for each password strength level
+                var minLength = 8;
+                var mediumLength = 12;
+                var strongLength = 16;
+                var mediumChars = 3;
+                var strongChars = 5;
+
+                // Define a function to calculate the strength of the password
+                function calculatePasswordStrength(password) {
+                    var strength = 0;
+                    var length = password.length;
+                    var lowercaseRegex = /[a-z]/g;
+                    var uppercaseRegex = /[A-Z]/g;
+                    var digitRegex = /[0-9]/g;
+                    var specialCharRegex = /[^a-zA-Z0-9]/g;
+
+                    // Check the length of the password
+                    if (length >= minLength && length < mediumLength) {
+                        strength = 1;
+                    } else if (length >= mediumLength && length < strongLength) {
+                        strength = 2;
+                    } else if (length >= strongLength) {
+                        strength = 3;
+                    }
+
+                    // Check the number of lowercase letters in the password
+                    if (password.match(lowercaseRegex) && password.match(lowercaseRegex).length >= mediumChars) {
+                        strength++;
+                    }
+
+                    // Check the number of uppercase letters in the password
+                    if (password.match(uppercaseRegex) && password.match(uppercaseRegex).length >= mediumChars) {
+                        strength++;
+                    }
+
+                    // Check the number of digits in the password
+                    if (password.match(digitRegex) && password.match(digitRegex).length >= mediumChars) {
+                        strength++;
+                    }
+
+                    // Check the number of special characters in the password
+                    if (password.match(specialCharRegex) && password.match(specialCharRegex).length >= strongChars) {
+                        strength++;
+                    }
+
+                    return strength;
+                }
+
+                // Define a function to update the color of the password strength bar
+                function updatePasswordStrengthBar() {
+                    var password = passwordInput.value;
+                    var strength = calculatePasswordStrength(password);
+
+                    if (strength == 0) {
+                        passwordStrengthBar.style.backgroundColor = "";
+                        passwordStrengthBar.style.width = "0%";
+                    } else if (strength == 1) {
+                        passwordStrengthBar.style.backgroundColor = weakColor;
+                        passwordStrengthBar.style.width = "33%";
+                    } else if (strength == 2) {
+                        passwordStrengthBar.style.backgroundColor = mediumColor;
+                        passwordStrengthBar.style.width = "66%";
+                    } else if (strength == 3) {
+                        passwordStrengthBar.style.backgroundColor = strongColor;
+                        passwordStrengthBar.style.width = "100%";
+                    }
+                }
+
+                // Define a function to update the color of the password match bar
+                function updatePasswordMatchBar() {
+                    var password = passwordInput.value;
+                    var passwordConfirm = passwordConfirmInput.value;
+
+                    if (passwordConfirm == "") {
+                        passwordMatchBar.style.backgroundColor = "";
+                        passwordMatchBar.style.width = "0%";
+                    } else if (passwordConfirm == password) {
+                        passwordMatchBar.style.backgroundColor = matchColor;
+                        passwordMatchBar.style.width = "100%";
+                    } else {
+                        passwordMatchBar.style.backgroundColor = noMatchColor;
+                        passwordMatchBar.style.width = "100%";
+                    }
+                }
+
+                // Add event listeners to the password input fields
+                passwordInput.addEventListener("input", function () {
+                    updatePasswordStrengthBar();
+                    updatePasswordMatchBar();
+                });
+
+                passwordConfirmInput.addEventListener("input", function () {
+                    updatePasswordMatchBar();
+                });
+
+            </script>
+
+
+
+            <div class="form-group"><label class="control-label" for="id_jabber">Jabber (optional)</label><input
+                    class="form-control" id="id_jabber" maxlength="32" name="jabber" placeholder="brian@jabme.de"
+                    title="" type="text" /></div>
+
+
+            {% if context.captcha_error %}
+            <p style="
+                                    color: red;
+                                " class="error">{{ context.captcha_error }}</p>
+            {% endif %}
+            <div class="form-group">
+                <label class="control-label" for="id_captcha_1">Captcha &nbsp; </label>
+
+                <label style="font-size: 23px; color:gray" for="captcha">{{ context.captcha }}</label> <input
+                    id="id_captcha_0" name="captcha" type="hidden" />
+
+                <input autocomplete="off" class="form-control" id="id_captcha_1" name="captcha" required="required"
+                    title="" type="number" />
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+                <div class="checkbox"><label for="id_rules"><input class="" id="id_rules" name="rules"
+                            required="required" type="checkbox" /> I agree to the <a href="#modalRules"
+                            data-toggle="modal">Terms of Service</a></label></div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Create Account" />
+                <span style="font-size:14pt;">or <a href="{% url 'login' %}">sign in</a></span>
+            </div>
+        </form>
+
+    </div>
+    <!-- /container -->
+
+    <div class="modal fade" id="modalRules" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="modalDepositTitle">Terms of Service</h4>
+                </div>
+                <div class="modal-body">
+                    1. We are not responsible for your actions<br>
+                    2. You use the information on the site at your own risk<br>
+                    3. We do not do moneybacks<br>
+                    4. We don't allow the clones. All fake accounts will be banned.<br>
+                    5. The attempts to hack, cheating us - immediately ban, without moneybacks.<br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $("#id_password").strength({ showMeter: true, toggleMask: false });
+
+        $('#thisForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    message: 'Username is invalid',
+                    validators: {
+                        notEmpty: {
+                            message: 'Username is required'
+                        },
+                        stringLength: {
+                            max: 32,
+                            message: 'Username must be less than 32 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[A-Za-z0-9]+$/,
+                            message: 'Username can only contains alphanumeric characters'
+                        },
+                        // remote: {
+                        //     url: '/check_exists/username/',
+                        //     type: 'POST',
+                        //     data: function(validator) {
+                        //         return {'data': validator.getFieldElements('username').val()};
+                        //     },
+                        //     message: 'That user is already taken , please select another '
+                        // }
+                    }
+                },
+                password: {
+                    message: 'Password is required',
+                    validators: {
+                        notEmpty: {
+                            message: 'Password is required'
+                        },
+                        stringLength: {
+                            min: 8,
+                            max: 64,
+                            message: 'Password must be at least 8 characters'
+                        }
+                    }
+                },
+                jabber: {
+                    message: 'Jabber is invalid',
+                    validators: {
+                        stringLength: {
+                            max: 32,
+                            message: 'Jabber must be less than 32 characters long'
+                        },
+                        emailAddress: {
+                            message: 'Jabber is invalid'
+                        },
+                        // remote: {
+                        //     url: '/check_exists/jabber/',
+                        //     type: 'POST',
+                        //     data: function(validator) {
+                        //         return {'data': validator.getFieldElements('jabber').val()};
+                        //     },
+                        //     message: 'That jabber is already taken , please select another '
+                        // }
+                    }
+                }
+            }
+        });
+        $('.captcha').click(function () {
+            $form = $('.form-signin');
+
+            $.getJSON("captcha/refresh/", {}, function (json) {
+                $form.find('input[name="captcha_0"]').val(json.key);
+                $form.find('img.captcha').attr('src', json.image_url);
+            });
+
+            return false;
+            @csrf_exempt
+        });
+    });
+</script>
+
+</html>

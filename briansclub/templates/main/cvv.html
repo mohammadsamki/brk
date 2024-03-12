@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+
+{% load google_analytics %}
+
+{% if site_config.google_analytics_id %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site_config.google_analytics_id }}"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { { dataLayer.push(arguments); } }
+    gtag('js', new Date());
+    gtag('config', '{{ site_config.google_analytics_id }}');
+</script>
+{% endif %}
+    <!-- Google tag (gtag.js) -->
+    <link rel="icon" href="{% static 'public/images/favicon.ico' %}">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="onion-location" content="http://briansccxf4qknms.onion">
+    <meta name="n" content="1">
+    <title>cvv</title>
+    <link href="{% static 'public/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/justified-nav.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/elem.css' %}" rel="stylesheet">
+
+    <link href="{% static 'public/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/bootstrap-toggle.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/slider.css' %}" rel="stylesheet">
+    <script src="{% static 'public/js/jquery.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'public/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <script src="{% static 'public/js/date.js' %}"></script>
+    <script src="{% static 'public/js/moment-with-locales.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'public/js/passgen.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-toggle.min.js' %}"></script>
+    <script src="{% static 'public/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-slider.js' %}"></script>
+
+    <style>
+        .nav-right li a {
+            padding-top: 6px !important;
+            padding-bottom: 6px !important;
+        }
+    </style>
+    <style type="text/css">
+        @font-face {
+            font-family: Roboto;
+            src: url("chrome-extension://mcgbeeipkmelnpldkobichboakdfaeon/css/Roboto-Regular.ttf");
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="width:90%;max-width:1700px;">
+        <div class="masthead">
+            <div role="navigation"
+                style="float: right;margin-top: 0px; white-space: nowrap; width: min-content;width: -moz-min-content;width: -webkit-min-content;display: -ms-grid;-ms-grid-columns: min-content;">
+                <ul class="nav nav-justified nav-right">
+                    <li>
+                        <a href="{% url 'tasklist' %}" style="color:green;"> <b>Lottery</b> <span
+                                class="glyphicon glyphicon-usd" aria-hidden="true"></span></a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="openMyGift" data-toggle="modal" data-target="#myModalDetailsMG"><span
+                                    class="glyphicon glyphicon-gift" aria-hidden="true"
+                                    style="color: orangered;"></span> My Gift </span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"
+                                aria-hidden="true"></span><b>
+                                Logout</b></a>
+                    </li>
+                </ul>
+            </div>
+
+            <script>
+                function myFunction() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Your account is inactive. For activation you need to top up your balance!!!',
+                        footer: '<a href="{% url 'tasklist' %}">topup your balance</a>',
+                    })
+                }
+
+            </script>
+            <div class="text-muted"
+                style="margin-top: -20px;padding-bottom:10px;float: none;width: auto;overflow: visible;">
+                <h3 class="text-muted">Welcome <i>{{ request.user }}</i> <span style="font-size: 16px;">[<a href="/profile/">profile</a>]</span></h3>
+{% if user.is_authenticated %}
+    <b>Balance:</b> {{ user.balance.balance }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+{% else %}
+<b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+
+{% endif %}
+                <link rel="shortcut icon" type="image/png">
+<b>Crab Rating:</b> 
+<a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
+    {% if not user.balance or user.balance.balance is None %}
+        <!-- No image for no balance -->
+    {% elif user.balance.balance < 1 %}
+        <!-- No crab image for 0 rating -->
+    {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+        <img src="{% static 'public/images/crab_rate.png' %}" alt="1 crab">
+    {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+        {% for i in '01'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="2 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+        {% for i in '012'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="3 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+        {% for i in '0123'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="4 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+        {% for i in '01234'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="5 crabs">
+        {% endfor %}
+    {% else %}
+        {% for i in '012345'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
+        {% endfor %}
+    {% endif %}
+</a> 
+[ <a href="#" class="open_cr">details</a> ]<br>
+
+                <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
+                        style="color: red;"></span>$<br></span>
+                <span style="display:none;"> en Billing.php</span>
+                <b>Current server time:</b> <span id="current_time"></span>
+
+                <script>
+                    // Get the current time
+                    var currentTime = new Date();
+
+                    // Get the hours, minutes, and seconds
+                    var h = currentTime.getHours();
+                    var m = currentTime.getMinutes();
+                    var s = currentTime.getSeconds();
+
+                    // Add leading zeros to the hours, minutes, and seconds if they are less than 10
+                    h = (h < 10 ? "0" : "") + h;
+                    m = (m < 10 ? "0" : "") + m;
+                    s = (s < 10 ? "0" : "") + s;
+
+                    // Update the HTML element with the current time
+                    document.getElementById("current_time").innerHTML = h + ":" + m + ":" + s;
+                </script>
+            </div>
+            <div role="navigation">
+                <ul class="nav nav-justified">
+                    <li id="menu-home"><a href="{% url 'dashboard' %}">News</a></li>
+                    <li id="menu-dumps-search"><a href="{% url 'dumps' %}"
+                            style="background-image: -webkit-linear-gradient(top, #ABDDFC 0%, #ABDDFC 100%);">Dumps</a>
+                    </li>
+                    <li id="menu-cc-search" class=" active"><a href="{% url 'cvv' %}"
+                            style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
+                    </li>
+                    <li id="menu-fullz-search"><a href="{% url 'fullz' %}"
+                            style="background-image: -webkit-linear-gradient(top, #bbfcff 0%, #bbfcff 100%);">Fullz</a>
+                    </li>
+                    <li id="menu-wholesale" style="min-width:110px;"><a href="{% url 'wholesale' %}">Wholesale</a></li>
+                    <li id="menu-cart">
+                        <a href="{% url 'cart' %}">Cart <span class="badge" id="count_cart_items">{{ request.session.cart_item_count|default:0 }}</span></a>
+                    </li>                    <li id="menu-orders"><a href="/orders">Orders</a></li>
+                    <li id="menu-auction"><a href="/auction"
+                            style="color: white; background-image: -webkit-linear-gradient(top, #FB786B 0%, #FB786B 100%);">Auction
+                            <span class="badge" id="count_bids"></span></a></li>
+                    <li id="menu-checker"><a href="/tools" style="background-color:#FFFFCC">Tools <span class="label label-danger" id="last_update_mybins_menu" style="display: initial;">new</span></a></li>
+                    <li id="menu-tickets"><a href="/tickets/">Tickets <span class="badge" id="count_tickets"></span></a>
+                    </li>
+                    <li id="menu-logs" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-expanded="false">Help<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+
+                        </ul>
+                    </li>
+                    <li id="menu-profile"><a href="/profile"><span class="glyphicon glyphicon-cog"
+                                aria-hidden="true"></span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="alert alert-danger alert-danger-page fade in" style="display:none;margin-top:10px;" tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id="pageDanger"></p>
+        </div>
+        <div class="alert alert-block alert-success alert-success-page fade in" style="display:none;margin-top:10px;"
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id="pageSuccess"></p>
+        </div>
+        <div class="alert alert-block alert-info alert-info-page fade in" style="display:none;margin-top:30px;"
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id="pageInfo"></p>
+        </div>
+        <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+            <p>
+                Your account is inactive. For activation you need <a href="{% url 'tasklist' %}">to top up your
+                    balance</a>.<br>
+                Attention: Not activated accounts for more than 5 days will be deleted automatically.
+            </p>
+        </div>
+        <!-- <form method="post">
+            {% csrf_token %}
+            <input type="text" name="query" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form> -->
+        <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;">
+            <div class="panel-body">
+                <div class="col-sm-16">
+                    <form  method="post" id="searchForm">
+                        {% csrf_token %}
+
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td style="width:25%">
+
+                                        <table class="table">
+                                            <tbody>
+                                                <tr style="">
+                                                    <td><label for="query">Bins</label></td>
+                                                    <td>            <input type="number" pattern="[0-9]{1,6}" name="query" placeholder="Search...">
+                                                    </td>
+                                                </tr>
+                                                <tr style="">
+                                                    <td><label for="zips">Zips</label></td>
+                                                    <td><textarea class="form-control" name="zips" id="zips"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="bank_name">Bank</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh select2"
+                                                            name="bank_name" id="bank_name">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td style="width:25%">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr style="">
+                                                    <td><label for="country_iso2">Country</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="country_iso2"
+                                                            id="country_iso2">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="state">State</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="state"
+                                                            id="state">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="zip">ZIP</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="zip" id="zip">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="address" style="white-space: nowrap;">Full
+                                                            Address</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="address" id="address">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="phone">Phone</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="phone" id="phone">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="email">Email</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="email" id="email">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="email_pass" style="white-space: nowrap;">Email
+                                                            password</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="email_pass" id="email_pass">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="no_cvv" style="white-space: nowrap;">Without
+                                                            cvv2</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="no_cvv" id="no_cvv">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td style="width:25%">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr style="">
+                                                    <td><label for="type">Type</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="type" id="type">
+                                                            <option value="*">- all -</option>
+                                                            <option value="1">Visa</option>
+                                                            <option value="2">Mastercard</option>
+                                                            <option value="3">AMEX</option>
+                                                            <option value="4">Discover</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="subtype1">Credit/Debit</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="subtype1"
+                                                            id="subtype1">
+                                                            <option value="*">- all -</option>
+                                                            <option value="1">Credit</option>
+                                                            <option value="2">Debit</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="subtype2">Subtype</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="subtype2"
+                                                            id="subtype2">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="exp_date">Exp Date</label></td>
+                                                    <td>
+                                                        <input type="text" class="form-control" placeholder="03/21"
+                                                            name="exp_date" id="exp_date">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="discount">Discounted</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="discount" id="discount">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="replace_accepted" style="white-space: nowrap;">Only
+                                                            refundable</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="replace_accepted"
+                                                            id="replace_accepted">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="price_range" style="white-space: nowrap;">Price
+                                                            Range</label></td>
+                                                    <td>
+                                                        <b>$<span id="price_range_low">1</span> &nbsp;&nbsp;</b><input
+                                                            type="text" class="span2 slider" id="price_range"
+                                                            name="price_range" value="" data-slider-min="1"
+                                                            data-slider-max="150" data-slider-step="1"
+                                                            data-slider-value="[1,150]" data-slider-interval="150"
+                                                            data-slider-orientation="horizontal"
+                                                            data-slider-selection="before"
+                                                            data-slider-tooltip="hide"><b>&nbsp;&nbsp; $<span
+                                                                id="price_range_high">150</span></b>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td style="width:25%">
+                                        <span id="base_info"></span>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr style="">
+                                                    <td style="min-width: 100px;"><label for="base">Base</label></td>
+                                                    <td>
+                                                        <select class="form-control get_refresh" name="base" id="base">
+                                                            <option value="*">- all -</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr style="" rowspan="2">
+
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="dob">DOB</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="dob" id="dob">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="ssn">SSN</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="ssn" id="ssn">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="mmn">MMN</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="mmn" id="mmn">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="ip_address">IP address</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="ip_address" id="ip_address">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="last_paid_amount" style="white-space: nowrap;">Last
+                                                            Paid Amount</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="last_paid_amount"
+                                                            id="last_paid_amount">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="driver_license" style="white-space: nowrap;">Driver
+                                                            License Number</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="driver_license"
+                                                            id="driver_license">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="driver_license_scan"
+                                                            style="white-space: nowrap;">Driver License Scan</label>
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" name="driver_license_scan"
+                                                            id="driver_license_scan">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="atm_pin">ATM PIN</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="atm_pin" id="atm_pin">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="att_pin">AT&amp;T PIN</label></td>
+                                                    <td>
+                                                        <input type="checkbox" name="att_pin" id="att_pin">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">
+                                        <button onclick="myFunction()" type="button" id="makeReset"
+                                            class="btn btn-default">Clear</button>
+                                        &nbsp;
+                                        <button type="submit" class="btn btn-primary" > Search
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">
+                                        <a href="#" data-toggle="modal" data-target="#modalViewRules"
+                                            style="color: red;font-weight: bold;">Please read carefully before
+                                            buying!</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="modal fade" id="modalViewRules" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span
+                                            aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="modalDepositTitle">Purchase rules</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <ul
+                                        class="nav nav-pills nav-stacked col-xs-3 col-sm-2 sidebar-offcanvas list-group">
+                                        <li class=""><a href="#russian" class="list-group-item" role="tab"
+                                                data-toggle="tab">На Русском</a></li>
+                                        <li class=" active"><a href="#english" class="list-group-item" role="tab"
+                                                data-toggle="tab">In English</a></li>
+                                    </ul>
+                                    <div class="tab-content col-xs-9 col-sm-10">
+                                        <div role="tabpanel" class="tab-pane" id="russian">
+                                            <b>Внимательно прочитайте данную информацию перед покупкой:</b><br><br>
+                                            <ul style="list-style-type: decimal;">
+                                                <li>Полный адрес поставляется только с картами которые имеют отметку
+                                                    "Yes" в колонке "Full Address"</li>
+                                                <li>В колонке "Name", отображается первое имя держателя карты, фамилия
+                                                    скрыта символами *.<br>
+                                                    <b>Внимание!</b> Если после имени нет символов *, значит нет
+                                                    информации о фамилии держаталя карты.
+                                                </li>
+                                                <li>
+                                                    Наличие дополнительной информации к картой указан в колонке
+                                                    <b>"Extra"</b>, значения:
+                                                    <ul>
+                                                        <li><b>E-mail</b> = e-mail адрес</li>
+                                                        <li><b>Phone</b> = телефонный номер</li>
+                                                        <li><b>DOB</b> = Дата рождения</li>
+                                                        <li><b>SSN</b> = Номер социального страхования</li>
+                                                        <li><b>MMN</b> = Девичья фамилия матери</li>
+                                                        <li><b>EmailPass</b> = пароль к e-mail</li>
+                                                        <li><b>IP</b> = IP адрес держателя карты</li>
+                                                        <li><b>LPA</b> = Сумма последней транзакции по карте</li>
+                                                        <li><b>DrvLic</b> = водительские права</li>
+                                                        <li><b>AT&amp;T PIN</b> = the AT&amp;T pin that allows you to
+                                                            forward all the phone calls to confirm high priced
+                                                            transactions</li>
+                                                        <li><b>ATM PIN</b> = pin код для карты с cvv2. Для некоторых BIN
+                                                            вы можете сгенерировать track2, используя карту cvv2.</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Символ "-" или N/A в люой колонке обозначает, что такой информации
+                                                    нет.</li>
+                                            </ul>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane active" id="english">
+                                            <b>Carefully read the following instruction before buying:</b><br><br>
+                                            <ul style="list-style-type: decimal;">
+                                                <li>Complete address is available only for cards marked as "Yes" in the
+                                                    "Full Address" column.</li>
+                                                <li>The "Name" column is only reflecting first name of the cardholder
+                                                    while last name is hidden by asterisks *.<br>
+                                                    <b>Attention!</b> If you don't see asterisks * after the first name,
+                                                    then this card is not having a last name along with it.
+                                                </li>
+                                                <li>
+                                                    The <b>"Extra"</b> column shows availability of the following
+                                                    additional information for the card you're about to grab:
+                                                    <ul>
+                                                        <li><b>E-mail</b> = the e-mail address</li>
+                                                        <li><b>Phone</b> = the phone number</li>
+                                                        <li><b>DOB</b> = date of birth</li>
+                                                        <li><b>SSN</b> = social security number</li>
+                                                        <li><b>MMN</b> = mother's maiden name</li>
+                                                        <li><b>EmailPass</b> = password for the e-mail</li>
+                                                        <li><b>IP</b> = IP address of the cardholder</li>
+                                                        <li><b>LPA</b> = amount of money last processed by cardholder
+                                                        </li>
+                                                        <li><b>DrvLic</b> = driver license</li>
+                                                        <li><b>AT&amp;T PIN</b> = the AT&amp;T pin that allows you to
+                                                            forward all the phone calls to confirm high priced
+                                                            transactions</li>
+                                                        <li><b>ATM PIN</b> = the pin for the cvv2 card. You can generate
+                                                            a track2 using cvv2 card for some of the BINs on various
+                                                            carding communities.</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Symbol of "-" or "N/A" in any of the columns mean there's no
+                                                    information available.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dataTable">
+                        <div class="buttonsCart" style="margin-bottom: 10px;">
+                            <span class="batchAddDiv" style="display: none;">
+                                <button class="btn btn-primary" onclick="addToCartSelected();"><span
+                                        class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add
+                                    selected item(s) to the cart (<span class="s_count">0</span>)</button> &nbsp;
+                            </span>
+                            <span class="cartDiv" style="display: none;">
+                                <a href="/cart/" class="btn btn-success"><span class="glyphicon glyphicon-ok"
+                                        aria-hidden="true"></span> Checkout (<span class="c_count">0</span> item(s))</a>
+                            </span>
+                        </div>
+                        <table class="table table-bordered table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" onclick="selectAll(this.checked);"></td>
+                                    <th>Bin</th>
+                                    <th>Type</th>
+                                    <th>Subtype</th>
+                                    <th>Expiry</th>
+                                    <th>Name</th>
+                                    <th>Country</th>
+                                    <th>State</th>
+                                    <th>Full<br>Address</th>
+                                    <th>Zip</th>
+                                    <th>Extra</th>
+                                    <th>Bank</th>
+                                    <th>Base</th>
+                                    <th>Price</th>
+                                    <th>Cart</th>
+                                </tr>
+                            </tbody>
+                            <tbody id="itemsBody">
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="10278375"
+                                            onclick="checkSelected();" id="checkbox_10278375"></td>
+                                    <td>525302</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">DEBIT PREPAID</td>
+                                    <td>10/22</td>
+                                    <td>KAREN ***</td>
+                                    <td><img src="{% static 'public/static/images/GB.png' %}" title="United Kingdom">
+                                    </td>
+                                    <td> - </td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>ML***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">BANK OF SCOTLAND PLC; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0311_GB_IP</td>
+                                    <td>
+                                        20.00 $
+                                    </td>
+                                    <td id="td_cart_10278375"><button class="btn" title="add to cart"
+                                            onclick="addToCart(10278375)" id="button_cart_10278375"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="10446174"
+                                            onclick="checkSelected();" id="checkbox_10446174"></td>
+                                    <td>403446</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">DEBIT PREPAID</td>
+                                    <td>05/23</td>
+                                    <td>Wellesley ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>AZ</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>24***</td>
+                                    <td>
+                                        Phone<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">N/A</td>
+                                    <td style="font-size:8pt;">0309_US</td>
+                                    <td>
+                                        20.00 $
+                                    </td>
+                                    <td id="td_cart_10446174"><button class="btn" title="add to cart"
+                                            onclick="addToCart(10446174)" id="button_cart_10446174"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="8192171"
+                                            onclick="checkSelected();" id="checkbox_8192171"></td>
+                                    <td>371728</td>
+                                    <td><img src="{% static 'public/static/images/AMERICAN EXPRESS.png' %}"
+                                            title="AMERICAN EXPRESS"></td>
+                                    <td style="font-size:9pt;">CREDIT N/A</td>
+                                    <td>07/24</td>
+                                    <td>MARINA ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>CT</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>06***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">BANK OF AMERICA; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">1104_US_EMAIL_IP</td>
+                                    <td>
+                                        <span style="color:red;font-size:11pt;">10.00 $</span> <s>20.00</s>
+                                    </td>
+                                    <td id="td_cart_8192171"><button class="btn" title="add to cart"
+                                            onclick="addToCart(8192171)" id="button_cart_8192171"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="9381771"
+                                            onclick="checkSelected();" id="checkbox_9381771"></td>
+                                    <td>601100</td>
+                                    <td><img src="{% static 'public/static/images/DISCOVER.png' %}" title="DISCOVER">
+                                    </td>
+                                    <td style="font-size:9pt;">CREDIT PLATINUM</td>
+                                    <td>11/21</td>
+                                    <td>EMMA ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>OR</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>97***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        LPA<br>
+                                    </td>
+                                    <td style="font-size:8pt;">N/A; <span style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">0109_US</td>
+                                    <td>
+                                        18.00 $
+                                    </td>
+                                    <td id="td_cart_9381771"><button class="btn" title="add to cart"
+                                            onclick="addToCart(9381771)" id="button_cart_9381771"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="9377682"
+                                            onclick="checkSelected();" id="checkbox_9377682"></td>
+                                    <td>404308</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">CREDIT PREMIER</td>
+                                    <td>06/23</td>
+                                    <td> - </td>
+                                    <td><img src="{% static 'public/static/images/TR.png' %}" title="Turkey"></td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td>
+                                        LPA<br>
+                                    </td>
+                                    <td style="font-size:8pt;">TURKIYE GARANTI BANKASI A. S.; <span
+                                            style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">0110_TR</td>
+                                    <td>
+                                        6.00 $
+                                    </td>
+                                    <td id="td_cart_9377682"><button class="btn" title="add to cart"
+                                            onclick="addToCart(9377682)" id="button_cart_9377682"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="6757840"
+                                            onclick="checkSelected();" id="checkbox_6757840"></td>
+                                    <td>434257</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">DEBIT CLASSIC</td>
+                                    <td>11/23</td>
+                                    <td>ESLIN ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td> - </td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>55***</td>
+                                    <td>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">WELLS FARGO BANK, N.A.; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0806_WORLD_PHONE</td>
+                                    <td>
+                                        15.00 $
+                                    </td>
+                                    <td id="td_cart_6757840"><button class="btn" title="add to cart"
+                                            onclick="addToCart(6757840)" id="button_cart_6757840"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="6362785"
+                                            onclick="checkSelected();" id="checkbox_6362785"></td>
+                                    <td>510805</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">DEBIT STANDARD</td>
+                                    <td>04/22</td>
+                                    <td>RONALD ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>OH</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>44***</td>
+                                    <td></td>
+                                    <td style="font-size:8pt;">ING BANK, F.S.B.; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0719_WORLD</td>
+                                    <td>
+                                        15.00 $
+                                    </td>
+                                    <td id="td_cart_6362785"><button class="btn" title="add to cart"
+                                            onclick="addToCart(6362785)" id="button_cart_6362785"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="5900366"
+                                            onclick="checkSelected();" id="checkbox_5900366"></td>
+                                    <td>517041</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">DEBIT N/A</td>
+                                    <td>03/24</td>
+                                    <td>OUZHAN ***</td>
+                                    <td><img src="{% static 'public/static/images/TR.png' %}" title="Turkey"></td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">GARANTI; <span style="color:red;">not replaceable</span>
+                                    </td>
+                                    <td style="font-size:8pt;">0608_TR</td>
+                                    <td>
+                                        5.00 $
+                                    </td>
+                                    <td id="td_cart_5900366"><button class="btn" title="add to cart"
+                                            onclick="addToCart(5900366)" id="button_cart_5900366"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="9498612"
+                                            onclick="checkSelected();" id="checkbox_9498612"></td>
+                                    <td>535142</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">DEBIT N/A</td>
+                                    <td>08/23</td>
+                                    <td> - </td>
+                                    <td><img src="{% static 'public/static/images/GR.png' %}" title="Greece"></td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td>57***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">NATIONAL BANK OF GREECE, S.A.; <span
+                                            style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">0110_WORLD</td>
+                                    <td>
+                                        20.00 $
+                                    </td>
+                                    <td id="td_cart_9498612"><button class="btn" title="add to cart"
+                                            onclick="addToCart(9498612)" id="button_cart_9498612"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="8938158"
+                                            onclick="checkSelected();" id="checkbox_8938158"></td>
+                                    <td>414734</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">CREDIT SIGNATURE</td>
+                                    <td>04/25</td>
+                                    <td>JAY ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>WA</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>98***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">FIA CARD SERVICES, N.A.; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">1208_WORLD</td>
+                                    <td>
+                                        20.00 $
+                                    </td>
+                                    <td id="td_cart_8938158"><button class="btn" title="add to cart"
+                                            onclick="addToCart(8938158)" id="button_cart_8938158"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="10422453"
+                                            onclick="checkSelected();" id="checkbox_10422453"></td>
+                                    <td>517041</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">DEBIT N/A</td>
+                                    <td>02/24</td>
+                                    <td>Erdi ***</td>
+                                    <td><img src="{% static 'public/static/images/TR.png' %}" title="Turkey"></td>
+                                    <td> - </td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td> - </td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">GARANTI; <span style="color:red;">not replaceable</span>
+                                    </td>
+                                    <td style="font-size:8pt;">0308_WORLD</td>
+                                    <td>
+                                        18.00 $
+                                    </td>
+                                    <td id="td_cart_10422453"><button class="btn" title="add to cart"
+                                            onclick="addToCart(10422453)" id="button_cart_10422453"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="7433203"
+                                            onclick="checkSelected();" id="checkbox_7433203"></td>
+                                    <td>474477</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">DEBIT PLATINUM</td>
+                                    <td>01/24</td>
+                                    <td> - </td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>MD</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>21***</td>
+                                    <td></td>
+                                    <td style="font-size:8pt;">BANK OF AMERICA, N.A.; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0914_WORLD_EMAIL</td>
+                                    <td>
+                                        15.00 $
+                                    </td>
+                                    <td id="td_cart_7433203"><button class="btn" title="add to cart"
+                                            onclick="addToCart(7433203)" id="button_cart_7433203"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="8682369"
+                                            onclick="checkSelected();" id="checkbox_8682369"></td>
+                                    <td>493841</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">CREDIT CLASSIC</td>
+                                    <td>05/23</td>
+                                    <td> - </td>
+                                    <td><img src="{% static 'public/static/images/TR.png' %}" title="Turkey"></td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td>
+                                        IP<br>
+                                        LPA<br>
+                                    </td>
+                                    <td style="font-size:8pt;">TURKIYE VAKIFLAR BANKASI T. A. O.; <span
+                                            style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">1120_TR</td>
+                                    <td>
+                                        5.00 $
+                                    </td>
+                                    <td id="td_cart_8682369"><button class="btn" title="add to cart"
+                                            onclick="addToCart(8682369)" id="button_cart_8682369"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="8398836"
+                                            onclick="checkSelected();" id="checkbox_8398836"></td>
+                                    <td>476361</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">DEBIT CLASSIC</td>
+                                    <td>10/21</td>
+                                    <td>MR A M ALOTAIBI ***</td>
+                                    <td><img src="{% static 'public/static/images/GB.png' %}" title="United Kingdom">
+                                    </td>
+                                    <td> - </td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>88***</td>
+                                    <td></td>
+                                    <td style="font-size:8pt;">ROYAL BANK OF SCOTLAND PLC; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">1115_WORLD</td>
+                                    <td>
+                                        25.00 $
+                                    </td>
+                                    <td id="td_cart_8398836"><button class="btn" title="add to cart"
+                                            onclick="addToCart(8398836)" id="button_cart_8398836"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="7491700"
+                                            onclick="checkSelected();" id="checkbox_7491700"></td>
+                                    <td>625247</td>
+                                    <td><img src="{% static 'public/static/images/CHINA UNION PAY.png' %}"
+                                            title="CHINA UNION PAY"></td>
+                                    <td style="font-size:9pt;">DEBIT N/A</td>
+                                    <td>09/29</td>
+                                    <td> - </td>
+                                    <td><img src="{% static 'public/static/images/CN.png' %}" title="China"></td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td></td>
+                                    <td style="font-size:8pt;">N/A; <span style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">1011_CN</td>
+                                    <td>
+                                        4.00 $
+                                    </td>
+                                    <td id="td_cart_7491700"><button class="btn" title="add to cart"
+                                            onclick="addToCart(7491700)" id="button_cart_7491700"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="10474335"
+                                            onclick="checkSelected();" id="checkbox_10474335"></td>
+                                    <td>548901</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">CREDIT STANDARD</td>
+                                    <td>11/21</td>
+                                    <td>CARMEN MARTÍN MATEOS ***</td>
+                                    <td><img src="{% static 'public/static/images/ES.png' %}" title="Spain"></td>
+                                    <td> - </td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>28***</td>
+                                    <td>
+                                        Phone<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">BANCO SANTANDER, S.A.; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0315_WORLD_IP</td>
+                                    <td>
+                                        35.00 $
+                                    </td>
+                                    <td id="td_cart_10474335"><button class="btn" title="add to cart"
+                                            onclick="addToCart(10474335)" id="button_cart_10474335"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="4974723"
+                                            onclick="checkSelected();" id="checkbox_4974723"></td>
+                                    <td>446291</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">DEBIT CLASSIC</td>
+                                    <td>06/21</td>
+                                    <td>ALEXANDRA J ***</td>
+                                    <td><img src="{% static 'public/static/images/GB.png' %}" title="United Kingdom">
+                                    </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">BANK OF SCOTLAND PLC; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0324_WORLD</td>
+                                    <td>
+                                        18.00 $
+                                    </td>
+                                    <td id="td_cart_4974723"><button class="btn" title="add to cart"
+                                            onclick="addToCart(4974723)" id="button_cart_4974723"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="4611009"
+                                            onclick="checkSelected();" id="checkbox_4611009"></td>
+                                    <td>435880</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">DEBIT PREPAID</td>
+                                    <td>04/28</td>
+                                    <td>JULIE ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>NY</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>14***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">METABANK; <span style="color:red;">not replaceable</span>
+                                    </td>
+                                    <td style="font-size:8pt;">0603_US_IP</td>
+                                    <td>
+                                        <span style="color:red;font-size:11pt;">17.50 $</span> <s>25.00</s>
+                                    </td>
+                                    <td id="td_cart_4611009"><button class="btn" title="add to cart"
+                                            onclick="addToCart(4611009)" id="button_cart_4611009"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="8955945"
+                                            onclick="checkSelected();" id="checkbox_8955945"></td>
+                                    <td>426684</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">CREDIT PREMIER</td>
+                                    <td>09/23</td>
+                                    <td>GABRIELLE ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>FL</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>33***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">CHASE BANK USA, N.A.; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">1216_WORLD_IP</td>
+                                    <td>
+                                        20.00 $
+                                    </td>
+                                    <td id="td_cart_8955945"><button class="btn" title="add to cart"
+                                            onclick="addToCart(8955945)" id="button_cart_8955945"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="10095024"
+                                            onclick="checkSelected();" id="checkbox_10095024"></td>
+                                    <td>558650</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">CREDIT N/A</td>
+                                    <td>02/23</td>
+                                    <td>KATHLEEN ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>OH</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>44***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">N/A; <span style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">0309_US_IP</td>
+                                    <td>
+                                        20.00 $
+                                    </td>
+                                    <td id="td_cart_10095024"><button class="btn" title="add to cart"
+                                            onclick="addToCart(10095024)" id="button_cart_10095024"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="4974936"
+                                            onclick="checkSelected();" id="checkbox_4974936"></td>
+                                    <td>475714</td>
+                                    <td><img src="{% static 'public/static/images/VISA.png' %}" title="VISA"></td>
+                                    <td style="font-size:9pt;">DEBIT CLASSIC</td>
+                                    <td>07/21</td>
+                                    <td>MR A ***</td>
+                                    <td><img src="{% static 'public/static/images/GB.png' %}" title="United Kingdom">
+                                    </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">SANTANDER UK PLC; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0324_WORLD</td>
+                                    <td>
+                                        18.00 $
+                                    </td>
+                                    <td id="td_cart_4974936"><button class="btn" title="add to cart"
+                                            onclick="addToCart(4974936)" id="button_cart_4974936"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="10130115"
+                                            onclick="checkSelected();" id="checkbox_10130115"></td>
+                                    <td>535318</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">CREDIT GOLD</td>
+                                    <td>03/22</td>
+                                    <td>ANDREW ***</td>
+                                    <td><img src="{% static 'public/static/images/AU.png' %}" title="Australia"></td>
+                                    <td> - </td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>20***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                        IP<br>
+                                    </td>
+                                    <td style="font-size:8pt;">COMMONWEALTH BANK OF AUSTRALIA; <span
+                                            style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">0304_AU_IP</td>
+                                    <td>
+                                        20.00 $
+                                    </td>
+                                    <td id="td_cart_10130115"><button class="btn" title="add to cart"
+                                            onclick="addToCart(10130115)" id="button_cart_10130115"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="8056442"
+                                            onclick="checkSelected();" id="checkbox_8056442"></td>
+                                    <td>379710</td>
+                                    <td><img src="{% static 'public/static/images/AMERICAN EXPRESS.png' %}"
+                                            title="AMERICAN EXPRESS"></td>
+                                    <td style="font-size:9pt;">CREDIT N/A</td>
+                                    <td>09/25</td>
+                                    <td>ANN ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>FL</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>34***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">AMERICAN EXPRESS US; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">1016_US</td>
+                                    <td>
+                                        15.00 $
+                                    </td>
+                                    <td id="td_cart_8056442"><button class="btn" title="add to cart"
+                                            onclick="addToCart(8056442)" id="button_cart_8056442"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="5081531"
+                                            onclick="checkSelected();" id="checkbox_5081531"></td>
+                                    <td>551895</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">DEBIT STANDARD</td>
+                                    <td>07/21</td>
+                                    <td>REX ***</td>
+                                    <td><img src="{% static 'public/static/images/US.png' %}" title="United States">
+                                    </td>
+                                    <td>OH</td>
+                                    <td><span style="color:green;font-weight:bold;">Yes</span></td>
+                                    <td>45***</td>
+                                    <td>
+                                        Phone<br>
+                                        Email<br>
+                                    </td>
+                                    <td style="font-size:8pt;">U.S. BANK NATIONAL ASSOCIATION, ND; <span
+                                            style="color:red;">not replaceable</span></td>
+                                    <td style="font-size:8pt;">0603_US_IP</td>
+                                    <td>
+                                        25.00 $
+                                    </td>
+                                    <td id="td_cart_5081531"><button class="btn" title="add to cart"
+                                            onclick="addToCart(5081531)" id="button_cart_5081531"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="item_checkboxes" value="6640294"
+                                            onclick="checkSelected();" id="checkbox_6640294"></td>
+                                    <td>524347</td>
+                                    <td><img src="{% static 'public/static/images/MASTERCARD.png' %}"
+                                            title="MASTERCARD"></td>
+                                    <td style="font-size:9pt;">CREDIT PLATINUM</td>
+                                    <td>03/23</td>
+                                    <td> - </td>
+                                    <td><img src="{% static 'public/static/images/TR.png' %}" title="Turkey"></td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td> - </td>
+                                    <td>
+                                        IP<br>
+                                        LPA<br>
+                                    </td>
+                                    <td style="font-size:8pt;">AKBANK T.A.S.; <span style="color:red;">not
+                                            replaceable</span></td>
+                                    <td style="font-size:8pt;">0729_WORLD</td>
+                                    <td>
+                                        15.00 $
+                                    </td>
+                                    <td id="td_cart_6640294"><button class="btn" title="add to cart"
+                                            onclick="addToCart(6640294)" id="button_cart_6640294"><span
+                                                class="glyphicon glyphicon-shopping-cart"
+                                                aria-hidden="true"></span></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="buttonsCart" style="margin-top: 0px;">
+                            <span class="batchAddDiv" style="display: none;">
+                                <button class="btn btn-primary" onclick="addToCartSelected();"><span
+                                        class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add
+                                    selected item(s) to the cart (<span class="s_count">0</span>)</button> &nbsp;
+                            </span>
+                            <span class="cartDiv" style="display: none;">
+                                <a href="/cart/" class="btn btn-success"><span class="glyphicon glyphicon-ok"
+                                        aria-hidden="true"></span> Checkout (<span class="c_count">0</span> item(s))</a>
+                            </span>
+                        </div>
+                        <nav class="pull-right">
+                            <ul class="pagination" test="1">
+                                <li class="active"><a onclick="myFunction1()">1</a></li>
+                                <li><a onclick="myFunction1()">2</a></li>
+                                <li><a onclick="myFunction1()">3</a></li>
+                                <li><a onclick="myFunction1()">4</a></li>
+                                <li><a onclick="myFunction1()" title="next"><span aria-hidden="true">»</span><span
+                                            class="sr-only">next</span></a></li>
+                                <li><a onclick="myFunction1()" title="last"><span aria-hidden="true">»»</span><span
+                                            class="sr-only">last</span></a></li>
+                            </ul>
+                        </nav>
+                        <script>
+                            var csrf = 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1';
+                            function selectAll(action) {
+                                $('.item_checkboxes').prop('checked', action);
+                                checkSelected();
+                            }
+                            function getSelectedArray(only_arr) {
+                                ids = $("#itemsBody input:checkbox:checked").map(function () {
+                                    return $(this).val();
+                                }).get();
+                                if (!only_arr)
+                                    return ids.join(";");
+                                else
+                                    return ids
+                            }
+                            function checkSelected() {
+                                var ids = getSelectedArray(true);
+                                if (ids.length > 0) {
+                                    $('.s_count').html(ids.length);
+                                    $('.batchAddDiv').show();
+                                    return true;
+                                } else {
+                                    $('.batchAddDiv').hide();
+                                    return false;
+                                }
+                            }
+                            function addToCart(id) {
+                                var post_array = {
+                                    'action': 'add_items',
+                                    'type': 'cc',
+                                    'ids': id,
+                                    'csrfmiddlewaretoken': csrf
+                                };
+                                submitRequest(post_array, [id]);
+                            }
+                            function addToCartSelected() {
+                                var ids = getSelectedArray(true);
+                                if (ids.length == 0) {
+                                    showMessage('page', 'danger', 'selected items not found');
+                                    return false;
+                                }
+                                var post_array = {
+                                    'action': 'add_items',
+                                    'type': 'cc',
+                                    'ids': ids.join(';'),
+                                    'csrfmiddlewaretoken': csrf
+                                };
+                                submitRequest(post_array, ids);
+                            }
+                            function submitRequest(post_array, ids) {
+                                var l = ids.length;
+                                for (var i = 0; i < l; i++)
+                                    $('#button_cart_' + ids[i]).attr('disabled', 'disabled');
+
+                                $.post('/cart/', post_array, function (data) {
+                                    if (data && data.status == 'fail') {
+                                        showMessage('page', 'danger', data.message);
+                                    }
+                                    $.each(data.error_ids, function (key, item) {
+                                        $('#td_cart_' + item[0]).html(item[1]).css('color', 'red');
+                                        $('#checkbox_' + item[0]).attr('checked', false);
+                                    });
+                                    $.each(data.success_ids, function (key, item) {
+                                        $('#td_cart_' + item[0]).html(item[1]).css('color', 'green');
+                                        $('#checkbox_' + item[0]).attr('checked', false);
+                                    });
+
+                                    if (data.total_items_count['count'] > 0) {
+                                        $('.cartDiv').show();
+                                        $('.c_count').html(data.total_items_count['count']);
+                                        $('#count_cart_items').html(data.total_items_count['count']);
+                                    } else {
+                                        $('.cartDiv').hide();
+                                        $('#count_cart_items').html('');
+                                    }
+                                    checkSelected();
+                                }, 'json').error(function () {
+                                    showMessage('page', 'danger', 'Not enough money on your account you need <a href="{% url 'tasklist' %}">to top up your balance</a>');
+                                    for (var i = 0; i < l; i++)
+                                        $('#button_cart_' + ids[i]).removeAttr('disabled');
+                                }).always(function () {
+                                    //
+                                });
+                                return true;
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <footer>
+            <center><a href="{% url 'tasklist' %}">Earn money with us!</a></center>
+            <p>© 2021 Crabs on Security </p>
+        </footer>
+<div class="modal fade" id="myModalCR" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Crab Rating</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered" style="width:100%;max-width:400px;">
+                                <tbody>
+                                    <tr>
+                                        <th>Total Deposits: </th>
+                                        <td><a href="#">{{ user.balance.balance }} $</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Refunds: </th>
+                                        <td><a href="#">0.00 $</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Crab Points: </th>
+                                        <td>{{ user.balance.balance }} - 0.00 = {{ user.balance.balance }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <span style="font-size:15pt;">Your crab rating:</span> &nbsp;<span style="font-size:17pt;">
+                                {% if user.balance.balance < 1 %}
+                                    0
+                                {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+                                    1
+                                {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+                                    2
+                                {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+                                    3
+                                {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+                                    4
+                                {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+                                    5
+                                {% else %}
+                                    super
+                                {% endif %}
+                            </span> <br>
+                            Next level is <b>1 crab</b> (1.00 points left)
+                        </div>
+                        <div class="col-md-12">
+                            <i>We count only deposits and refunds from <u>last 60 days</u><br>
+                                The rating is recalculated every 30 minutes</i><br><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Crab Points</th>
+                                        <th>Rating</th>
+                                        <th>Discounts</th>
+                                        <th>Other</th>
+                                    </tr>
+                                    <tr id="crab00_tr" {% if user.balance.balance < 1 %}class="success"{% endif %}>
+                                        <td>&lt; 1</td>
+                                        <td>0 crabs</td>
+                                        <td> - </td>
+                                        <td> wait period 3 hours </td>
+                                    </tr>
+                                    <tr id="crab1_tr" {% if user.balance.balance >= 1 and user.balance.balance < 1001 %}class="success"{% endif %}>
+                                        <td>1 - 1000</td>
+                                        <td>1 crab</td>
+                                        <td> 3% </td>
+                                        <td> wait period 2 hours </td>
+                                    </tr>
+                                    <tr id="crab2_tr" {% if user.balance.balance >= 1001 and user.balance.balance < 2001 %}class="success"{% endif %}>
+                                        <td>1001 - 2000</td>
+                                        <td>2 crabs</td>
+                                        <td> 5% </td>
+                                        <td> wait period 1 hour </td>
+                                    </tr>
+                                    <tr id="crab3_tr" {% if user.balance.balance >= 2001 and user.balance.balance < 3001 %}class="success"{% endif %}>
+                                        <td>2001 - 3000</td>
+                                        <td>3 crabs</td>
+                                        <td> 7% </td>
+                                        <td> - </td>
+                                    </tr>
+                                    <tr id="crab4_tr" {% if user.balance.balance >= 3001 and user.balance.balance < 4001 %}class="success"{% endif %}>
+                                        <td>3001 - 4000</td>
+                                        <td>4 crabs</td>
+                                        <td> 9% </td>
+                                        <td> - </td>
+                                    </tr>
+                                    <tr id="crab5_tr" {% if user.balance.balance >= 4001 and user.balance.balance < 6001 %}class="success"{% endif %}>
+                                        <td>4001 - 6000</td>
+                                        <td>5 crabs</td>
+                                        <td> 12% </td>
+                                        <td> - </td>
+                                    </tr>
+                                    <tr id="crab6_tr" {% if user.balance.balance >= 6001 %}class="success"{% endif %}>
+                                        <td>&gt; 6001</td>
+                                        <td>super crab</td>
+                                        <td> 15% </td>
+                                        <td> VIP status </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div class="modal fade" id="myModalDetailsC" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalDetailsCTitle">Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalDanger"></p>
+                        </div>
+                        <div id="cr_details_data" style="max-height:400px;overflow:auto;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalDetailsMG" tabindex="-1" role="dialog" aria-hidden="false">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalDetailsMGTitle">Terms for receiving a free daily dump!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalDanger"></p>
+                        </div>
+                        <div id="mg_data" style="max-height:400px;overflow:auto;">
+                            <ul>
+                                <li>you made a purchase in the last 24 hours</li>
+                                <li>you made a deposit within the last 24 hours</li>
+                                <li>you don't have any outstanding credits/loans</li>
+                                <li>minimum of $100 in combined deposits </li>
+                            </ul>
+                            <span style="font-weight: bold;font-size: 12px;">
+                                Disclaimer:
+                                <p>
+                                    - Daily free dump is an expiring, randomly picked dump from the older databases.
+                                    There's no guarantee It will work and not region locked in your area. Creating a
+                                    ticket complaining about a free dump will void an ability to receive any future
+                                    daily gifts in my shop.
+                                </p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="go_to_my_orders"
+                            onclick="window.location.href = '/orders';" style="display: none;">Go to My Orders</button>
+                        <button type="button" class="btn btn-primary" id="receive_gift" onclick="ReceiveGift();">Click
+                            here to receive your gift.</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalLoan" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalLoanTitle">Loan request</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalDanger"></p>
+                        </div>
+                        <div class="alert alert-success alert-success-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalSuccess"></p>
+                        </div>
+                        <div id="loan_data"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <link href="/static/css/select2/select2.css" rel="stylesheet">
+    <link href="/static/css/select2/select2-bootstrap.css" rel="stylesheet">
+    <script src="/static/js/select2/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+
+            var menuID = document.getElementById("menu-home");
+            if (menuID)
+                menuID.className = menuID.className + " active";
+
+
+            /*String.prototype.capitalise = function() {
+                return this.charAt(0).toUpperCase() + this.slice(1);
+            };*/
+
+            startTime();
+            getLiveData();
+
+            $('.open_cr').click(function () {
+                $('#myModalCR').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+            $('.open_in').click(function () {
+                $('#AcoountInfo').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+
+            $('.open_request_loan').click(function () {
+                $('#myModalLoan').modal('show');
+                $('#loan_data').html('data is loading, please wait ...');
+
+                // $.get("get_loan/index.php", function (data) {
+                //     if(data.status && data.status == 'success') {
+                //         $('#loan_data').html(data.html);
+                //     } else {
+                //         showMessage('modal', 'danger', data.message);
+                //     }
+                // }, 'json').error(function () {
+                //     showMessage('modal', 'danger', 'timeout error, please try again');
+                // }).always(function() {
+                //     //
+                // });
+
+                return false;
+            });
+
+        });
+
+        if (window.parent.frames.length > 0) {
+            // $.get("check_iframe/index.php", function (data) {
+            //     //
+            // }, 'json').error(function () {
+            //     //
+            // }).always(function() {
+            //     //
+            // });
+        }
+
+        var currentHour = 23;
+        var timeoutArray = [];
+        var userBalance = 0.000000;
+
+        function getRatingDetails(action) {
+            $('#myModalDetailsC').modal('show');
+            $('#cr_details_data').html('data is loading, please wait ...');
+
+            // $.post("get_crab_rating/index.php", {
+            //     csrfmiddlewaretoken: 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            //     action: action
+            // }, function (data) {
+            //     $('#cr_details_data').html(data);
+            // }).error(function () {
+            //     showMessage('modal', 'danger', 'timeout error, please try again');
+            // }).always(function() {
+            //     //
+            // });
+
+            return false;
+        }
+
+        function checkTime(i) {
+            return (i < 10) ? "0" + i : i;
+        }
+
+        function startTime() {
+            var today = new Date();
+            today.setHours(currentHour);
+            var h = today.getHours();
+            var m = checkTime(today.getMinutes());
+            var s = checkTime(today.getSeconds());
+            if (m == 59 && s == 59)
+                currentHour++;
+            if (currentHour > 23)
+                currentHour = 0;
+            document.getElementById('current_time').innerHTML = h + ":" + m + ":" + s;
+            setTimeout(function () {
+                startTime()
+            }, 1000);
+        }
+
+
+        function firstUpperCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showMessage(where, type, message, messageID, timeout) {
+            var divClass = (where == 'page') ? 'alert-' + type + '-page' : 'alert-' + type + '-modal';
+            messageID = (messageID == undefined) ? where + firstUpperCase(type) : messageID;
+
+            if (timeout != false && (timeout == undefined || timeout < 1)) {
+                timeout = 5000;
+            }
+
+            var elementMessage = (where == 'page') ? '#' : '.';
+
+            if ($('.' + divClass).is(':visible')) {
+                if (timeout != false && timeoutArray[type] != undefined) {
+                    clearTimeout(timeoutArray[type]);
+                    timeoutArray[type] = undefined;
+                    delete timeoutArray[type];
+                }
+                $(elementMessage + messageID).append('<br>' + message);
+            } else {
+                $(elementMessage + messageID).html(message);
+            }
+
+            $('.' + divClass).show().focus();
+
+            if (timeout != false)
+                timeoutArray[type] = setTimeout(function () {
+                    $('.' + divClass).hide('slow');
+                }, timeout);
+
+            return false;
+        }
+
+        function getLiveData() {
+            // $.getJSON('get_live_data/index.php', function (data) {
+            //     if(data.info)
+            //         showMessage('page', 'info', data.info, undefined, false);
+            //     if(data.count_cart_items > 0)
+            //         $('#count_cart_items').html(data.count_cart_items);
+            //     if(data.count_tickets > 0)
+            //         if(data.waiting_tickets !== undefined)
+            //             $('#count_tickets').html(data.waiting_tickets + '/' + data.count_tickets);
+            //         else
+            //             $('#count_tickets').html(data.count_tickets);
+            //     //if(data.count_pendings > 0)
+            //     if(data.count_payoffs > 0)
+            //         $('#count_payoffs').html(data.count_payoffs);
+            //     if(data.remain_amount)
+            //         $('#remain_amount').html(data.remain_amount);
+            //     if (data.bid_total>0) {
+            //         $('#count_bids').html(data.bid_active + '/' + data.bid_total);
+            //     }
+            //     if(data.current_loan) {
+            //         $('#current_loan').html(data.current_loan);
+            //         $('#current_loan_block').css("display","initial");
+            //     } else {
+            //         $('#request_loan_block').css("display","initial");
+            //     }
+            // }).error(function () {
+            //     //
+            // }).always(function () {
+            //     //
+            // });
+        }
+
+        function ReceiveGift() {
+            $('#receive_gift').prop('disabled', true);
+            var post_array = {
+                'action': 'receive_gift',
+                'type': 'dumps',
+                'ids': '0',
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post('cart/index.php', post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //         $('#go_to_my_orders').show();
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#receive_gift').prop('disabled', false);
+            // });
+            return true;
+        }
+
+        function GetMyLoan() {
+            $('#get_my_loan').prop('disabled', true);
+            $loan_amount = $('.active [name="options"]').attr('loan')
+            var post_array = {
+                'action': 'get_my_loan',
+                'loan_amount': $loan_amount,
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post(/get_loan/, post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#get_my_loan').prop('disabled', false);
+            // });
+            return true;
+        }
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        var csrfToken = '{{ csrf_token }}';
+        var cartItemCount = {{ request.session.cart_item_count|default:0 }};
+    </script>
+    <script src="{% static 'public/js/cart.js' %}"></script>
+</body>
+
+</html>

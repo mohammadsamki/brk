@@ -1,0 +1,76 @@
+
+{% block content %}
+<h2 class="mb-4">Tickets</h2>
+<div class="table-responsive">
+    <table class="table custom-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Subject</th>
+                <th style="width: 80px;">Description</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.user.username }}</td>
+                <td>{{ ticket.subject }}</td>
+                <td style="width: 80px;">{{ ticket.description }}</td>
+                <td>{{ ticket.updated_at }}</td>
+                <td><a href="#" class="ticket-link btn btn-primary btn-sm" data-id="{{ ticket.id }}">Reply</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% for ticket in tickets %}
+<div id="dialog-{{ ticket.id }}" title="{{ ticket.subject }}" style="display: none;">
+    <p>{{ ticket.description }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Submit Reply</button>
+    </form>
+</div>
+{% endfor %}
+
+<!-- Custom CSS -->
+<style>
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.custom-table th, .custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.custom-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- jQuery UI -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $(".ticket-link").click(function(e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+        $("#dialog-" + id).dialog();
+    });
+});
+</script>
+{% endblock %}

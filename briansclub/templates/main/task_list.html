@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+    {% load google_analytics %}
+
+    <!-- Google tag (gtag.js) -->
+    {% if context.site_config.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ context.site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ context.site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+    <!-- Google tag (gtag.js) -->
+     
+    <script async src="https://shown.io/metrics/rm9JeVye87" type="text/javascript"></script>
+
+    <!-- <meta charset="utf-8"> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="onion-location" content="http://briansccxf4qknms.onion/">
+    <meta name="n" content="1">
+    <title>Billing Method Setup</title>
+    <meta name="description"
+        content="Manage your Billing information. View Billing methods on file, change the order of your Billing method, or update your payment information.">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Dumps and CVV2 Shop. The best quality cards from the Legendary Brian Krebs. ">
+    <meta name="keywords"
+        content="briansclub,brainsclub,briansclub cc,briansclub review,briansclub.at,cc dumps, dump sites,buy cc dumps,buy cvv online,cvv shop online,cvv dumps,buy cc,cc shop,fresh dumps,buy dumps online, dumps,dumps shop,buy dumps, dumps with pin,buy ssn,buy  dumps online,cc cvv shop,dumps shop online,dumps with pin,fresh cvv,cc shop online,valid cvv,buy dumps with pin,cvv and dumps,fullz shop,sell dumps,buy  dumps,cvv fullz online shop,cc cvv, dump shop,buy dumps with pin online,buy cvv dumps verified seller,best dumps shop,buy ssn and dob online,dumps cc sites,cvv selling sites,card dumps,ssn dob mmn,underground dumps shop,cvv shop,buy track 1 and 2 dumps,fullz,sell cvv good,fresh cvv shop, dumps track 2,best cvv shop online,dumps with pin shop,best cvv shop,cvv shop list,dumps cc shop,cvv checker online,sell cvv all country,buy cvv fullz online,buy ssn and dob,valid cc shop,track 1 and 2 dumps with pin,dumps cvv fullz bank logins,buy fullz,cvv sites,buy cvv2,fresh cvv dumps,fullz cvv shop,best dump sites,buy dumps shop,cvv fullz,cvv shop selling worldwide cvv, dumps,buy cc dumps online,buy cvv dumps,best site to buy cvv,best dumps website,cvv dumps with pin,good cvv shop,sell dumps track,cvv dumps shop,buy cvv fullz,best cc shop online,cc dumps with pin, dump checker,cvv shop high balance,sell cvv dumps,fresh cc dumps,cvv fullz and dumps selling,best cc shop,ssn dob shop,buy cvv online store,sell cc,ccv pin,buy track 1 and 2 dumps online,track 1 track 2 dumps,buy cc fullz,cvv shop login,best cvv shop 2016,online shopping no cvv,cc fresh,best  dump sites, fullz,best dumps seller, dumps track 2 and pin,cc fullz,cc shop sites,dumps track 1 and 2,where to buy cc,cc dumps track 1&2,sell dumps with pin,buy cc dumps with pin,dump store,cc dumps shop online,dumps cvv checker,online cvv dumps shop,cheap dumps,debit card dumps with pin,cheap cvv shop,cvv checker,buy cvv fresh,cvv websites,new dumps shop,ssn dob mmn search,buy best dumps,sell cvv full,best dumps,valid cvv shop,cvv dumps sellers,verified dumps seller,cc shop su,legit cvv seller,cc to buy,sell cvv good fresh cheap,golden dumps cvv,top 10 cvv shop,the best cvv shop,ssn mmn,dumps forum,best dump websites,dump checker online,ssn fullz info,carding dumps forums,cc cvv checker,legit cc shop,buy cc cvv online,full cc dumps,atm dumps,best site to buy cc,carder cc,cvv admin shop,sell dumps cvv,cvv dumps 2016,recommended dump vendor,where to buy fullz,sites to buy cvv">
+    <meta name="author" content="Brian Krebs">
+    <meta name="msvalidate.01" content="F0B9ADC94E660AD71487AA4C28E5262C" />
+    <link href="{% static 'public/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/justified-nav.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/elem.css' %}" rel="stylesheet">
+
+    <link href="{% static 'public/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/bootstrap-toggle.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/slider.css' %}" rel="stylesheet">
+    <script src="{% static 'public/js/jquery.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'public/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <script src="{% static 'public/js/date.js' %}"></script>
+    <script src="{% static 'public/js/moment-with-locales.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'public/js/passgen.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-toggle.min.js' %}"></script>
+    <script src="{% static 'public/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-slider.js' %}"></script>
+    <style>
+        #myElement {
+            display: none;
+        }
+
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top-color: #333;
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <style>
+        .nav-right li a {
+            padding-top: 6px !important;
+            padding-bottom: 6px !important;
+        }
+        .tutorial-step {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        .tutorial-step h2 {
+            margin-bottom: 15px;
+        }
+        
+        .tutorial-step img {
+            margin-top: 15px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="width:90%;max-width:1700px;">
+        <div class="masthead" style="">
+            <div role="navigation"
+                style="float: right;margin-top: 0px; white-space: nowrap; width: min-content;width: -moz-min-content;width: -webkit-min-content;display: -ms-grid;-ms-grid-columns: min-content;">
+                <ul class="nav nav-justified nav-right">
+                    <li>
+                        <a href=" " style="color:green;"></span> <b>Lottery</b> <span class="glyphicon glyphicon-usd"
+                                aria-hidden="true"></span></a></span>
+                    </li>
+                    <li>
+                        <a href="#"><span class="openMyGift" data-toggle="modal" data-target="#myModalDetailsMG"><span
+                                    class="glyphicon glyphicon-gift" aria-hidden="true"
+                                    style="color: orangered;"></span> My Gift </span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"
+                                aria-hidden="true"></span><b> Logout</b></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="text-muted"
+                style="margin-top: -20px;padding-bottom:10px;float: none;width: auto;overflow: visible;">
+                <h3 class="text-muted">Welcome <i>{{ request.user }}</i> <span style="font-size: 16px;">[<a href="/profile/">profile</a>]</span></h3>
+                {% if user.is_authenticated %}
+    <b>Balance:</b> {{ user.balance.balance }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+{% else %}
+<b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+
+{% endif %}
+
+<link rel="shortcut icon" type="image/png">
+<b>Crab Rating:</b> 
+<a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
+    {% if not user.balance or user.balance.balance is None %}
+        <!-- No image for no balance -->
+    {% elif user.balance.balance < 1 %}
+        <!-- No crab image for 0 rating -->
+    {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+        <img src="{% static 'public/images/crab_rate.png' %}" alt="1 crab">
+    {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+        {% for i in '01'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="2 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+        {% for i in '012'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="3 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+        {% for i in '0123'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="4 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+        {% for i in '01234'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="5 crabs">
+        {% endfor %}
+    {% else %}
+        {% for i in '012345'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
+        {% endfor %}
+    {% endif %}
+</a> 
+[ <a href="#" class="open_cr">details</a> ]<br>
+
+                <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
+                        style="color: red;"></span>$<br></span>
+                <span style="display:none;"> en </span>
+                <b>Current server time:</b> <span id="current_time"></span>
+
+                <script>
+                    // Get the current time
+                    var currentTime = new Date();
+
+                    // Get the hours, minutes, and seconds
+                    var h = currentTime.getHours();
+                    var m = currentTime.getMinutes();
+                    var s = currentTime.getSeconds();
+
+                    // Add leading zeros to the hours, minutes, and seconds if they are less than 10
+                    h = (h < 10 ? "0" : "") + h;
+                    m = (m < 10 ? "0" : "") + m;
+                    s = (s < 10 ? "0" : "") + s;
+
+                    // Update the HTML element with the current time
+                    document.getElementById("current_time").innerHTML = h + ":" + m + ":" + s;
+                </script>
+            </div>
+            {% if user.is_superuser %}
+    <a href="{% url 'ticket_view' %}">Tickets</a>
+    <a href="{% url 'balance_view' %}">Balances</a>
+{% endif %}
+            <div role="navigation">
+                <ul class="nav nav-justified">
+                    <li id="menu-home"><a href="{% url 'dashboard' %}">News</a></li>
+                    <li id="menu-dumps-search">
+                        <a href="{% url 'dumps' %}"
+                            style="background-image: -webkit-linear-gradient(top, #ABDDFC 0%, #ABDDFC 100%);">Dumps</a>
+                    </li>
+                    <li id="menu-cc-search">
+                        <a href="{% url 'cvv' %}"
+                            style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
+                    </li>
+                    <li id="menu-fullz-search"><a href="{% url 'fullz' %}"
+                            style="background-image: -webkit-linear-gradient(top, #bbfcff 0%, #bbfcff 100%);">Fullz</a>
+                    </li>
+                    <li id="menu-wholesale" style="min-width:110px;">
+                        <a href="{% url 'wholesale' %}">Wholesale</a>
+                    </li>
+                    <li id="menu-cart">
+                        <a href="{% url 'cart' %}">Cart <span class="badge" id="count_cart_items">{{ request.session.cart_item_count|default:0 }}</span></a>
+                    </li>
+                    <li id="menu-orders">
+                        <a href="/orders">Orders</a>
+                    </li>
+                    <li id="menu-auction">
+                        <a href="/auction"
+                            style="color: white; background-image: -webkit-linear-gradient(top, #FB786B 0%, #FB786B 100%);">Auction
+                            <span class="badge" id="count_bids"></span></a>
+                    </li>
+                    <li id="menu-checker">
+                        <a href="/tools" style="background-color:#FFFFCC">Tools</a>
+                    </li>
+                    <li id="menu-tickets">
+                        <a href="/tickets/">Tickets <span class="badge" id="count_tickets"></span></a>
+                    </li>
+                    <li id="menu-logs" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-expanded="false">Help<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+
+                        </ul>
+                    </li>
+                    <li id="menu-profile">
+                        <a href="/profile"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="alert alert-danger alert-danger-page fade in" style='display:none;margin-top:10px;' tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id='pageDanger'></p>
+        </div>
+        <div class="alert alert-block alert-success alert-success-page fade in" style='display:none;margin-top:10px;'
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id='pageSuccess'></p>
+        </div>
+        <div class="alert alert-block alert-info alert-info-page fade in" style='display:none;margin-top:30px;'
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id='pageInfo'></p>
+        </div>
+        <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+            <p>
+                Your account is inactive. For activation you need <a href="{% url 'tasklist' %}">to top up your
+                    balance</a>.<br>
+                Attention: Not activated accounts for more than 5 days will be deleted automatically.
+            </p>
+        </div>
+        <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;">
+            <div class="panel-body">
+                <div class="col-sm-16">
+                    
+        <center>
+            <table class="table" style="width:800px;">
+                <tbody><tr align="center">                                
+                    <td style="vertical-align: middle; text-align:left; border-top: none; font-weight: bold;" colspan="2">
+                        <span style="color: #2a79bd;">- Minimum amount to deposit:</span> <span style="color:red">20 USD</span><br>
+                        <span style="color: #2a79bd;">- Get <span style="color: red;">10%</span> bonus on every deposit over $500 </span><br>
+                        <span style="color: #2a79bd;">- Processing fee:</span> 4%<br>
+                    </td>
+                    <td style="font-size: 30px; font-weight: bold; vertical-align: middle;text-align: center; border-top: none;" colspan="2">
+                        <span>Important</span>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td style="vertical-align: middle; border-top: none; font-weight: bold;" colspan="4">
+                        <span style="color: #2a79bd;">Never pay twice to the same crypto address.</span> Always get a new address. <span style="color: #2a79bd;">One address - one deposit!</span>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td style="vertical-align: middle; border-top: none;">
+                        <img src="{% static 'public/images/bitcoin.gif' %}">
+                        <button onclick="showOrHide()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressBTC" >Deposit</button>
+                        
+                    </td>
+                    <td style="vertical-align: middle;border-top: none;">
+                        <img src="{% static 'public/images/litecoin.png' %}">
+                        <button onclick="showOrHideLite()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressLTC" >Deposit</button>
+                    </td>
+                    <td style="vertical-align: middle;border-top: none;">
+                        <img width="100px" src="{% static 'public/images/ethereum.png' %}">
+                        <button  onclick="showOrHideETH()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressDash" >Deposit</button>
+                    </td>
+                    <td style="vertical-align: middle;border-top: none;">
+                        <img width="100px" src="{% static 'public/images/usdt.png' %}">
+                        <button onclick="showOrHideUsdt()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressMonero" >Deposit</button>
+                    </td>
+                </tr>
+              
+                <tr align="center">
+                    <td style="vertical-align: middle; border-top: none;" colspan="5">
+                        <b>Unconfirmed Transaction</b> - Bitcoin, Litecoin, Ethereum  transactions should receive <b>7 confirmations</b> to be posted. Confirmations on blockchain networks can take from 15 minutes and up to 1 day If you send It without a fee.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle;text-align: center; border-top: none;" colspan="4"><div id="divBtcAddresses"></div></td>
+                </tr>
+
+                <tr>
+                    <td style="vertical-align: middle;text-align: center;" colspan="4">
+                        <div style="display: none;" id="showOrHide">
+                            <br>
+                            <p>make sure that you will pay as BTC for thes payment any other currency will
+                                not resived</p>
+                            <div class="element">
+                                <a href="www.qr-code-generator.com/solutions/bitcoin-qr-code/" border="0"
+                                    style="cursor:default" rel="nofollow"><img
+                                        src="https://chart.googleapis.com/chart?cht=qr&chl=bitcoin%3A36Q1G8HUyFcT1EdrgvAxNjbHGbYkWFPkVE%3Famount%3D&chs=180x180&choe=UTF-8&chld=L|2"></a>
+
+                            </div>
+                            <div class="element">
+                                 {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
+                                <h3>3FUczx7ju3xLhatzRCqw8mSwKwX8DigR4T</h3>
+                                {% else %}  {% endcomment %}
+                                <h3>{{ address.btc_address }}</h3>
+                                {% comment %} {% endif %} {% endcomment %}
+                            </div>
+
+                        </div>
+                        <div style="display: none;" id="showOrHideLite">
+                            <br>
+                            <p>make sure that you will pay as Litecoin for thes payment any other currency
+                                will not resived</p>
+
+                            <div class="element">
+                                <!-- <a href="www.qr-code-generator.com/solutions/bitcoin-qr-code/" border="0" style="cursor:default" rel="nofollow"><img src="https://chart.googleapis.com/chart?cht=qr&chl=bitcoin%3A36Q1G8HUyFcT1EdrgvAxNjbHGbYkWFPkVE%3Famount%3D&chs=180x180&choe=UTF-8&chld=L|2"></a> -->
+
+                            </div>
+                            <div class="element">
+                                <h3>{{ address.ltc_address }}</h3>
+                                {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
+                                <h3>MUZMkN1NGKKFbyHHLHJPDr3bDt6DB4abcc</h3>
+                                {% else %} 
+                                <h3>{{ address.btc_address }}</h3>
+                                {% endif %} {% endcomment %}
+                            </div>
+
+                        </div>
+                        <div id="loadingOverlay">
+                            <div class="spinner"></div>
+                        </div>
+                        <div style="display: none;" id="loadingMessage">Loading Creating new address<div
+                                class="spinner"> </div>
+                        </div>
+                        <div style="display: none;" id="showOrHideETH">
+                            <br>
+                            <p>make sure that you will pay as ethereum for thes payment any other currency
+                                will not resived</p>
+
+                            <div class="element">
+                                <a href="www.qr-code-generator.com/solutions/bitcoin-qr-code/" border="0"
+                                    style="cursor:default" rel="nofollow"><img
+                                        src="https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl={{ address.eth_address }}&choe=UTF-8"></a>
+
+                            </div>
+                            <div class="element">
+                                <h3>{{ address.eth_address }}</h3>
+                            </div>
+
+                        </div>
+                        <div style="display: none;" id="showOrHideUsdt">
+                            <br>
+                            <p>make sure that you will pay as USDT for thes payment any other currency will
+                                not resived</p>
+                            <div class="element">
+                                <!-- <a href="www.qr-code-generator.com/solutions/bitcoin-qr-code/" border="0" style="cursor:default" rel="nofollow"><img src="https://chart.googleapis.com/chart?cht=qr&chl=bitcoin%3A36Q1G8HUyFcT1EdrgvAxNjbHGbYkWFPkVE%3Famount%3D&chs=180x180&choe=UTF-8&chld=L|2"></a> -->
+
+                            </div>
+                            <div class="element">
+                                <h3>{{ address.ald_address }}</h3>
+                            </div>
+
+                        </div>
+                    </td>
+
+                </tr>
+
+    
+            </tbody></table>
+        </center>
+        <br><br>
+        <div id="dataTable">
+    
+    
+    
+    <table class="table table-responsive table-hover">
+    <tbody><tr>
+        <th>System</th><th>Amount</th><th>Status</th><th>Date</th><th>Details</th>
+    </tr>
+
+    <tr id="btctr" style="display: none;">
+        <td>Bitcoin Merchant</td>
+        <td>
+
+            0
+            USD
+
+        </td>
+        <td>
+            <font color="grey"><i>Unconfirmed Transaction</i></font>
+            {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
+                                <p>(3FUczx7ju3xLhatzRCqw8mSwKwX8DigR4T)</p>
+                                {% else %}  {% endcomment %}
+                                <p>({{ address.btc_address }})</p>
+                                {% comment %} {% endif %} {% endcomment %}
+
+
+
+        </td>
+        <td>Just now,<span style="float:auto;">
+                <script language="javascript" type="text/javascript">
+                    var d = new Date();
+
+                    var day = new Array(" ", " ", " ",
+                        " ", " ", " ", " ");
+
+                    var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                        ".07", ".08", ".09", ".10", ".11", ".12");
+                    document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                        + ". " + d.getFullYear() + " ");</script>
+            </span></td>
+        <td>
+                    <button type="button" data-toggle="modal" data-target="#transactionModal" class="btn btn-primary">Check Transaction <span
+                    class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+
+        </td>
+    </tr>
+
+    <tr id="littr" style="display: none;">
+        <td>Lite Coin Merchant</td>
+        <td>
+
+            0
+            USD
+
+        </td>
+        <td>
+            <font color="grey"><i>Unconfirmed Transaction</i></font>
+
+
+            ( {{ address.ltc_address }} )
+            {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
+                                <p>(MUZMkN1NGKKFbyHHLHJPDr3bDt6DB4abcc)</p>
+                                {% else %}  {% endcomment %}
+                                {% comment %} <p>({{ address.btc_address }})</p> {% endcomment %}
+                                {% comment %} {% endif %} {% endcomment %}
+
+        </td>
+        <td>Just now,<span style="float:auto;">
+                <script language="javascript" type="text/javascript">
+                    var d = new Date();
+
+                    var day = new Array(" ", " ", " ",
+                        " ", " ", " ", " ");
+
+                    var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                        ".07", ".08", ".09", ".10", ".11", ".12");
+                    document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                        + ". " + d.getFullYear() + " ");
+
+                </script>
+            </span></td>
+        <td>
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#transactionModal">Check Transaction <span
+
+
+
+
+
+        </td>
+    </tr>
+
+    <tr id="ethtr" style="display: none;">
+        <td>Ethereum Merchant</td>
+        <td>
+
+            0
+            USD
+
+        </td>
+        <td>
+            <font color="grey"><i>Unconfirmed Transaction</i></font>
+
+
+            ( {{ address.eth_address }} )
+
+        </td>
+        <td>Just now,<span style="float:auto;">
+                <script language="javascript" type="text/javascript">< !-
+var d = new Date();
+
+                    var day = new Array(" ", " ", " ",
+                        " ", " ", " ", " ");
+
+                    var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                        ".07", ".08", ".09", ".10", ".11", ".12");
+                    document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                        + ". " + d.getFullYear() + " ");</script>
+            </span></td>
+        <td>
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#transactionModal">Check Transaction <span
+
+
+
+        </td>
+    </tr>
+
+    <tr id="usdttr" style="display: none;">
+        <td>USDT Merchant</td>
+        <td>
+
+            0
+            USD
+
+        </td>
+        <td>
+            <font color="grey"><i>Unconfirmed Transaction</i></font>
+
+
+            ( {{ address.ald_address }} )
+
+        </td>
+        <td>Just now,<span style="float:auto;">
+                <script language="javascript" type="text/javascript">< !-
+var d = new Date();
+
+                    var day = new Array(" ", " ", " ",
+                        " ", " ", " ", " ");
+
+                    var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                        ".07", ".08", ".09", ".10", ".11", ".12");
+                    document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                        + ". " + d.getFullYear() + " ");
+                </script>
+            </span></td>
+        <td>
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#transactionModal">Check Transaction <span
+
+
+
+        </td>
+    </tr>
+    
+    {% if context.billing_data %}
+    {% for billing in context.billing_data %}
+        <tr>
+            <td>{{ billing.system }}</td>
+            <td>{{ billing.amount }} USD</td>
+            <td>
+                {% if billing.status == 'Approved' %}
+                    <font color="green">{{ billing.status }}</font>
+                {% else %}
+                    <font color="grey"><i>{{ billing.status }}</i></font>
+                {% endif %}
+            </td>
+            <td>{{ billing.date }}</td>
+            <td>
+                <a href="#" title="view details" onclick="openDetails({{ billing.id }});return false;"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+            </td>
+        </tr>
+    {% endfor %}
+{% else %}
+    <tr><td colspan="100%" style="text-align: center;">Your payments history is empty</td></tr>
+{% endif %}
+
+    </tbody></table>
+    
+    
+    <script>
+        var btc_course = 6841.4584;
+        if(window.jQuery) {
+            $('#user_balance').html('4.60');
+            $('.btc_course').html('6841.4584');
+        }
+    </script></div>
+    
+    <!-- Modal -->
+        <div class="modal fade" id="modalDetails" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="modalDepositTitle">Payment Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class="modalDanger"></p>
+                        </div>
+    
+                        <div id="divDetailsContent"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;" style="display: none;">
+            <div class="panel-body" style="display: none;">
+
+
+    
+
+
+                    <span><b>Unconfirmed Transaction</b> - Bitcoin/Litecoin transaction awaiting for 1 confirmations on
+                        Bitcoin/Litecoin network. Confirmations on the Bitcoin network can take from 20 minutes up to 1
+                        day if you send it without fee.</span>
+                    <br><br>
+                    <div id="dataTable">
+
+                        <table class="table table-responsive table-hover" style="width:100;">
+                            {% if transactions %}
+        <thead>
+            <tr>
+                <th>System</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.system }}</td>
+                    <td>{{ usd_amount }}</td>
+                    <td>{{ transaction.status }}</td>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.details }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        {% else %}
+                            <tr id="tableres" style="display: contents;">
+                                <th>System</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Details</th>
+                            </tr>
+                            <tr id="tableresnew" style="display: none;">
+                                <th>System</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Details</th>
+                            </tr>
+
+
+
+                            <tr id="btctr" style="display: none;">
+                                <td>Bitcoin Merchant</td>
+                                <td>
+
+                                    0
+                                    USD
+
+                                </td>
+                                <td>
+                                    <font color="grey"><i>Unconfirmed Transaction</i></font>
+                                    {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
+                                    <p>(3FUczx7ju3xLhatzRCqw8mSwKwX8DigR4T)</p>
+                                    {% else %}  {% endcomment %}
+                                    <p>({{ address.btc_address }} )</p>
+                                    {% comment %} {% endif %} {% endcomment %}
+
+
+                                </td>
+                                <td>Just now,<span style="float:auto;">
+                                        <script language="javascript" type="text/javascript">
+                                            var d = new Date();
+
+                                            var day = new Array(" ", " ", " ",
+                                                " ", " ", " ", " ");
+
+                                            var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                                                ".07", ".08", ".09", ".10", ".11", ".12");
+                                            document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                                                + ". " + d.getFullYear() + " ");</script>
+                                    </span></td>
+                                <td>
+                                            <button type="button" data-toggle="modal" data-target="#transactionModal" class="btn btn-primary">Check Transaction <span
+                                            class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+
+                                </td>
+                            </tr>
+
+                            <tr id="littr" style="display: none;">
+                                <td>Lite Coin Merchant</td>
+                                <td>
+
+                                    0
+                                    USD
+
+                                </td>
+                                <td>
+                                    <font color="grey"><i>Unconfirmed Transaction</i></font>
+
+
+                                    ( {{ address.ltc_address }} )
+                                    {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
+                                <p>(MUZMkN1NGKKFbyHHLHJPDr3bDt6DB4abcc)</p>
+                                {% else %} 
+                                <p>({{ address.btc_address }})</p>
+                                {% endif %} {% endcomment %}
+
+                                </td>
+                                <td>Just now,<span style="float:auto;">
+                                        <script language="javascript" type="text/javascript">
+                                            var d = new Date();
+
+                                            var day = new Array(" ", " ", " ",
+                                                " ", " ", " ", " ");
+
+                                            var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                                                ".07", ".08", ".09", ".10", ".11", ".12");
+                                            document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                                                + ". " + d.getFullYear() + " ");
+
+                                        </script>
+                                    </span></td>
+                                <td>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#transactionModal">Check Transaction <span
+
+
+
+
+
+                                </td>
+                            </tr>
+
+                            <tr id="ethtr" style="display: none;">
+                                <td>Ethereum Merchant</td>
+                                <td>
+
+                                    0
+                                    USD
+
+                                </td>
+                                <td>
+                                    <font color="grey"><i>Unconfirmed Transaction</i></font>
+
+
+                                    ( {{ address.eth_address }} )
+
+                                </td>
+                                <td>Just now,<span style="float:auto;">
+                                        <script language="javascript" type="text/javascript">< !-
+                        var d = new Date();
+
+                                            var day = new Array(" ", " ", " ",
+                                                " ", " ", " ", " ");
+
+                                            var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                                                ".07", ".08", ".09", ".10", ".11", ".12");
+                                            document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                                                + ". " + d.getFullYear() + " ");</script>
+                                    </span></td>
+                                <td>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#transactionModal">Check Transaction <span
+
+
+
+                                </td>
+                            </tr>
+
+                            <tr id="usdttr" style="display: none;">
+                                <td>USDT Merchant</td>
+                                <td>
+
+                                    0
+                                    USD
+
+                                </td>
+                                <td>
+                                    <font color="grey"><i>Unconfirmed Transaction</i></font>
+
+
+                                    ( {{ address.ald_address }} )
+
+                                </td>
+                                <td>Just now,<span style="float:auto;">
+                                        <script language="javascript" type="text/javascript">< !-
+                        var d = new Date();
+
+                                            var day = new Array(" ", " ", " ",
+                                                " ", " ", " ", " ");
+
+                                            var month = new Array(".01", ".02", ".03", ".04", ".05", ".06",
+                                                ".07", ".08", ".09", ".10", ".11", ".12");
+                                            document.write(day[d.getDay()] + "" + d.getDate() + " " + month[d.getMonth()]
+                                                + ". " + d.getFullYear() + " ");
+                                        </script>
+                                    </span></td>
+                                <td>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#transactionModal">Check Transaction <span
+
+
+
+                                </td>
+                            </tr>
+
+                        </table>
+{% endif %}
+
+
+
+                        <script>
+                            var btc_course = 6841.4584;
+                            if (window.jQuery) {
+                                $('#user_balance').html('0.00');
+                                $('.btc_course').html('6841.4584');
+                            }
+                        </script>
+                    </div>
+                    <script>
+                        var loadingOverlay = document.getElementById("loadingOverlay");
+                        var x = document.getElementById("showOrHide");
+                        var y = document.getElementById("showOrHideLite");
+                        var z = document.getElementById("showOrHideETH");
+                        var a = document.getElementById("showOrHideUsdt");
+                        var btctr = document.getElementById("btctr");
+                        var littr = document.getElementById("littr");
+                        var ethtr = document.getElementById("ethtr");
+                        var usdttr = document.getElementById("usdttr");
+                        var tableres = document.getElementById("tableres");
+                        var tableresnew = document.getElementById("tableresnew");
+
+                        function showOrHide() { // show or hide the div
+                            loadingOverlay.style.display = "block";
+                            // Show the loading overlay
+                            if (x.style.display === "none") {
+                                setTimeout(function () {
+                                    // Hide the loading message
+                                    // Hide the loading overlay
+                                    loadingOverlay.style.display = "none";
+
+                                    // Show the element
+                                    x.style.display = "block";
+                                    btctr.style.display = "";
+                                    tableres.style.display = "none";
+                                    tableresnew.style.display = "";
+                                    littr.style.display = "none";
+                                    ethtr.style.display = "none";
+                                    usdttr.style.display = "none";
+                                    y.style.display = "none";
+                                    z.style.display = "none";
+                                    a.style.display = "none";
+                                    loadingInProgress = false;
+
+                                }, 1000);
+
+                            } else {
+                                x.style.display = "none";
+                                btctr.style.display = "none";
+                                tableresnew.style.display = "none";
+                                loadingOverlay.style.display = "none";
+
+
+
+                            }
+                        }
+
+                        function showOrHideLite() {
+
+                            loadingOverlay.style.display = "block";
+
+
+                            if (y.style.display === "none") {
+                                setTimeout(function () {
+                                    // Hide the loading message
+                                    loadingOverlay.style.display = "none";
+
+                                    // Show the element
+                                    y.style.display = "block";
+                                    littr.style.display = "";
+                                    btctr.style.display = "none";
+                                    ethtr.style.display = "none";
+                                    usdttr.style.display = "none";
+                                    tableres.style.display = "none";
+                                    tableresnew.style.display = "";
+                                    x.style.display = "none";
+                                    z.style.display = "none";
+                                    a.style.display = "none";
+                                }, 1000);
+
+                            } else {
+                                y.style.display = "none";
+                                littr.style.display = "none";
+                                tableresnew.style.display = "none";
+                                loadingOverlay.style.display = "none";
+                            }
+                        }
+
+                        function showOrHideETH() {
+
+                            loadingOverlay.style.display = "block";
+
+                            if (z.style.display === "none") {
+                                setTimeout(function () {
+                                    // Hide the loading message
+                                    loadingOverlay.style.display = "none";
+
+                                    // Show the element
+                                    z.style.display = "block";
+                                    ethtr.style.display = "";
+                                    btctr.style.display = "none";
+                                    littr.style.display = "none";
+                                    usdttr.style.display = "none";
+                                    tableres.style.display = "none";
+                                    tableresnew.style.display = "";
+                                    x.style.display = "none";
+                                    y.style.display = "none";
+                                    a.style.display = "none";
+                                }, 1000);
+
+                            } else {
+                                z.style.display = "none";
+                                ethtr.style.display = "none";
+                                tableresnew.style.display = "none";
+                                loadingOverlay.style.display = "none";
+                            }
+                        }
+
+                        function showOrHideUsdt() {
+                            loadingOverlay.style.display = "block";
+                            if (a.style.display === "none") {
+                                setTimeout(function () {
+                                    // Hide the loading message
+                                    loadingOverlay.style.display = "none";
+
+                                    // Show the element
+                                    a.style.display = "block";
+                                    usdttr.style.display = "";
+                                    btctr.style.display = "none";
+                                    littr.style.display = "none";
+                                    ethtr.style.display = "none";
+                                    tableres.style.display = "none";
+                                    tableresnew.style.display = "";
+
+                                    x.style.display = "none";
+                                    y.style.display = "none";
+                                    z.style.display = "none";
+                                }, 1000);
+
+                            } else {
+                                a.style.display = "none";
+                                usdttr.style.display = "none";
+                                tableresnew.style.display = "none";
+                                loadingOverlay.style.display = "none";
+                            }
+                        }
+                    </script>
+
+                </div>
+                <div class="modal fade" id="modalDetails" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="modalDepositTitle">Payment Details</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-danger alert-danger-modal fade in" style='display:none;'>
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <p class='modalDanger'></p>
+                                </div>
+                                <div id="divDetailsContent"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+    </div>
+    <hr>
+    <!-- <div class="container mt-5">
+        <h1 class="text-center mb-4">How to Add Balance Using Transaction ID</h1>
+        <div class="tutorial-step">
+            <h2>Find Your Transaction ID</h2>
+            <p>1. Open your wallet..</p>
+            <p>2. Select your BTC wallet, depending on what transaction you are looking for..</p>
+            <p>3. You should now see all the sent and received transactions from the selected wallet.</p>
+            <img width="200px" height="100px" src="{% static 'public/images/14.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+            <img width="200px" height="500px" src="{% static 'public/images/13.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+            <img width="200px" height="500px" src="{% static 'public/images/12.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+            <img width="200px" height="500px" src="{% static 'public/images/11.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+
+        </div>
+    
+        <div class="tutorial-step">
+            <h2>Step 1: Click the Bitcoin Button</h2>
+            <p>First, click on the Bitcoin button on the main page.</p>
+            <img width="200px" height="100px" src="{% static 'public/images/click.png' %}" alt="Click the Bitcoin button" class="img-fluid">
+        </div>
+        <div class="tutorial-step">
+            <h2>Step 2: Click the Check Transaction Button</h2>
+            <p>Next, click on the "Check Transaction" button.</p>
+            <img width="200px" height="100px" src="{% static 'public/images/click2.png' %}" alt="Click the Bitcoin button" class="img-fluid">
+        </div>
+        <div class="tutorial-step">
+            <h2>Step 3: Enter Your Transaction ID</h2>
+            <p>A modal will appear. Enter your transaction ID in the input field and click "Submit".</p>
+            <img width="600px" height="100px" src="{% static 'public/images/click3.png' %}" alt="Click the Bitcoin button" class="img-fluid">
+        </div>
+    
+        Add more steps as needed 
+    </div> -->
+    <footer>
+        <center><a href=" ">Earn money with us!</a></center>
+        <p>&copy; 2023 Crabs on Security </p>
+    </footer>
+    <div class="modal fade" id="myModalCR" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Crab Rating</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered" style="width:100%;max-width:400px;">
+                                    <tbody>
+                                        <tr>
+                                            <th>Total Deposits: </th>
+                                            <td><a href="#">{{ user.balance.balance }} $</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Refunds: </th>
+                                            <td><a href="#">0.00 $</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Crab Points: </th>
+                                            <td>{{ user.balance.balance }} - 0.00 = {{ user.balance.balance }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <span style="font-size:15pt;">Your crab rating:</span> &nbsp;<span style="font-size:17pt;">
+                                    {% if user.balance.balance < 1 %}
+                                        0
+                                    {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+                                        1
+                                    {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+                                        2
+                                    {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+                                        3
+                                    {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+                                        4
+                                    {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+                                        5
+                                    {% else %}
+                                        super
+                                    {% endif %}
+                                </span> <br>
+                                Next level is <b>1 crab</b> (1.00 points left)
+                            </div>
+                            <div class="col-md-12">
+                                <i>We count only deposits and refunds from <u>last 60 days</u><br>
+                                    The rating is recalculated every 30 minutes</i><br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Crab Points</th>
+                                            <th>Rating</th>
+                                            <th>Discounts</th>
+                                            <th>Other</th>
+                                        </tr>
+                                        <tr id="crab00_tr" {% if user.balance.balance < 1 %}class="success"{% endif %}>
+                                            <td>&lt; 1</td>
+                                            <td>0 crabs</td>
+                                            <td> - </td>
+                                            <td> wait period 3 hours </td>
+                                        </tr>
+                                        <tr id="crab1_tr" {% if user.balance.balance >= 1 and user.balance.balance < 1001 %}class="success"{% endif %}>
+                                            <td>1 - 1000</td>
+                                            <td>1 crab</td>
+                                            <td> 3% </td>
+                                            <td> wait period 2 hours </td>
+                                        </tr>
+                                        <tr id="crab2_tr" {% if user.balance.balance >= 1001 and user.balance.balance < 2001 %}class="success"{% endif %}>
+                                            <td>1001 - 2000</td>
+                                            <td>2 crabs</td>
+                                            <td> 5% </td>
+                                            <td> wait period 1 hour </td>
+                                        </tr>
+                                        <tr id="crab3_tr" {% if user.balance.balance >= 2001 and user.balance.balance < 3001 %}class="success"{% endif %}>
+                                            <td>2001 - 3000</td>
+                                            <td>3 crabs</td>
+                                            <td> 7% </td>
+                                            <td> - </td>
+                                        </tr>
+                                        <tr id="crab4_tr" {% if user.balance.balance >= 3001 and user.balance.balance < 4001 %}class="success"{% endif %}>
+                                            <td>3001 - 4000</td>
+                                            <td>4 crabs</td>
+                                            <td> 9% </td>
+                                            <td> - </td>
+                                        </tr>
+                                        <tr id="crab5_tr" {% if user.balance.balance >= 4001 and user.balance.balance < 6001 %}class="success"{% endif %}>
+                                            <td>4001 - 6000</td>
+                                            <td>5 crabs</td>
+                                            <td> 12% </td>
+                                            <td> - </td>
+                                        </tr>
+                                        <tr id="crab6_tr" {% if user.balance.balance >= 6001 %}class="success"{% endif %}>
+                                            <td>&gt; 6001</td>
+                                            <td>super crab</td>
+                                            <td> 15% </td>
+                                            <td> VIP status </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModalDetailsC" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalDetailsCTitle">Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger alert-danger-modal fade in" style='display:none;'>
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <p class='modalDanger'></p>
+                    </div>
+                    <div id="cr_details_data" style="max-height:400px;overflow:auto;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModalDetailsMG" tabindex="-1" role="dialog" aria-hidden="false">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalDetailsMGTitle">Terms for receiving a free daily dump!</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger alert-danger-modal fade in" style='display:none;'>
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <p class='modalDanger'></p>
+                    </div>
+                    <div id="mg_data" style="max-height:400px;overflow:auto;">
+                        <ul>
+                            <li>you made a purchase in the last 24 hours</li>
+                            <li>you made a deposit within the last 24 hours</li>
+                            <li>you don't have any outstanding credits/loans</li>
+                            <li>minimum of $25 in combined deposits </li>
+                        </ul>
+                        <span style="font-weight: bold;font-size: 12px;">Disclaimer:<p>
+                                - Daily free dump is an expiring, randomly picked dump from the older databases.
+                                There's no guarantee It will work and not region locked in your area. Creating a
+                                ticket complaining about a free dump will void an ability to receive any future
+                                daily gifts in my shop.</p>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="go_to_my_orders"
+                        onclick="window.location.href = '';" style="display: none;">Go to My
+                        Orders</button>
+                    <button type="button" class="btn btn-primary" id="receive_gift" onclick="ReceiveGift();">Click
+                        here to receive your gift.</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModalLoan" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLoanTitle">Loan request</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger alert-danger-modal fade in" style='display:none;'>
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <p class='modalDanger'></p>
+                    </div>
+                    <div class="alert alert-success alert-success-modal fade in" style='display:none;'>
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <p class='modalSuccess'></p>
+                    </div>
+                    <div id="loan_data"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="transactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="transactionModalLabel">Check Transaction</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              
+            </div>
+            <div class="modal-body" style="width: 500px;">
+                <p style="color: silver; 	font-size: 12px;">example for transaction Id :</p>
+                <p style="color: silver; 	font-size: 12px;">88870927273505c23227dd15f102cf6ec9ef24cfa2c...</p>
+              <form method="post">
+                {% csrf_token %}
+                <input type="text" name="transaction_id" placeholder="Enter transaction ID" style="width: 250px;">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+            <div style="width: 300px;" class="container mt-5">
+                <h1 class="text-center mb-4">How to Add Balance Using Transaction ID</h1>
+                <div class="tutorial-step">
+                    <h2>Find Your Transaction ID</h2>
+                    <p>1. Open your wallet..</p>
+                    <p>2. Select your BTC wallet, depending on what transaction you are looking for..</p>
+                    <p>3. You should now see all the sent and received transactions from the selected wallet.</p>
+                    <img width="200px" height="100px" src="{% static 'public/images/14.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+                    <img width="200px" height="500px" src="{% static 'public/images/13.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+                    <img width="200px" height="500px" src="{% static 'public/images/12.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+                    <img width="200px" height="500px" src="{% static 'public/images/11.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
+                    
+        
+                </div>
+            
+                <div class="tutorial-step">
+                    <h2>Step 1: Click the Bitcoin Button</h2>
+                    <p>First, click on the Bitcoin button on the main page.</p>
+                    <img width="200px" height="100px" src="{% static 'public/images/click.png' %}" alt="Click the Bitcoin button" class="img-fluid">
+                </div>
+                <div class="tutorial-step">
+                    <h2>Step 2: Click the Check Transaction Button</h2>
+                    <p>Next, click on the "Check Transaction" button.</p>
+                    <img width="200px" height="100px" src="{% static 'public/images/click2.png' %}" alt="Click the Bitcoin button" class="img-fluid">
+                </div>
+                <div class="tutorial-step">
+                    <h2>Step 3: Enter Your Transaction ID</h2>
+                    <p>A modal will appear. Enter your transaction ID in the input field and click "Submit".</p>
+                    <img width="600px" height="100px" src="{% static 'public/images/click3.png' %}" alt="Click the Bitcoin button" class="img-fluid">
+                </div>
+            
+                Add more steps as needed 
+            </div>
+          </div>
+        </div>
+      </div> -->
+    <link href="{% static 'public/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/bootstrap-toggle.min.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet">
+    <link href="{% static 'public/css/slider.css' %}" rel="stylesheet">
+    <script src="{% static 'public/js/jquery.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'public/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <script src="{% static 'public/js/date.js' %}"></script>
+    <script src="{% static 'public/js/moment-with-locales.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'public/js/passgen.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-toggle.min.js' %}"></script>
+    <script src="{% static 'public/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap-slider.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+
+            var menuID = document.getElementById("menu-home");
+            if (menuID)
+                menuID.className = menuID.className + " active";
+
+
+            /*String.prototype.capitalise = function() {
+                return this.charAt(0).toUpperCase() + this.slice(1);
+            };*/
+
+            startTime();
+            getLiveData();
+
+            $('.open_cr').click(function () {
+                $('#myModalCR').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+            $('.open_in').click(function () {
+                $('#AcoountInfo').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+
+            $('.open_request_loan').click(function () {
+                $('#myModalLoan').modal('show');
+                $('#loan_data').html('data is loading, please wait ...');
+
+                // $.get("get_loan/index.php", function (data) {
+                //     if(data.status && data.status == 'success') {
+                //         $('#loan_data').html(data.html);
+                //     } else {
+                //         showMessage('modal', 'danger', data.message);
+                //     }
+                // }, 'json').error(function () {
+                //     showMessage('modal', 'danger', 'timeout error, please try again');
+                // }).always(function() {
+                //     //
+                // });
+
+                return false;
+            });
+
+        });
+
+        if (window.parent.frames.length > 0) {
+            // $.get("check_iframe/index.php", function (data) {
+            //     //
+            // }, 'json').error(function () {
+            //     //
+            // }).always(function() {
+            //     //
+            // });
+        }
+
+        var currentHour = 23;
+        var timeoutArray = [];
+        var userBalance = 0.000000;
+
+        function getRatingDetails(action) {
+            $('#myModalDetailsC').modal('show');
+            $('#cr_details_data').html('data is loading, please wait ...');
+
+            // $.post("get_crab_rating/index.php", {
+            //     csrfmiddlewaretoken: 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            //     action: action
+            // }, function (data) {
+            //     $('#cr_details_data').html(data);
+            // }).error(function () {
+            //     showMessage('modal', 'danger', 'timeout error, please try again');
+            // }).always(function() {
+            //     //
+            // });
+
+            return false;
+        }
+
+        function checkTime(i) {
+            return (i < 10) ? "0" + i : i;
+        }
+
+        function startTime() {
+            var today = new Date();
+            today.setHours(currentHour);
+            var h = today.getHours();
+            var m = checkTime(today.getMinutes());
+            var s = checkTime(today.getSeconds());
+            if (m == 59 && s == 59)
+                currentHour++;
+            if (currentHour > 23)
+                currentHour = 0;
+            document.getElementById('current_time').innerHTML = h + ":" + m + ":" + s;
+            setTimeout(function () {
+                startTime()
+            }, 1000);
+        }
+
+
+        function firstUpperCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showMessage(where, type, message, messageID, timeout) {
+            var divClass = (where == 'page') ? 'alert-' + type + '-page' : 'alert-' + type + '-modal';
+            messageID = (messageID == undefined) ? where + firstUpperCase(type) : messageID;
+
+            if (timeout != false && (timeout == undefined || timeout < 1)) {
+                timeout = 5000;
+            }
+
+            var elementMessage = (where == 'page') ? '#' : '.';
+
+            if ($('.' + divClass).is(':visible')) {
+                if (timeout != false && timeoutArray[type] != undefined) {
+                    clearTimeout(timeoutArray[type]);
+                    timeoutArray[type] = undefined;
+                    delete timeoutArray[type];
+                }
+                $(elementMessage + messageID).append('<br>' + message);
+            } else {
+                $(elementMessage + messageID).html(message);
+            }
+
+            $('.' + divClass).show().focus();
+
+            if (timeout != false)
+                timeoutArray[type] = setTimeout(function () {
+                    $('.' + divClass).hide('slow');
+                }, timeout);
+
+            return false;
+        }
+
+        function getLiveData() {
+            // $.getJSON('get_live_data/index.php', function (data) {
+            //     if(data.info)
+            //         showMessage('page', 'info', data.info, undefined, false);
+            //     if(data.count_cart_items > 0)
+            //         $('#count_cart_items').html(data.count_cart_items);
+            //     if(data.count_tickets > 0)
+            //         if(data.waiting_tickets !== undefined)
+            //             $('#count_tickets').html(data.waiting_tickets + '/' + data.count_tickets);
+            //         else
+            //             $('#count_tickets').html(data.count_tickets);
+            //     //if(data.count_pendings > 0)
+            //     if(data.count_payoffs > 0)
+            //         $('#count_payoffs').html(data.count_payoffs);
+            //     if(data.remain_amount)
+            //         $('#remain_amount').html(data.remain_amount);
+            //     if (data.bid_total>0) {
+            //         $('#count_bids').html(data.bid_active + '/' + data.bid_total);
+            //     }
+            //     if(data.current_loan) {
+            //         $('#current_loan').html(data.current_loan);
+            //         $('#current_loan_block').css("display","initial");
+            //     } else {
+            //         $('#request_loan_block').css("display","initial");
+            //     }
+            // }).error(function () {
+            //     //
+            // }).always(function () {
+            //     //
+            // });
+        }
+
+        function ReceiveGift() {
+            $('#receive_gift').prop('disabled', true);
+            var post_array = {
+                'action': 'receive_gift',
+                'type': 'dumps',
+                'ids': '0',
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post('cart/index.php', post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //         $('#go_to_my_orders').show();
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#receive_gift').prop('disabled', false);
+            // });
+            return true;
+        }
+
+        function GetMyLoan() {
+            $('#get_my_loan').prop('disabled', true);
+            $loan_amount = $('.active [name="options"]').attr('loan')
+            var post_array = {
+                'action': 'get_my_loan',
+                'loan_amount': $loan_amount,
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post(/get_loan/, post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#get_my_loan').prop('disabled', false);
+            // });
+            return true;
+        }
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        var csrfToken = '{{ csrf_token }}';
+        var cartItemCount = {{ request.session.cart_item_count|default:0 }};
+    </script>
+    <script src="{% static 'public/js/cart.js' %}"></script>
+    <script>
+        var loadingOverlay = document.getElementById("loadingOverlay");
+        var x = document.getElementById("showOrHide");
+        var y = document.getElementById("showOrHideLite");
+        var z = document.getElementById("showOrHideETH");
+        var a = document.getElementById("showOrHideUsdt");
+        var btctr = document.getElementById("btctr");
+        var littr = document.getElementById("littr");
+        var ethtr = document.getElementById("ethtr");
+        var usdttr = document.getElementById("usdttr");
+        var tableres = document.getElementById("tableres");
+        var tableresnew = document.getElementById("tableresnew");
+
+        function showOrHide() { // show or hide the div
+            loadingOverlay.style.display = "block";
+            // Show the loading overlay
+            if (x.style.display === "none") {
+                setTimeout(function () {
+                    // Hide the loading message
+                    // Hide the loading overlay
+                    loadingOverlay.style.display = "none";
+
+                    // Show the element
+                    x.style.display = "block";
+                    btctr.style.display = "";
+                    tableres.style.display = "none";
+                    tableresnew.style.display = "";
+                    littr.style.display = "none";
+                    ethtr.style.display = "none";
+                    usdttr.style.display = "none";
+                    y.style.display = "none";
+                    z.style.display = "none";
+                    a.style.display = "none";
+                    loadingInProgress = false;
+
+                }, 1000);
+
+            } else {
+                x.style.display = "none";
+                btctr.style.display = "none";
+                tableresnew.style.display = "none";
+                loadingOverlay.style.display = "none";
+
+
+
+            }
+        }
+
+        function showOrHideLite() {
+
+            loadingOverlay.style.display = "block";
+
+
+            if (y.style.display === "none") {
+                setTimeout(function () {
+                    // Hide the loading message
+                    loadingOverlay.style.display = "none";
+
+                    // Show the element
+                    y.style.display = "block";
+                    littr.style.display = "";
+                    btctr.style.display = "none";
+                    ethtr.style.display = "none";
+                    usdttr.style.display = "none";
+                    tableres.style.display = "none";
+                    tableresnew.style.display = "";
+                    x.style.display = "none";
+                    z.style.display = "none";
+                    a.style.display = "none";
+                }, 1000);
+
+            } else {
+                y.style.display = "none";
+                littr.style.display = "none";
+                tableresnew.style.display = "none";
+                loadingOverlay.style.display = "none";
+            }
+        }
+
+        function showOrHideETH() {
+
+            loadingOverlay.style.display = "block";
+
+            if (z.style.display === "none") {
+                setTimeout(function () {
+                    // Hide the loading message
+                    loadingOverlay.style.display = "none";
+
+                    // Show the element
+                    z.style.display = "block";
+                    ethtr.style.display = "";
+                    btctr.style.display = "none";
+                    littr.style.display = "none";
+                    usdttr.style.display = "none";
+                    tableres.style.display = "none";
+                    tableresnew.style.display = "";
+                    x.style.display = "none";
+                    y.style.display = "none";
+                    a.style.display = "none";
+                }, 1000);
+
+            } else {
+                z.style.display = "none";
+                ethtr.style.display = "none";
+                tableresnew.style.display = "none";
+                loadingOverlay.style.display = "none";
+            }
+        }
+
+        function showOrHideUsdt() {
+            loadingOverlay.style.display = "block";
+            if (a.style.display === "none") {
+                setTimeout(function () {
+                    // Hide the loading message
+                    loadingOverlay.style.display = "none";
+
+                    // Show the element
+                    a.style.display = "block";
+                    usdttr.style.display = "";
+                    btctr.style.display = "none";
+                    littr.style.display = "none";
+                    ethtr.style.display = "none";
+                    tableres.style.display = "none";
+                    tableresnew.style.display = "";
+
+                    x.style.display = "none";
+                    y.style.display = "none";
+                    z.style.display = "none";
+                }, 1000);
+
+            } else {
+                a.style.display = "none";
+                usdttr.style.display = "none";
+                tableresnew.style.display = "none";
+                loadingOverlay.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+
+</html>

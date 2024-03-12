@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    {% load google_analytics %}
+
+    
+ 
+    {% if context.site_config.google_analytics_id %}
+    <script async
+        src="https://www.googletagmanager.com/gtag/js?id={{ context.site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ context.site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+    {% if site_config.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+    <!-- Google tag (gtag.js) -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #captcha {
+            font-size: 30px;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 20px;
+        }
+        #refresh, #submit {
+            background-color: #5fa3fe;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #refresh:hover, #submit:hover {
+            background-color: #fe6f5f;
+        }
+        #input {
+            font-size: 20px;
+            padding: 10px;
+            width: 200px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        h1{
+            font-size: revert;
+        }
+        .spinner {
+            margin: auto;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    
+     
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="author" content="Brian Krebs">
+    <meta name="n" content="2">
+
+    
+    <title>Welcome</title>
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#000">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#000">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000">
+    <link rel="stylesheet" href="{% static 'public/static/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'public/static/css/mainlogin.css' %}">
+
+    <!-- Custom styles for this template -->
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'public/static/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'public/static/js/jquery.min.js' %}"></script>
+    <script src="{% static 'public/static/js/bootstrap.min.js' %}"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'public/images/favicon.ico' %}">
+</head>
+
+<body>
+    <section class="form-section" id="form-section">
+
+
+
+        <div class="form-wrapper container" style="width: 400px; hight: ">
+
+
+                <br>
+                <br>
+
+                <br>
+                <br>
+                <form id="recaptchaForm" action="">
+                    <script src='https://www.google.com/recaptcha/api.js'></script>
+                    <div style="margin: auto;" class="g-recaptcha" data-sitekey="6Lc6V_MnAAAAACMrPkASj9P1Q3Jp4BKVdLFhV_f1"></div>
+                
+                    <button id="submit" class="" type="submit">Submit</button>
+                </form>
+                
+                <script>
+                document.getElementById('recaptchaForm').addEventListener('submit', function(event) {
+                    event.preventDefault();  // Prevent the form from submitting normally
+                
+                    // Check if the reCAPTCHA has been solved
+                    if (grecaptcha.getResponse()) {
+                        // If it has been solved, redirect to the login URL
+                        window.location.href = '/login';  // Replace '/login' with your login URL
+                    } else {
+                        // If it hasn't been solved, show an alert
+                        alert('Please solve the reCAPTCHA before submitting.');
+                    }
+                });
+                </script>
+                
+                <script>
+
+                </script>
+                
+        </div>
+
+
+
+    </section>
+
+
+</body>

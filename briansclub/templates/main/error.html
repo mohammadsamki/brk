@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .error-message {
+            border: 2px solid ;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #ffe6e6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your content here -->
+    <!-- add error image from static/public/images/error.png -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center mt-5">
+                <img src="{% static 'public/images/error.png' %}" alt="Error" width="200">
+            </div>
+        </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="error-message text-center mt-5">
+                    <h2 class="text-danger">Error</h2>
+                    <p>{{ message }}</p>
+                    <a href="{% url 'tasklist' %}" class="btn btn-primary">Go to Billing</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

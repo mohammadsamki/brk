@@ -1,0 +1,8 @@
+<form method="POST" action="{% url 'check_transaction' %}">
+    {% csrf_token %}
+    <label for="transaction_id">Transaction ID:</label>
+    <input type="text" id="transaction_id" name="transaction_id">
+    <br>
+    <button type="submit">Check</button>
+  </form>
+  

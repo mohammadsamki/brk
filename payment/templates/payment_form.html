@@ -1,0 +1,7 @@
+<h1>Enter Payment Amount</h1>
+   <form method="post">
+       {% csrf_token %}
+       <label for="amount">Amount:</label>
+       <input type="text" name="amount" id="amount">
+       <button type="submit">Pay with Bitcoin</button>
+   </form>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    {% load google_analytics %}
+    <meta name="google-site-verification" content="3yfmtpvOZl6fWRm4vNYKrxnnVJrzfsVavq6cIXznbls" />
+    <meta name="msvalidate.01" content="955D30370E82F8071282CEA1CA825D83" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="msvalidate.01" content="F0B9ADC94E660AD71487AA4C28E5262C" />
+    {% if context.site_config.google_analytics_id %}
+    <script async
+        src="https://www.googletagmanager.com/gtag/js?id={{ context.site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ context.site_config.google_analytics_id }}');
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11425482838"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-11425482838');
+</script>
+    {% endif %}
+    {% if site_config.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+    <!-- Google tag (gtag.js) -->
+
+    <meta name='robots' content='index, follow' />
+     
+    <link rel="icon" href="{% static 'public/images/favicon.ico' %}">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="author" content="Brian Krebs">
+    <meta name="n" content="2">
+
+    
+    <meta name="keywords" content='bclub,bclub cm,bclub tk,bclub login,bclub com,bclub,briansclub,brainsclub cm,briansclub cc,briansclub review,brianclub cm login,brainclub,cc dumps,cvv online,cvv shop online,cvv dumps,buy cc,cc shop,fresh dumps,buy dumps online, dumps,dumps shop,buy dumps, dumps with pin,buy ssn,briansclub sign in,briansclub official site,is briansclub legit,new briansclub,briansclub forum,bclub,blub cm,bclub tkbriansclub onion,briansclub onion link,brians club login,brians club,sites to buy cvv'    >
+    <meta name="description" content='Briansclub cm | The best shop for CVV2 and Dumps.Briansclub is one of the best cc shops for quality cards. bclub, Brians club - Member login'>
+    <title>BRIANSCLUB.CM - BRIANSCLUB Login | BCLUB</title>
+    <meta name="theme-color" content="#000">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#000">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000">
+    <link rel="stylesheet" href="{% static 'public/static/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'public/static/css/mainlogin.css' %}">
+
+    <!-- Custom styles for this template -->
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'public/static/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'public/static/js/jquery.min.js' %}"></script>
+    <script src="{% static 'public/static/js/bootstrap.min.js' %}"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <section class="form-section" id="form-section"
+        style="background-image: url({% static 'public/static/images/wallbaber.jpg' %});">
+
+        <!-- <div class="form-decorations">
+            <div class="form-decorations__logo form-decorations__item">
+                <img src="{% static 'public/static/images/login/logo.png' %}" alt="">
+            </div>
+            <div class="form-decorations__item">
+                <img src="{% static 'public/static/images/login/doc1.png' %}" alt="">
+            </div>
+            <div class="form-decorations__item">
+                <img src="{% static 'public/static/images/login/doc2.png' %}" alt="">
+            </div>
+            <div class="form-decorations__item">
+                <img src="{% static 'public/static/images/login/flowerpot.png' %}" alt="">
+            </div>
+            <div class="form-decorations__item">
+                <img src="{% static 'public/static/images/login/Three_Cards.png' %}" alt="">
+            </div>
+            <div class="form-decorations__item">
+                <img src="{% static 'public/static/images/login/newspaper1.png' %}" alt="">
+            </div>
+            <div class="form-decorations__item">
+                <img src="{% static 'public/static/images/login/A4_later.png' %}" alt="">
+            </div>
+            <div class="form-decorations__item">
+                <img src="{% static 'public/static/images/login/key.png' %}" alt="">
+            </div>
+        </div> -->
+
+        <div class="form-wrapper container">
+
+            <form class="form form-signin" id="form-sing-in" action="" method="post" role="form">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                <p>
+                    {{ field.errors }}
+
+                </p>
+                {% endfor %}
+
+
+                <h1 class="form-title">
+                    <span>
+                        Please Login - briansclub
+                    </span>
+                </h1>
+                {% if auth_error %}
+                <div class="alert alert-danger" tabindex="-1">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <ul class="errorlist nonfield">
+                        <li>Login or password are incorrect</li>
+                    </ul>
+                </div> {% endif %}
+
+
+
+                <div class="alert alert-danger alert-danger-page fade in" style='display:none;margin-top:10px;'
+                    tabindex="-1">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <p id='pageDanger'></p>
+                </div>
+                <div class="alert alert-block alert-success alert-success-page fade in"
+                    style='display:none;margin-top:10px;' tabindex="-1">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <p id='pageSuccess'></p>
+                </div>
+                <div class="alert alert-block alert-info alert-info-page fade in" style='display:none;margin-top:30px;'
+                    tabindex="-1">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <p id='pageInfo'></p>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="id_username" class="form__label control-label">Username</label>
+                    <div class="form-group__wrapper form-group">
+                        <input required type="text" id="id_username" name="username" placeholder="Username"
+                            maxlength="32" required="required" class="form__input">
+                        <span class="form-group__icon">
+                            <i class="zmdi zmdi-account"></i>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="password" class="form__label">Password</label>
+                    <div class="form-group__wrapper form-group">
+                        <input type="password" id="password" name="password" maxlength="64" placeholder="Password"
+                            required="required" class="form__input">
+                        <span class="form-group__icon">
+                            <i class="zmdi zmdi-account"></i>
+                        </span>
+                    </div>
+                    <input type="checkbox" onclick="ShowPassword()" class="form__label">&nbsp;<label for="password"
+                        class="form__label">Show Password </label>
+                </div>
+                {% if captcha_error %}
+                <p style="
+    color: red;
+" class="error">{{ captcha_error }}</p>
+                {% endif %}
+                <div class="form-group captcha-wrapper" style="margin-top: 20px;">
+                    <!-- <label for="code" class="form__label">enter code</label> -->
+                    <div class="form-group__wrapper" style="display: ruby-text-container;">
+                        <label style="
+                            font-size: 23px; color:gray" for="captcha">{{ captcha }}</label>
+                        <input id="id_captcha_0" name="captcha" type="hidden" />
+                        <input autocomplete="off" id="id_captcha_1" name="captcha" type="number" />
+                        <span class="form-group__captcha" id="captcha"></span>
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-buttons">
+                    <button class="button form__button form__button--gradient" type="submit">Login</button>
+                    <a href="{% url 'register' %}" class="button form__button ">Register</a>
+                </div>
+
+                <div class="form-links">
+                    <a href="#modalReset" class="form-links__item" data-toggle="modal">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal fade" id="modalReset" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="modalResetTitle">Reset Password</h4>
+                    </div>
+                    <div class="modal-body">
+                        Please create a new account and submit a ticket requesting password reset for your original
+                        account.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            $("#id_captcha_1").attr('class', 'form__input');
+            $("#id_captcha_1").attr('required', 'required');
+            $("#id_captcha_1").attr('placeholder', 'Equals?');
+            $("#id_captcha_1").css("width", "auto");
+            $("#id_username").keypress(function (event) {
+                var ew = event.which;
+                if (48 <= ew && ew <= 57)
+                    return true;
+                if (65 <= ew && ew <= 90)
+                    return true;
+                if (97 <= ew && ew <= 122)
+                    return true;
+                return false;
+            });
+        })
+        function ShowPassword() {
+            var x = $("#password");
+            if (x.attr("type") === "password") {
+                x.attr("type", "text");
+            } else {
+                x.attr("type", "password");
+            }
+        };
+    </script>
+
+</body>
+
+</html>

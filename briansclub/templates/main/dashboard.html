@@ -1,0 +1,1242 @@
+<head>
+    {% load static %}
+    {% load google_analytics %}
+
+    {% if site_config.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { { dataLayer.push(arguments); } }
+        gtag('js', new Date());
+        gtag('config', '{{ site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+    <!-- Google tag (gtag.js) -->
+    <link rel="icon" href="{% static 'public/images/favicon.ico' %}">
+    <meta name="keywords" content="briantclub, brian's club, briansclub, brains club,brians club" />
+    <script async src="https://shown.io/metrics/rm9JeVye87" type="text/javascript"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="onion-location" content="http://briansccxf4qknms.onion/">
+    <meta name="n" content="1">
+    <title>Welcome</title>
+    <meta name="description"
+        content="Dashboard from BriansCLub. The perfect overview for your trades and taxes, payment options from bitcoin, litecoin and dash and a lot more!">
+    <link href=" {% static 'public/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href=" {% static 'public/css/justified-nav.css' %}" rel="stylesheet">
+    <link href=" {% static 'public/images/favicon_v3.html' %}" rel="icon" type="image/x-icon">
+    <link href=" {% static 'public/images/favicon_v3.html' %}" rel="shortcut" type="image/x-icon">
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-245295923-1">
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-245295923-1');
+    </script>
+    <style>
+        .nav-right li a {
+            padding-top: 6px !important;
+            padding-bottom: 6px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="width:90%;max-width:1700px;">
+        <div class="masthead" style="">
+            <div role="navigation"
+                style="float: right;margin-top: 0px; white-space: nowrap; width: min-content;width: -moz-min-content;width: -webkit-min-content;display: -ms-grid;-ms-grid-columns: min-content;">
+                <ul class="nav nav-justified nav-right">
+                    <li>
+                        <a href=" {% url 'tasklist' %}" style="color:green;"></span> <b>Lottery</b> <span
+                                class="glyphicon glyphicon-usd" aria-hidden="true"></span></a></span>
+                    </li>
+                    <li>
+                        <a href="#"><span class="openMyGift" data-toggle="modal" data-target="#myModalDetailsMG"><span
+                                    class="glyphicon glyphicon-gift" aria-hidden="true"
+                                    style="color: orangered;"></span> My Gift </span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"
+                                aria-hidden="true"></span><b> Logout</b></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="text-muted"
+                style="margin-top: -20px;padding-bottom:10px;float: none;width: auto;overflow: visible;">
+                <h3 class="text-muted">Welcome <i>{{ request.user }}</i> <span style="font-size: 16px;">[<a href="/profile/">profile</a>]</span></h3>
+                {% if user.is_authenticated %}
+                <b>Balance:</b> {{ user.balance.balance }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+            {% else %}
+            <b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+            
+            {% endif %} 
+            <link rel="shortcut icon" type="image/png">
+<b>Crab Rating:</b> 
+<a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
+    {% if not user.balance or user.balance.balance is None %}
+        <!-- No image for no balance -->
+    {% elif user.balance.balance < 1 %}
+        <!-- No crab image for 0 rating -->
+    {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+        <img src="{% static 'public/images/crab_rate.png' %}" alt="1 crab">
+    {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+        {% for i in '01'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="2 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+        {% for i in '012'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="3 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+        {% for i in '0123'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="4 crabs">
+        {% endfor %}
+    {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+        {% for i in '01234'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="5 crabs">
+        {% endfor %}
+    {% else %}
+        {% for i in '012345'|make_list %}
+            <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
+        {% endfor %}
+    {% endif %}
+</a> 
+[ <a href="#" class="open_cr">details</a> ]<br>
+
+                <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
+                        style="color: red;"></span>$<br></span>
+                <span style="display:none;"> en </span>
+                <b>Current server time:</b> <span id="current_time"></span>
+            </div>
+            <div role="navigation">
+                <ul class="nav nav-justified">
+                    <li id="menu-home"><a href="{% url 'dashboard' %}">News</a></li>
+                    <li id="menu-dumps-search">
+                        <a href=" {% url 'dumps' %}"
+                            style="background-image: -webkit-linear-gradient(top, #ABDDFC 0%, #ABDDFC 100%);">Dumps</a>
+                    </li>
+                    <li id="menu-cc-search">
+                        <a href=" {% url 'cvv' %}"
+                            style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
+                    </li>
+                    <li id="menu-fullz-search"><a href="{% url 'fullz' %}"
+                            style="background-image: -webkit-linear-gradient(top, #bbfcff 0%, #bbfcff 100%);">Fullz</a>
+                    </li>
+                    <li id="menu-wholesale" style="min-width:110px;">
+                        <a href=" {% url 'wholesale' %}">Wholesale</a>
+                    </li>
+                    <li id="menu-cart">
+                        <a href="{% url 'cart' %}">Cart <span class="badge" id="count_cart_items">{{ request.session.cart_item_count|default:0 }}</span></a>
+                    </li>
+                    <li id="menu-orders">
+                        <a href="/orders">Orders</a>
+                    </li>
+                    <li id="menu-auction">
+                        <a href="/auction"
+                            style="color: white; background-image: -webkit-linear-gradient(top, #FB786B 0%, #FB786B 100%);">Auction
+                            <span class="badge" id="count_bids"></span></a>
+                    </li>
+                    <li id="menu-checker">
+                        <a href="/tools" style="background-color:#FFFFCC">Tools</a>
+                    </li>
+                    <li id="menu-tickets">
+                        <a href="/tickets/">Tickets <span class="badge" id="count_tickets"></span></a>
+                    </li>
+                    <li id="menu-logs" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-expanded="false">Help<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+
+                        </ul>
+                    </li>
+                    <li id="menu-profile">
+                        <a href="/profile"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="alert alert-danger alert-danger-page fade in" style='display:none;margin-top:10px;' tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id='pageDanger'></p>
+        </div>
+        <div class="alert alert-block alert-success alert-success-page fade in" style='display:none;margin-top:10px;'
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id='pageSuccess'></p>
+        </div>
+        <div class="alert alert-block alert-info alert-info-page fade in" style='display:none;margin-top:30px;'
+            tabindex="-1">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p id='pageInfo'></p>
+        </div>
+        <!-- <div class="alert alert-block alert-info fade in" style='margin-top:10px;' tabindex="-1">
+            <p>
+                    balance</a>.<br>
+                Attention: Not activated accounts for more than 5 days will be deleted automatically.
+            </p>
+        </div> -->
+        <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+            <p>
+                Your account is inactive. For activation you need <a href=" {% url 'tasklist' %}">to top up your
+                    balance</a>.<br>
+                Attention: Not activated accounts for more than 5 days will be deleted automatically.
+            </p>
+        </div>
+
+
+        <div class="col-sm-12 panel panel-default" style="background:#86d367">
+            <h3 style="text-align: center;margin-top: 10px;"><a href="#"><span style="color:black; text-transform: uppercase; font-weight: bold;" data-toggle="modal" data-target="#modalNotificationAccount">Stop visiting PHISHING domains of the shop! Use official domains!!!</span></a></h3>
+                    
+        </div>
+
+
+
+        <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;">
+            <div class="panel-body">
+                <div class="col-sm-16">
+                    <div class="alert alert-block alert-warning fade in"
+                        style='margin-top:10px;display:none;font-size:12pt;' id="updateRelease">
+                        Update will be available in <span id="time_update_left" data-seconds="0">-</span>, please be
+                        patient.
+                    </div>
+
+                    <div class="col-12">
+                        <div class="col-sm-8">
+                            <a href="#news" style="font-size: 15pt;">Fresh Updates &amp; SALE</a>
+                        </div>
+                        <div class="col-sm-4" style="text-align:right;font-style: italic;">
+                            created 8 hours ago
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12 panel panel-default">
+                        <p style="font-size: 13pt;padding-top:5px;">
+                            Base name: <a href=" {% url 'tasklist' %}" target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Electric</span></a><br />Countries: USA [NV],
+                            World<br />Info: TR2 with <b style="color:red;">PIN</b>, State<br />Valid rate:
+                            <b>90%</b><br />No replacements!<br /><br />Base name: <a href=" {% url 'tasklist' %}"
+                                target="_blank"><span style='font-weight:bold;color:#348934'>
+                                    <p class="date1" style="display: inline-block;"></p>_US_IP_EMAIL
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Pnone,
+                            Email, IP<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='cvv/index6c8f6c8f.html?base=85266' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date1" style="display: inline-block;"></p>_US_IP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country,
+                            E-mail, Phone, <b>IP</b><br />Valid rate: <b>80%</b><br /><br />Base name: <a
+                                href='dumps/index85248524.html?base=85101' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Carlton</span></a><br />Countries: USA [CA,
+                            IL, MS, NV, NY, OR, PA, SC, TN, TX, WA], World<br />Info: TR2, TR1+TR2 with state<br />Valid
+                            rate: <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index7eee7eee.html?base=85902' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date1" style="display: inline-block;"></p>_US_IP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Phone,
+                            Email, IP<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='cvv/indexecdbecdb.html?base=85986' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date1" style="display: inline-block;"></p>_US_PHONE_EMAIL
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, Zip Code, State, Country, Phone,
+                            E-mail<br />Valid rate: <b>80%</b><br /><br />Base name: <a
+                                href='dumps/indexf3b6f3b6.html?base=85788' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Architect</span></a><br />Countries: USA [AL,
+                            AR, AZ, CA, CO, FL, GA, ID, IL, KS, LA, MI, MN, MO, NC, NY, OK, PA, SC, TN, TX, UT, VA, WY],
+                            World<br />Info: TR1 + TR2, TR2 with state, city, zip<br />Valid rate: <b>90%</b><br />No
+                            Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index81978197.html?base=85944' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date1" style="display: inline-block;"></p>_TR
+                                </span></a><br />Countries:
+                            Turkey<br />Info: Number, Exp Date, CVV2, <b>No Name</b>, <b>No Address</b>,
+                            Counrty<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/index9c949c94.html?base=84534' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Smart</span></a><br />Countries: USA [AZ, CA,
+                            CO, DC, FL, GA, IA, IL, KY, MA, MD, ME, MI, MO, NC, NJ, NV, NY, OH, PA, SC, TN, TX, VA,
+                            WI]<br />Info: TR2 with state, city, zip<br />Valid rate: <b>78%</b><br /><br />Base name:
+                            <a href='dumps/index5b115b11.html?base=85973' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Zorro</span></a><br />Countries: USA [NY],
+                            World<br />Info: TR2 with state<br />Valid rate: <b>90%</b><br />No Replacements for
+                            <b>24</b> hours.<br /><br />Base name: <a href='cvv/index113c113c.html?base=85995'
+                                target="_blank"><span style='font-weight:bold;color:#348934'>
+                                    <p class="date1" style="display: inline-block;"></p>_US_IP_PHONE
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country,
+                            E-mail, Phone, <b>IP</b><br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base
+                            name: <a href='dumps/index9f609f60.html?base=85443' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Batman</span></a><br />Countries: USA [AL,
+                            CA, CO, FL, GA, ID, IL, KS, KY, LA, MA, MD, ME, MI, MN, MO, MT, NV, NY, OH, PA, SC, TN, TX,
+                            VA, WI], World<br />Info: TR2 with state, city, zip<br />Valid rate:
+                            <b>75%</b><br /><br />Base name: <a href='dumps/index4baa4baa.html?base=85998'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Label</span></a><br />Countries: USA,
+                            World<br />Info: TR2<br />Valid rate: <b>90%</b><br />No Replacements for <b>24</b>
+                            hours.<br /><br /><b>SALE!</b> Prices of the bases <a
+                                href='cvv/indexfdeafdea.html?base=71233' target='_blank'><span
+                                    style='font-weight:bold;color:#348934'>0804_WORLD</span></a>, <a
+                                href='dumps/index74697469.html?base=79709' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Asmus</span></a>, <a
+                                href='dumps/index978d978d.html?base=80427' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Fibre</span></a> were decreased to
+                            <b>25%</b>!<br /><br />Stay safe & healthy, good luck!<br /><br /><i>P.S. next update will
+                                be released tomorrow at 8 AM Eastern Time</i>
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <div class="col-sm-8">
+                            <a href="#news" style="font-size: 15pt;">Fresh Updates &amp; SALE</a>
+                        </div>
+                        <div class="col-sm-4" style="text-align:right;font-style: italic;">
+                            created 1 day, 8 hours ago
+                        </div>
+                    </div>
+                    <div class="col-sm-12 panel panel-default">
+                        <p style="font-size: 13pt;padding-top:5px;">
+                            Base name: <a href='dumps/index36b336b3.html?base=85908' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Azure</span></a><br />Countries: USA
+                            [CA]<br />Info: TR2 with <b style="color:red;">EDD+PIN</b>, State<br />Valid rate:
+                            <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='cvv/indexdca2dca2.html?base=85836' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date2" style="display: inline-block;"></p>_US_IP_EMAIL
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Pnone,
+                            Email, IP<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/index11e111e1.html?base=85885' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Patrol</span></a><br />Countries: USA,
+                            World<br />Info: TR2 with <b style="color:red;">PIN</b><br />Valid rate: <b>90%</b><br />No
+                            replacements!<br /><br />Base name: <a href='cvv/index956b956b.html?base=85989'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>0318_US_IP_SSN</span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, DOB,
+                            Phone, E-mail, E-mail password, IP, SSN<br />Valid rate: <b>80%</b><br /><br />Base name: <a
+                                href='dumps/index04c604c6.html?base=85785' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Runner</span></a><br />Countries: USA [AL,
+                            AR, AZ, CA, CO, FL, GA, ID, IL, KS, LA, MI, MN, MO, NC, NY, OK, PA, PE, SC, TN, TX, UT, VA,
+                            WY], World<br />Info: TR1 + TR2, TR2 with state, city, zip<br />Valid rate:
+                            <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/indexc66fc66f.html?base=85932' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>0318_US_IP_SSN_MMN</span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, Zip Code, Country, DOB, Phone,
+                            E-mail, Email Password, IP, SSN, MMN<br />Valid rate: <b>90%</b><br />No
+                            replacements!<br /><br />Base name: <a href='dumps/index55815581.html?base=85098'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Tormenta</span></a><br />Countries: USA [CA,
+                            IL, MS, NV, NY, OR, PA, SC, TN, TX, WA], World<br />Info: TR2, TR1+TR2 with state<br />Valid
+                            rate: <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='dumps/index715e715e.html?base=84531' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Tech</span></a><br />Countries: USA [AZ, CA,
+                            CO, DC, FL, GA, IA, IL, KY, MA, MD, ME, MI, MO, NC, NJ, NV, NY, OH, PA, SC, TN, TX, VA, WI,
+                            WV]<br />Info: TR2 with state, city, zip<br />Valid rate: <b>78%</b><br /><br />Base name:
+                            <a href='dumps/index25ce25ce.html?base=85857' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Oasis</span></a><br />Countries: USA,
+                            World<br />Info: TR2<br />Valid rate: <b>90%</b><br />No Replacements for <b>24</b>
+                            hours.<br /><br />Base name: <a href='cvv/index2c1d2c1d.html?base=85950'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>0318_US_IP_DOB_LPA</span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Phone,
+                            IP, DOB, Last Paid Amount<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base
+                            name: <a href='dumps/indexc11dc11d.html?base=85686' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Bisquit</span></a><br />Countries: USA [IL,
+                            NC, NV, NY, OH], World<br />Info: TR1 + TR2, TR2 with state, city<br />Valid rate:
+                            <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='dumps/index4cda4cda.html?base=85440' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Soldier</span></a><br />Countries: USA [AL,
+                            CA, CO, FL, GA, ID, IL, KS, KY, LA, MA, MD, ME, MI, MN, MO, MT, NC, NJ, NV, NY, OH, ON, PA,
+                            SC, TN, TX, VA, WA, WI], World<br />Info: TR2 with state, city, zip<br />Valid rate:
+                            <b>75%</b><br /><br />Base name: <a href='dumps/index26b026b0.html?base=85922'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Crossfire</span></a><br />Countries: USA,
+                            World<br />Info: TR2<br />Valid rate: <b>90%</b><br />No Replacements for <b>24</b>
+                            hours.<br /><br />Base name: <a href='cvv/index09af09af.html?base=85968'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>0318_WORLD</span></a><br />Countries: USA,
+                            World<br />Info: Number, Exp Date, CVV2, Name, Address, City, Zip Code, State,
+                            Country<br />Valid rate: <b>90%</b><br />No replacements!<br /><br /><b>SALE!</b> Prices of
+                            the bases <a href='cvv/index4d784d78.html?base=71197' target='_blank'><span
+                                    style='font-weight:bold;color:#348934'>0802_WORLD</span></a>, <a
+                                href='dumps/indexb0deb0de.html?base=79641' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Freeway</span></a>, <a
+                                href='dumps/index1e011e01.html?base=81003' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Shuttle</span></a>, <a
+                                href='cvv/indexf1eaf1ea.html?base=82344' target='_blank'><span
+                                    style='font-weight:bold;color:#348934'>0122_US_IP</span></a> were decreased to
+                            <b>25%</b>!<br /><br />Stay safe & healthy, good luck!<br /><br /><i>P.S. next update will
+                                be released tomorrow at 8 AM Eastern Time</i>
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <div class="col-sm-8">
+                            <a href="#news" style="font-size: 15pt;">Fresh Updates &amp; SALE</a>
+                        </div>
+                        <div class="col-sm-4" style="text-align:right;font-style: italic;">
+                            created 2 days, 8 hours ago
+                        </div>
+                    </div>
+                    <div class="col-sm-12 panel panel-default">
+                        <p style="font-size: 13pt;padding-top:5px;">
+                            Base name: <a href='dumps/index13331333.html?base=85782' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Lotta</span></a><br />Countries: USA [AL, AR,
+                            AZ, CA, CO, FL, GA, ID, IL, KS, LA, MI, MN, MO, NC, NY, OK, PA, SC, TN, TX, UT, VA, WY],
+                            World<br />Info: TR1 + TR2, TR2 with state, city, zip<br />Valid rate: <b>90%</b><br />No
+                            Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index703d703d.html?base=85833' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date3" style="display: inline-block;"></p>_US_IP_EMAIL
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Pnone,
+                            Email, IP<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/index96cc96cc.html?base=85095' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Clowd</span></a><br />Countries: USA [CA, IL,
+                            MS, NV, NY, OR, PA, SC, TN, TX, WA], World<br />Info: TR2, TR1+TR2 with state<br />Valid
+                            rate: <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index3b443b44.html?base=85260' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date3" style="display: inline-block;"></p>_US_IP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country,
+                            E-mail, Phone, <b>IP</b><br />Valid rate: <b>80%</b><br /><br />Base name: <a
+                                href='cvv/indexdf0adf0a.html?base=85899' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date3" style="display: inline-block;"></p>_US_ZIP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code,
+                            Country<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/index68a768a7.html?base=85683' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Corporation</span></a><br />Countries: USA
+                            [IL, NC, NV, NY, OH], World<br />Info: TR1 + TR2, TR2 with state, city<br />Valid rate:
+                            <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='dumps/index2ccd2ccd.html?base=84528' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Porch</span></a><br />Countries: USA [AZ, CA,
+                            CO, DC, FL, GA, IA, IL, IN, KY, MA, MD, ME, MI, MO, NC, NJ, NV, NY, OH, PA, SC, TN, TX, VA,
+                            WI]<br />Info: TR2 with state, city, zip<br />Valid rate: <b>78%</b><br /><br />Base name:
+                            <a href='cvv/indexf7b6f7b6.html?base=85941' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date3" style="display: inline-block;"></p>_CA
+                                </span></a><br />Countries:
+                            Canada<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country,
+                            E-mail, Phone, Last Paid Amount<br />Valid rate: <b>90%</b><br />No
+                            replacements!<br /><br />Base name: <a href='dumps/indexd8d6d8d6.html?base=85437'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Sublime</span></a><br />Countries: USA [AL,
+                            CA, CO, FL, GA, ID, IL, KS, KY, LA, MA, MD, ME, MI, MN, MO, MT, NC, NH, NV, NY, OH, PA, SC,
+                            TN, TX, VA, WA, WI], World<br />Info: TR2 with state, city, zip<br />Valid rate:
+                            <b>75%</b><br /><br />Base name: <a href='dumps/index17c917c9.html?base=85854'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Holdem</span></a><br />Countries: USA,
+                            World<br />Info: TR2<br />Valid rate: <b>90%</b><br />No Replacements for <b>24</b>
+                            hours.<br /><br /><b>SALE!</b> Prices of the bases <a
+                                href='cvv/index94719471.html?base=71116' target='_blank'><span
+                                    style='font-weight:bold;color:#348934'>0801_WORLD</span></a>, <a
+                                href='dumps/index880e880e.html?base=76886' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Nokia</span></a>, <a
+                                href='dumps/index9d429d42.html?base=79677' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Sony</span></a> were decreased to
+                            <b>25%</b>!<br /><br />Stay safe & healthy, good luck!<br /><br /><i>P.S. next update will
+                                be released tomorrow at 8 AM Eastern Time</i>
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <div class="col-sm-8">
+                            <a href="#news" style="font-size: 15pt;">Fresh Updates &amp; SALE</a>
+                        </div>
+                        <div class="col-sm-4" style="text-align:right;font-style: italic;">
+                            created 3 days, 8 hours ago
+                        </div>
+                    </div>
+                    <div class="col-sm-12 panel panel-default">
+                        <p style="font-size: 13pt;padding-top:5px;">
+                            Base name: <a href='dumps/indexb888b888.html?base=85886' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Radio</span></a><br />Countries: USA
+                            [TX]<br />Info: TR2 with <b style="color:red;">PIN</b>, State<br />Valid rate:
+                            <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='cvv/index48554855.html?base=84588' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date4" style="display: inline-block;"></p>_US_IP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country,
+                            E-mail, Phone, <b>IP</b><br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base
+                            name: <a href='dumps/index66376637.html?base=85092' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Business</span></a><br />Countries: USA [CA,
+                            IL, MS, NV, NY, OR, PA, SC, TN, TX, WA], World<br />Info: TR2, TR1+TR2 with state<br />Valid
+                            rate: <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='dumps/index383d383d.html?base=84525' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Host</span></a><br />Countries: USA [AZ, CA,
+                            CO, DC, FL, GA, IA, IL, KY, MA, MD, ME, MI, MO, NC, NJ, NV, NY, OH, PA, SC, TN, TX, VA,
+                            WI]<br />Info: TR2 with state, city, zip<br />Valid rate: <b>78%</b><br /><br />Base name:
+                            <a href='cvv/index2d8c2d8c.html?base=85830' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date4" style="display: inline-block;"></p>_US_IP_EMAIL
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Pnone,
+                            Email, IP<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/index59fb59fb.html?base=85680' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Nascar</span></a><br />Countries: USA [IL,
+                            NC, NV, NY, OH], World<br />Info: TR1 + TR2, TR2 with state, city<br />Valid rate:
+                            <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index71f071f0.html?base=85875' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date4" style="display: inline-block;"></p>_US_PHONE
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Phone,
+                            Email<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/indexfc68fc68.html?base=85434' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Anchor</span></a><br />Countries: USA [AL,
+                            CA, CO, FL, GA, GT, ID, IL, KY, LA, MA, MD, ME, MI, MN, MO, MT, NC, NV, NY, OH, PA, SC, TN,
+                            TX, VA, WI], World<br />Info: TR2 with state, city, zip<br />Valid rate:
+                            <b>75%</b><br /><br />Base name: <a href='dumps/indexe4c0e4c0.html?base=85779'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Spark</span></a><br />Countries: USA [AL, AR,
+                            AZ, CA, CO, FL, GA, IA, ID, IL, KS, LA, MI, MN, MO, NC, NY, OK, PA, PE, SC, TN, TX, UT, VA,
+                            WY], World<br />Info: TR1 + TR2, TR2 with state, city, zip<br />Valid rate:
+                            <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index91e891e8.html?base=85892' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date4" style="display: inline-block;"></p>_US
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Country<br />Valid rate: <b>90%</b><br />No
+                            replacements!<br /><br />Base name: <a href='dumps/index118a118a.html?base=85851'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Salad</span></a><br />Countries: USA,
+                            World<br />Info: TR2<br />Valid rate: <b>90%</b><br />No Replacements for <b>24</b>
+                            hours.<br /><br />Base name: <a href='cvv/indexa87ca87c.html?base=85893'
+                                target="_blank"><span style='font-weight:bold;color:#348934'>
+                                    <p class="date4" style="display: inline-block;"></p>_US_ZIP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, <b>No Address</b>, City, Zip Code, State,
+                            Country<br />Valid rate: <b>90%</b><br />No replacements!<br /><br /><b>SALE!</b> Prices of
+                            the bases <a href='dumps/index59d159d1.html?base=76880' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Airbus</span></a>, <a
+                                href='dumps/index75317531.html?base=78508' target='_blank'><span
+                                    style='font-weight:bold;color:#2B60DE'>Boomerang</span></a>, <a
+                                href='cvv/indexb60fb60f.html?base=82194' target='_blank'><span
+                                    style='font-weight:bold;color:#348934'>0119_US_IP</span></a> were decreased to
+                            <b>25%</b>!<br /><br />Stay safe & healthy, good luck!<br /><br /><i>P.S. next update will
+                                be released tomorrow at 8 AM Eastern Time</i>
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <div class="col-sm-8">
+                            <a href="#news" style="font-size: 15pt;">Fresh Updates &amp; SALE</a>
+                        </div>
+                        <div class="col-sm-4" style="text-align:right;font-style: italic;">
+                            created 4 days, 8 hours ago
+                        </div>
+                    </div>
+                    <div class="col-sm-12 panel panel-default">
+                        <p style="font-size: 13pt;padding-top:5px;">
+                            Base name: <a href='dumps/index72517251.html?base=85728' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Platinum</span></a><br />Countries: USA
+                            [CA]<br />Info: TR2 with <b style="color:red;">EDD+PIN</b>, State<br />Valid rate:
+                            <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/index80d980d9.html?base=85723' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Wagner</span></a><br />Countries: USA [CA],
+                            World<br />Info: TR1 + TR2, TR2 with state, city, zip<br />Valid rate: <b>90%</b><br />No
+                            Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index032a032a.html?base=85764' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date5" style="display: inline-block;"></p>_US_SSN_IP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Phone,
+                            E-mail, E-mail password, IP, SSN<br />Valid rate: <b>80%</b><br /><br />Base name: <a
+                                href='cvv/index274f274f.html?base=85539' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date5" style="display: inline-block;"></p>_WORLD_IP
+                                </span></a><br />Countries: USA,
+                            World<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country,
+                            Pnone, Email, IP<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/indexede4ede4.html?base=85089' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Lift</span></a><br />Countries: USA [CA, IL,
+                            MS, NV, NY, OR, PA, SC, TN, TX, WA], World<br />Info: TR2, TR1+TR2 with state<br />Valid
+                            rate: <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/indexfe30fe30.html?base=85257' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date5" style="display: inline-block;"></p>_US_IP
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country,
+                            E-mail, Phone, <b>IP</b><br />Valid rate: <b>80%</b><br /><br />Base name: <a
+                                href='dumps/index7c637c63.html?base=85776' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Thunderbird</span></a><br />Countries: USA
+                            [AL, AR, AZ, CA, CO, FL, GA, ID, IL, KS, LA, MI, MN, MO, NC, NY, OK, PA, SC, TN, TX, UT, VA,
+                            WY], World<br />Info: TR1 + TR2, TR2 with state, city, zip<br />Valid rate:
+                            <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br />Base name: <a
+                                href='cvv/index524f524f.html?base=85746' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date5" style="display: inline-block;"></p>_WORLD
+                                </span></a><br />Countries: USA,
+                            World<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code,
+                            Country<br />Valid rate: <b>90%</b><br />No replacements!<br /><br />Base name: <a
+                                href='dumps/index5efb5efb.html?base=84522' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Cooler</span></a><br />Countries: USA [AZ,
+                            CA, CO, DC, FL, GA, IA, IL, KY, MA, MD, ME, MI, MO, NC, NJ, NV, NY, OH, PA, SC, TN, TX, VA,
+                            WI]<br />Info: TR2 with state, city, zip<br />Valid rate: <b>78%</b><br /><br />Base name:
+                            <a href='dumps/index8a5c8a5c.html?base=85665' target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Banzo</span></a><br />Countries: USA,
+                            World<br />Info: TR2<br />Valid rate: <b>90%</b><br />No Replacements for <b>24</b>
+                            hours.<br /><br />Base name: <a href='dumps/indexe637e637.html?base=85734'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Nasdaq</span></a><br />Countries: USA [IL],
+                            World<br />Info: TR2, TR1 + TR2 with state<br />Valid rate: <b>90%</b><br />No Replacements
+                            for <b>24</b> hours.<br /><br />Base name: <a href='dumps/indexc1c4c1c4.html?base=85431'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Sirius</span></a><br />Countries: USA [AL,
+                            CA, CO, FL, GA, ID, IL, KY, LA, MA, MD, ME, MI, MN, MO, MT, NC, NV, OH, PA, SC, TN, TX, VA,
+                            WI], World<br />Info: TR2 with state, city, zip<br />Valid rate: <b>75%</b><br /><br />Base
+                            name: <a href='cvv/indexfc47fc47.html?base=85752' target="_blank"><span
+                                    style='font-weight:bold;color:#348934'>
+                                    <p class="date5" style="display: inline-block;"></p>_US_IP_SSN
+                                </span></a><br />Countries:
+                            USA<br />Info: Number, Exp Date, CVV2, Name, Address, City, State, Zip Code, Country, Phone,
+                            Email, Email Password, DOB, SSN, IP, MMN<br />Valid rate: <b>90%</b><br />No
+                            replacements!<br /><br />Base name: <a href='dumps/index44724472.html?base=85677'
+                                target="_blank"><span
+                                    style='font-weight:bold;color:#2B60DE'>Revolution</span></a><br />Countries: USA
+                            [IL, NC, NV, NY, OH], World<br />Info: TR1 + TR2, TR2 with state, city<br />Valid rate:
+                            <b>90%</b><br />No Replacements for <b>24</b> hours.<br /><br /><b>SALE!</b> The bases
+                            <b>Champion</b>, <b>Barracuda</b> were moved to the base <b>3-Dollars</b><br />All dumps
+                            from the base 3-Dollars have a price of ... 3 dollars! Refunds are not accepted for this
+                            base.<br /><br />Stay safe & healthy, good luck!<br /><br /><i>P.S. next update will be
+                                released tomorrow at 8 AM Eastern Time</i>
+                        </p>
+                    </div>
+                    <nav class="pull-right">
+                        <ul class="pagination">
+                            <li class="disabled"><a href="#"><span aria-hidden="true">&laquo;</span><span
+                                        class="sr-only">previous</span></a></li>
+                            <li class="active"><a href="news26792679.html?page=1">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">next</span></a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="modal fade" id="modalNotification" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span
+                                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="modalNotificationTitle">Notification</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="divNotificationContent">
+                                        My dear crooks & loyal customers! You can now receive an automated 10% bonus
+                                        each time you deposit more than $500<br /><br />I am updating more than 50.000
+                                        freshly grabbed dumps & cards daily, so prepare your wallets for an avalanche of
+                                        new dumps coming soon and even more before the season! <br /><br />As a
+                                        reminder, I have updated you with more than 10 millions of dumps and cards in
+                                        last several months and much more to come! Get ready!
+                                    </div>
+                                    <input type="hidden" name="csrfmiddlewaretoken" id="csrfmiddlewaretoken"
+                                        value="TWXCtntphziA8JBWLFYVxSpjunWwUdQ1">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                        id="confirmNotification" data-id="39">Thanks, I got it</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <footer>
+            <center><a href=" {% url 'tasklist' %}">Earn money with us!</a></center>
+            <p>&copy; 2021 Crabs on Security </p>
+        </footer>
+        <script>
+            // Function to display the date for a given number of days ago
+            function displayDate(className, daysAgo, repeat) {
+                // Get the date for the specified number of days ago
+                var today = new Date();
+                var date = new Date(today);
+                date.setDate(today.getDate() - daysAgo);
+
+                // Format the date as "MM_dd"
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var formattedDate = (month < 10 ? '0' : '') + month + '_' + (day < 10 ? '0' : '') + day;
+
+                // Update the text content of the element with the specified class
+                var elements = document.getElementsByClassName(className);
+                for (var i = 0; i < elements.length; i++) {
+                    var text = "";
+                    for (var j = 0; j < repeat; j++) {
+                        text += formattedDate + " ";
+                    }
+                    elements[i].textContent = text;
+                }
+            }
+
+            // Display the dates for the last 5 days
+            displayDate("date1", 0, 1);
+            displayDate("date2", 1, 1);
+            displayDate("date3", 2, 1);
+            displayDate("date4", 3, 1);
+            displayDate("date5", 4, 1);
+
+
+        </script>
+
+        <script>
+            // Function to display the current date in an element
+            function displayDate(className) {
+                // Get the current date
+                var today = new Date();
+
+                // Format the date as "MM_dd"
+                var month = today.getMonth() + 1;
+                var day = today.getDate();
+                var formattedDate = (month < 10 ? '0' : '') + month + '_' + (day < 10 ? '0' : '') + day;
+
+                // Display the formatted date in all elements with the specified class
+                var elements = document.getElementsByClassName(className);
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].textContent = formattedDate;
+                }
+            }
+
+            // Call the function for the class "date"
+            displayDate("date");
+        </script>
+<div class="modal fade" id="myModalCR" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Crab Rating</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered" style="width:100%;max-width:400px;">
+                                <tbody>
+                                    <tr>
+                                        <th>Total Deposits: </th>
+                                        <td><a href="#">{{ user.balance.balance }} $</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Refunds: </th>
+                                        <td><a href="#">0.00 $</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Crab Points: </th>
+                                        <td>{{ user.balance.balance }} - 0.00 = {{ user.balance.balance }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <span style="font-size:15pt;">Your crab rating:</span> &nbsp;<span style="font-size:17pt;">
+                                {% if user.balance.balance < 1 %}
+                                    0
+                                {% elif user.balance.balance >= 1 and user.balance.balance < 1001 %}
+                                    1
+                                {% elif user.balance.balance >= 1001 and user.balance.balance < 2001 %}
+                                    2
+                                {% elif user.balance.balance >= 2001 and user.balance.balance < 3001 %}
+                                    3
+                                {% elif user.balance.balance >= 3001 and user.balance.balance < 4001 %}
+                                    4
+                                {% elif user.balance.balance >= 4001 and user.balance.balance < 6001 %}
+                                    5
+                                {% else %}
+                                    super
+                                {% endif %}
+                            </span> <br>
+                            Next level is <b>1 crab</b> (1.00 points left)
+                        </div>
+                        <div class="col-md-12">
+                            <i>We count only deposits and refunds from <u>last 60 days</u><br>
+                                The rating is recalculated every 30 minutes</i><br><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Crab Points</th>
+                                        <th>Rating</th>
+                                        <th>Discounts</th>
+                                        <th>Other</th>
+                                    </tr>
+                                    <tr id="crab00_tr" {% if user.balance.balance < 1 %}class="success"{% endif %}>
+                                        <td>&lt; 1</td>
+                                        <td>0 crabs</td>
+                                        <td> - </td>
+                                        <td> wait period 3 hours </td>
+                                    </tr>
+                                    <tr id="crab1_tr" {% if user.balance.balance >= 1 and user.balance.balance < 1001 %}class="success"{% endif %}>
+                                        <td>1 - 1000</td>
+                                        <td>1 crab</td>
+                                        <td> 3% </td>
+                                        <td> wait period 2 hours </td>
+                                    </tr>
+                                    <tr id="crab2_tr" {% if user.balance.balance >= 1001 and user.balance.balance < 2001 %}class="success"{% endif %}>
+                                        <td>1001 - 2000</td>
+                                        <td>2 crabs</td>
+                                        <td> 5% </td>
+                                        <td> wait period 1 hour </td>
+                                    </tr>
+                                    <tr id="crab3_tr" {% if user.balance.balance >= 2001 and user.balance.balance < 3001 %}class="success"{% endif %}>
+                                        <td>2001 - 3000</td>
+                                        <td>3 crabs</td>
+                                        <td> 7% </td>
+                                        <td> - </td>
+                                    </tr>
+                                    <tr id="crab4_tr" {% if user.balance.balance >= 3001 and user.balance.balance < 4001 %}class="success"{% endif %}>
+                                        <td>3001 - 4000</td>
+                                        <td>4 crabs</td>
+                                        <td> 9% </td>
+                                        <td> - </td>
+                                    </tr>
+                                    <tr id="crab5_tr" {% if user.balance.balance >= 4001 and user.balance.balance < 6001 %}class="success"{% endif %}>
+                                        <td>4001 - 6000</td>
+                                        <td>5 crabs</td>
+                                        <td> 12% </td>
+                                        <td> - </td>
+                                    </tr>
+                                    <tr id="crab6_tr" {% if user.balance.balance >= 6001 %}class="success"{% endif %}>
+                                        <td>&gt; 6001</td>
+                                        <td>super crab</td>
+                                        <td> 15% </td>
+                                        <td> VIP status </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div class="modal fade" id="AcoountInfo" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">Attention!!!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divNotificationAccountContent">
+                            <p>Every single day I get hundreds of tickets from people who's password got changed.</p>
+                            <br>
+                            The ONLY reason It happens is because my customers visit scam domains that look similar,
+                            deliberately sharing their login credentials with scammers. No wonder, after they enter the
+                            username and password on similar looking scam domain name, crooks will change the password
+                            &amp; use victim's account balance.
+                            <br><br>
+                            Despite all the warnings I have on all the forums, on the main page of my shop, on all the
+                            carding communities, channels and notifications popping up everywhere, people still decide
+                            on thier own what domain is official and what not.
+                            <br><br>
+                            The ONLY official domains are:
+                            <br><br>
+                            https://briansclub.io<br>
+                            https://bclub.cm<br>
+                            https://bclub.cm<br>
+                            https://bclub.cm<br>
+                            --<br>
+                            https://bclub.cm<br>
+                            https://briansclub.mx<br>
+                            --<br>
+                            https://briancrabs.de<br>
+                            https://briancrabs.cm<br>
+                            https://briancrabs.mx<br>
+                            --<br>
+                            http://briansclcfyc5oe34hgxnn3akr4hzshy3edpwxsilvbsojp2gwxr57qd.onion
+                            <br><br>
+                            <b>All other domains are a scam!</b>
+                            <br><br>
+                            <b>You WILL LOOSE your username If you visit ANY OTHER domain!!</b>
+                            <br><br>
+                            I strongly suggest you add additional layer of security, such as Secret Passphrase as a
+                            second password. You can set It by pressing [profile] in left upper corner next to your
+                            username. Make sure you understand how It works. For instance - you will be requested to
+                            enter first and third letter of the passphrase when you log in, so don't make your Secret
+                            Passphrase too complicated.
+                            <br><br>
+                            For instance, If you select a secret passphrase as "swordfish" and shop is asking you to
+                            enter 3rd and 5th letter, you need to enter "od".
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalDetailsC" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalDetailsCTitle">Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style='display:none;'>
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class='modalDanger'></p>
+                        </div>
+                        <div id="cr_details_data" style="max-height:400px;overflow:auto;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalDetailsMG" tabindex="-1" role="dialog" aria-hidden="false">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalDetailsMGTitle">Terms for receiving a free daily dump!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style='display:none;'>
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class='modalDanger'></p>
+                        </div>
+                        <div id="mg_data" style="max-height:400px;overflow:auto;">
+                            <ul>
+                                <li>you made a purchase in the last 24 hours</li>
+                                <li>you made a deposit within the last 24 hours</li>
+                                <li>you don't have any outstanding credits/loans</li>
+                                <li>minimum of $100 in combined deposits </li>
+                            </ul>
+                            <span style="font-weight: bold;font-size: 12px;">Disclaimer:<p>
+                                    - Daily free dump is an expiring, randomly picked dump from the older databases.
+                                    There's no guarantee It will work and not region locked in your area. Creating a
+                                    ticket complaining about a free dump will void an ability to receive any future
+                                    daily gifts in my shop.</p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="go_to_my_orders"
+                            onclick="window.location.href = 'orders-2.html';" style="display: none;">Go to My
+                            Orders</button>
+                        <button type="button" class="btn btn-primary" id="receive_gift" onclick="ReceiveGift();">Click
+                            here to receive your gift.</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModalLoan" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLoanTitle">Loan request</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger alert-danger-modal fade in" style='display:none;'>
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class='modalDanger'></p>
+                        </div>
+                        <div class="alert alert-success alert-success-modal fade in" style='display:none;'>
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p class='modalSuccess'></p>
+                        </div>
+                        <div id="loan_data"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <link href=" {% static 'public/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <link href=" {% static 'public/css/bootstrap-toggle.min.css' %}" rel="stylesheet">
+    <link href=" {% static 'public/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet">
+    <link href=" {% static 'public/css/slider.css' %}" rel="stylesheet">
+    <script src=" {% static 'public/js/jquery.min.js' %}"></script>
+    <script src=" {% static 'public/js/bootstrap.min.js' %}"></script>
+    <script src=" {% static 'public/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <script src=" {% static 'public/js/date.js' %}"></script>
+    <script src=" {% static 'public/js/moment-with-locales.min.js' %}"></script>
+    <script src=" {% static 'public/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src=" {% static 'public/js/passgen.min.js' %}"></script>
+    <script src=" {% static 'public/js/bootstrap-toggle.min.js' %}"></script>
+    <script src=" {% static 'public/js/jquery.bootstrap-touchspin.js' %}"></script>
+    <script src=" {% static 'public/js/bootstrap-slider.js' %}"></script>
+
+    <script>
+        // Get the current time
+        var currentTime = new Date();
+
+        // Get the hours, minutes, and seconds
+        var h = currentTime.getHours();
+        var m = currentTime.getMinutes();
+        var s = currentTime.getSeconds();
+
+        // Add leading zeros to the hours, minutes, and seconds if they are less than 10
+        h = (h < 10 ? "0" : "") + h;
+        m = (m < 10 ? "0" : "") + m;
+        s = (s < 10 ? "0" : "") + s;
+
+        // Update the HTML element with the current time
+        document.getElementById("current_time").innerHTML = h + ":" + m + ":" + s;
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            var menuID = document.getElementById("menu-home");
+            if (menuID)
+                menuID.className = menuID.className + " active";
+
+
+            /*String.prototype.capitalise = function() {
+                return this.charAt(0).toUpperCase() + this.slice(1);
+            };*/
+
+            startTime();
+            getLiveData();
+
+            $('.open_cr').click(function () {
+                $('#myModalCR').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+            $('.open_in').click(function () {
+                $('#AcoountInfo').modal('show');
+                $('#cr_data').html('data is loading, please wait ...');
+
+                return false;
+            });
+
+            $('.open_request_loan').click(function () {
+                $('#myModalLoan').modal('show');
+                $('#loan_data').html('data is loading, please wait ...');
+
+                // $.get("get_loan/index.php", function (data) {
+                //     if(data.status && data.status == 'success') {
+                //         $('#loan_data').html(data.html);
+                //     } else {
+                //         showMessage('modal', 'danger', data.message);
+                //     }
+                // }, 'json').error(function () {
+                //     showMessage('modal', 'danger', 'timeout error, please try again');
+                // }).always(function() {
+                //     //
+                // });
+
+                return false;
+            });
+
+        });
+
+        if (window.parent.frames.length > 0) {
+            // $.get("check_iframe/index.php", function (data) {
+            //     //
+            // }, 'json').error(function () {
+            //     //
+            // }).always(function() {
+            //     //
+            // });
+        }
+
+        var currentHour = 23;
+        var timeoutArray = [];
+        var userBalance = 0.000000;
+
+        function getRatingDetails(action) {
+            $('#myModalDetailsC').modal('show');
+            $('#cr_details_data').html('data is loading, please wait ...');
+
+            // $.post("get_crab_rating/index.php", {
+            //     csrfmiddlewaretoken: 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            //     action: action
+            // }, function (data) {
+            //     $('#cr_details_data').html(data);
+            // }).error(function () {
+            //     showMessage('modal', 'danger', 'timeout error, please try again');
+            // }).always(function() {
+            //     //
+            // });
+
+            return false;
+        }
+
+        function checkTime(i) {
+            return (i < 10) ? "0" + i : i;
+        }
+
+        function startTime() {
+            var today = new Date();
+            today.setHours(currentHour);
+            var h = today.getHours();
+            var m = checkTime(today.getMinutes());
+            var s = checkTime(today.getSeconds());
+            if (m == 59 && s == 59)
+                currentHour++;
+            if (currentHour > 23)
+                currentHour = 0;
+            document.getElementById('current_time').innerHTML = h + ":" + m + ":" + s;
+            setTimeout(function () {
+                startTime()
+            }, 1000);
+        }
+
+
+        function firstUpperCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showMessage(where, type, message, messageID, timeout) {
+            var divClass = (where == 'page') ? 'alert-' + type + '-page' : 'alert-' + type + '-modal';
+            messageID = (messageID == undefined) ? where + firstUpperCase(type) : messageID;
+
+            if (timeout != false && (timeout == undefined || timeout < 1)) {
+                timeout = 5000;
+            }
+
+            var elementMessage = (where == 'page') ? '#' : '.';
+
+            if ($('.' + divClass).is(':visible')) {
+                if (timeout != false && timeoutArray[type] != undefined) {
+                    clearTimeout(timeoutArray[type]);
+                    timeoutArray[type] = undefined;
+                    delete timeoutArray[type];
+                }
+                $(elementMessage + messageID).append('<br>' + message);
+            } else {
+                $(elementMessage + messageID).html(message);
+            }
+
+            $('.' + divClass).show().focus();
+
+            if (timeout != false)
+                timeoutArray[type] = setTimeout(function () {
+                    $('.' + divClass).hide('slow');
+                }, timeout);
+
+            return false;
+        }
+
+        function getLiveData() {
+            // $.getJSON('get_live_data/index.php', function (data) {
+            //     if(data.info)
+            //         showMessage('page', 'info', data.info, undefined, false);
+            //     if(data.count_cart_items > 0)
+            //         $('#count_cart_items').html(data.count_cart_items);
+            //     if(data.count_tickets > 0)
+            //         if(data.waiting_tickets !== undefined)
+            //             $('#count_tickets').html(data.waiting_tickets + '/' + data.count_tickets);
+            //         else
+            //             $('#count_tickets').html(data.count_tickets);
+            //     //if(data.count_pendings > 0)
+            //     if(data.count_payoffs > 0)
+            //         $('#count_payoffs').html(data.count_payoffs);
+            //     if(data.remain_amount)
+            //         $('#remain_amount').html(data.remain_amount);
+            //     if (data.bid_total>0) {
+            //         $('#count_bids').html(data.bid_active + '/' + data.bid_total);
+            //     }
+            //     if(data.current_loan) {
+            //         $('#current_loan').html(data.current_loan);
+            //         $('#current_loan_block').css("display","initial");
+            //     } else {
+            //         $('#request_loan_block').css("display","initial");
+            //     }
+            // }).error(function () {
+            //     //
+            // }).always(function () {
+            //     //
+            // });
+        }
+
+        function ReceiveGift() {
+            $('#receive_gift').prop('disabled', true);
+            var post_array = {
+                'action': 'receive_gift',
+                'type': 'dumps',
+                'ids': '0',
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post('cart/index.php', post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //         $('#go_to_my_orders').show();
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#receive_gift').prop('disabled', false);
+            // });
+            return true;
+        }
+
+        function GetMyLoan() {
+            $('#get_my_loan').prop('disabled', true);
+            $loan_amount = $('.active [name="options"]').attr('loan')
+            var post_array = {
+                'action': 'get_my_loan',
+                'loan_amount': $loan_amount,
+                'csrfmiddlewaretoken': 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1',
+            };
+            // $.post(/get_loan/, post_array, function (data) {
+            //     if(data.status == 'success') {
+            //         showMessage('modal', 'success', data.message);
+            //     }
+            //     if (data && data.status == 'fail') {
+            //         showMessage('modal', 'danger', data.message);
+            //     }
+            // }, 'json').error(function () {
+            //     showMessage('modal', 'danger', 'In order to receive a gift you have got to have minimum of $100 in combined deposits');
+            // }).always(function () {
+            //     $('#get_my_loan').prop('disabled', false);
+            // });
+            return true;
+        }
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        var csrfToken = '{{ csrf_token }}';
+        var cartItemCount = {{ request.session.cart_item_count|default:0 }};
+    </script>
+    <script src="{% static 'public/js/cart.js' %}"></script>
+</body>
+
+
+
+</html>

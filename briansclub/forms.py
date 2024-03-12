@@ -8,10 +8,10 @@ from .models import AdminReply, Balance
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib import admin
 
-from captcha.fields import ReCaptchaField
+# from captcha.fields import ReCaptchaField
 
-class CaptchaForm(forms.Form):
-    captcha = ReCaptchaField()
+# class CaptchaForm(forms.Form):
+#     captcha = ReCaptchaField()
 
 class BalanceForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=User.objects.all())
@@ -44,14 +44,14 @@ class NewUserForm(UserCreationForm):
 	class Meta:
 		model = User
 		fields = ("username", "email", "password1", "password2")
-        
+
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
 		if commit:
 			user.save()
 		return user
-	
+
 class DivErrorList(ErrorList):
     def __str__(self):
         return self.as_divs()

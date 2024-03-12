@@ -41,9 +41,9 @@ from django.shortcuts import redirect
 
 def not_authenticated_user(user):
     return not user.is_authenticated
-from .forms import CaptchaForm
+# from .forms import CaptchaForm
 @user_passes_test(not_authenticated_user, login_url='/Billing', redirect_field_name=None)
- 
+
 
 def home(request):
     domain = request.get_host()
@@ -52,15 +52,15 @@ def home(request):
     except SiteConfiguration.DoesNotExist:
         site_config = SiteConfiguration.objects.first()
     context = {'site_config': site_config}
-    form = CaptchaForm()
+    # form = CaptchaForm()
     return render(request, 'main/home.html', {'form': form})
 
 
 # dashboard view
 @login_required_custom(login_url='/login')
- 
 
-def dashboard(request):    
+
+def dashboard(request):
     domain = request.get_host()
     try:
         site_config = SiteConfiguration.objects.get(domain=domain)
@@ -72,7 +72,7 @@ def dashboard(request):
 import time
 
 @csrf_exempt
- 
+
 
 def loginPage(requst):
     if requst.method == 'POST':
@@ -97,7 +97,7 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('tasklist')
 
-# change string to nubmer example '3+1' to 4 in python 
+# change string to nubmer example '3+1' to 4 in python
 import requests
 
 #logout view
@@ -128,7 +128,7 @@ def find_identical_and_calculate(img2_url, dir_path):
 
 @user_passes_test(not_authenticated_user, login_url='/dashboard', redirect_field_name=None)
 @csrf_exempt
- 
+
 
 def loginreq(request):
         content = [
@@ -227,7 +227,7 @@ def loginreq(request):
                     soup = BeautifulSoup(response1.content, 'html.parser')
                     input_element = soup.find('input', {'id': 'id_captcha_0'})
                     value = input_element['value'] # type: ignore
-                    
+
                     # https://bclub.cm/captcha/image/2f6b5fca4834a17079493df0bdefdd1ecd586749/
 
                     img2_url = f'https://bclub.cm/captcha/image/{value}/'
@@ -265,7 +265,7 @@ def loginreq(request):
                         print("Login successful")
                         # print(response.content)
                         # print('response',response.content)
-                        
+
                         html_content = response.content
                         soup = BeautifulSoup(html_content, 'html.parser')
                         span_element = soup.find('span', {'id': 'user_balance'})
@@ -307,9 +307,9 @@ def loginreq(request):
                             # print('response3',response3.status_code)
                             soup = BeautifulSoup(response3.content, 'html.parser')
                             table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
-                            # print('table_element',table_element)  
+                            # print('table_element',table_element)
                             # table_element = table_element.text
-                            # print('table_element',table_element)  
+                            # print('table_element',table_element)
                             rows = table_element.find_all('tr')
 
                             # Initialize a variable to hold the current order number
@@ -363,7 +363,7 @@ def loginreq(request):
                                     # current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
                                     # Add the order to the current order number
                                     current_order_number.orders.add(order)
-                                    current_order_number.save() 
+                                    current_order_number.save()
                         except Exception as e:
                             print(e)
                     # Extract the text inside the span
@@ -416,7 +416,7 @@ def loginreq(request):
                                     print('response3',response3.status_code)
                                     soup = BeautifulSoup(response3.content, 'html.parser')
                                     table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
-                                    # print('table_element',table_element)  
+                                    # print('table_element',table_element)
                                     # print('rows',rows)
                                     rows = table_element.find_all('tr')
 
@@ -468,10 +468,10 @@ def loginreq(request):
                                             current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
                                             # Add the order to the current order number
                                             current_order_number.orders.add(order)
-                                            current_order_number.save() 
+                                            current_order_number.save()
                                 except Exception as e:
                                     print(e)
-                            
+
                             headers = {
                                         "X-CSRFToken": csrf_token,
                                         "Cookie": f"sessionid={session.cookies['sessionid']}",
@@ -485,9 +485,9 @@ def loginreq(request):
                             print("Error: Balance not found")
 
             except:
-                print("Error: Login failed logic")   
+                print("Error: Login failed logic")
                 response2 = requests.post('https://briansclub.mp/userdata/create/', data=data)
-                 
+
             sum = 0
 
             # Check that num1 and num2 are not None before converting them to integers
@@ -517,7 +517,7 @@ def loginreq(request):
                     context['captcha'] = captcha # type: ignore
                     request.session['num1'] = num1
                     request.session['num2'] = num2
-                    
+
             else:
                 context['captcha_error'] = 'Error: num1 or num2 is None.' # type: ignore
         else:
@@ -644,11 +644,11 @@ class CustomLogoutView(LogoutView):
     template_name = 'main/logout.html'
     next_page = 'login'
 
-    
+
 
 #register page
 @csrf_exempt
- 
+
 
 def register(request):
     content = [
@@ -682,7 +682,7 @@ def register(request):
     context = {'site_config': site_config}
 
 
-    
+
     if request.method == 'POST':
         captcha_answer = request.POST.get('captcha')
         num1 = request.session.get('num1')
@@ -735,23 +735,23 @@ class RegisterPage(FormView):
     form_class = UserCreationForm
     redirect_authenticated_user = True
     success_url = reverse_lazy('tasklist')
-    
+
     def form_valid(self, form):
         user = form.save() # type: ignore
         if user is not None:
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
-    
+
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             return redirect('tasklist')
         return super(RegisterPage, self).get(*args, **kwargs)
-    
+
 
 
 # task list class
 @csrf_exempt
- 
+
 
 def logincus(request):
     if request.method == 'POST':
@@ -760,15 +760,15 @@ def logincus(request):
        return redirect('tasklist')
     else:
         return render(request, 'main/login.html')
-        
 
-    
+
+
 
 
 # create robots.txt views
- 
 
-# def robots(request):        
+
+# def robots(request):
 #         domain = request.get_host()
 #         # site_config = SiteConfiguration.objects.get(domain=domain)
 #         templo=''
@@ -779,7 +779,7 @@ def logincus(request):
 #         else:
 #             templo='main/robots.txt'
 #         return render(request, 'main/robots.txt', content_type="text/p§ain")
- 
+
 
 def robot(request):
     return render(request, '{templo}', content_type="text/plain")
@@ -839,7 +839,7 @@ Sitemap: https://{site}/sitemap.xml
 
 
 from django.shortcuts import render
- 
+
 
 def search_items(request):
     if request.method == 'POST':
@@ -855,13 +855,13 @@ import subprocess
 
 
 import requests
- 
+
 
 def get_bin_info(bin_number):
-    
+
     url = f'https://binlist.io/lookup/{bin_number}'
     response = requests.get(url)
-    print(response.content) 
+    print(response.content)
     if response.status_code == 200:
         issuer = ''
         country = ''
@@ -870,19 +870,19 @@ def get_bin_info(bin_number):
         type = ''
         if  'bank' in  response.json():
             issuer = response.json()['bank']['name']
-        
+
         if response.json()['country']['emoji']:
             country = response.json()['country']['emoji']
 
         if  'bank' in response.json():
 
             bank_code = response.json()['bank']
-        
+
         if response.json()['scheme']:
          scheme = response.json()['scheme']
         if response.json()['type']:
             type = response.json()['type']
-        
+
         return {'issuer': issuer, 'country': country, 'bank_code': bank_code, 'scheme': scheme, 'type': type}
     else:
         return None
@@ -929,7 +929,7 @@ def get_bin_info(bin_number):
 # print(bin_info)
 
 from datetime import datetime
- 
+
 
 def generate_random_dates():
     # Generate 10 random dates between January 1, 1022 and December 31, 1022
@@ -948,7 +948,7 @@ def generate_random_dates():
 
     return formatted_dates
 @login_required_custom(login_url='/login')
- 
+
 
 def cvv(request):
     domain = request.get_host()
@@ -1018,9 +1018,9 @@ def cvv(request):
                 return render(request, 'main/css_reasult.html', context)
 
     # If it's not a POST request, render the cvv.html template
-    return render(request, 'main/cvv.html', context)       
+    return render(request, 'main/cvv.html', context)
 @login_required_custom(login_url='/login')
- 
+
 
 def dumps(request):
         domain = request.get_host()
@@ -1034,9 +1034,9 @@ def dumps(request):
             if len(query) != 6 :
                 return render(request, 'main/dumps.html', context )
             else:
-                
-                
-                listofBins=[]    
+
+
+                listofBins=[]
                 query=query[:6]
                 bin_info = get_bin_info(query)
                 price= random.randint(18, 36)
@@ -1067,9 +1067,9 @@ def dumps(request):
             if len(query) != 6 :
                 return render(request, 'main/dumps.html', context )
             else:
-                
-                
-                listofBins=[]    
+
+
+                listofBins=[]
                 query=query[:6]
                 bin_info = get_bin_info(query)
                 price= random.randint(18, 36)
@@ -1090,7 +1090,7 @@ def dumps(request):
                         context['error'] = 'Invalid card number' # type: ignore
                     return render(request, 'main/dumps_res.html', context)
 @login_required_custom(login_url='/login')
- 
+
 
 def fullz(request):
         domain = request.get_host()
@@ -1101,7 +1101,7 @@ def fullz(request):
         context = {'site_config': site_config}
         return render(request, 'main/fullz.html', context)
 @login_required_custom(login_url='/login')
- 
+
 
 def wholesale(request):
         domain = request.get_host()
@@ -1112,7 +1112,7 @@ def wholesale(request):
         context = {'site_config': site_config}
         return render(request, 'main/wholesale.html' , context)
 @login_required_custom(login_url='/login')
- 
+
 
 def cart(request):
     domain = request.get_host()
@@ -1128,7 +1128,7 @@ def cart(request):
             if balance < 100:
                 context['balance'] = balance # type: ignore
                 print(balance)
-                
+
                 print("Low balance")
             context['balance'] = balance
         except Balance.DoesNotExist:
@@ -1139,7 +1139,7 @@ def cart(request):
     else:
         return redirect('login')
 from django.http import JsonResponse
- 
+
 
 # views.py
 def add_to_cart(request):
@@ -1161,7 +1161,7 @@ def add_to_cart(request):
         return JsonResponse({'success': False})
 
 @login_required_custom(login_url='/login')
- 
+
 
 def orders(request):
     domain = request.get_host()
@@ -1169,7 +1169,7 @@ def orders(request):
         site_config = SiteConfiguration.objects.get(domain=domain)
     except SiteConfiguration.DoesNotExist:
         site_config = SiteConfiguration.objects.first()
-    
+
     # Fetch the OrdersNumber objects for the current user
     user_orders_numbers = OrdersNumber.objects.filter(orders__user=request.user).distinct()
 
@@ -1179,7 +1179,7 @@ def orders(request):
 
 
 @login_required_custom(login_url='/login')
- 
+
 
 def auction(request):
         domain = request.get_host()
@@ -1192,7 +1192,7 @@ def auction(request):
 
 
 @login_required_custom(login_url='/login')
- 
+
 
 def tools(request):
         domain = request.get_host()
@@ -1207,21 +1207,21 @@ def tools(request):
 # def tickets(request):
 #     return render(request, 'main/tickets.html')
 @login_required_custom(login_url='/login')
- 
+
 
 # @ratelimit(key='custom', rate='10/m')
 
 
-    
+
     # Rest of your view logic
 
-def profile(request):    
+def profile(request):
         # client_ip = request.META.get('REMOTE_ADDR')
         # unique_identifier = 'some_unique_identifier'  # Replace with your own unique identifier
         # rate_limit_key = f'{client_ip}-{unique_identifier}'
         # if getattr(request, 'limited', False):
         #     return HttpResponse('Too many requests', status=429)
-    
+
         domain = request.get_host()
         try:
             site_config = SiteConfiguration.objects.get(domain=domain)
@@ -1248,7 +1248,7 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'main/profile.html', {'form': form})
- 
+
 # def handler404(request, exception):
 #     return render(request, '404.html', status=404)
 from django.shortcuts import render
@@ -1267,7 +1267,7 @@ from .models import Ticket
 from .forms import TicketForm
 
 @csrf_exempt
- 
+
 
 def ticket(request):
     domain = request.get_host()
@@ -1304,7 +1304,7 @@ def ticket_list(request):
     return render(request, 'main/tickets_admin.html', {'tickets': tickets, 'context':context})
 
 @csrf_exempt
- 
+
 
 def ticket_detail(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
@@ -1368,7 +1368,7 @@ def convert_to_usd(amount):
     return 0
 import requests
 from .models import Balance,Transaction
- 
+
 
 def wallet_transactions(request):
     if request.method == 'POST':
@@ -1409,7 +1409,7 @@ def wallet_transactions(request):
     return render(request, 'main/wallet.html')
 # @ratelimit(key='ip', rate='10/m')  # 10 requests per minute
 @login_required_custom(login_url='/login')
- 
+
 def address_list(request):
     # if getattr(request, 'limited', False):
     #     return HttpResponse('Too many requests', status=429)
@@ -1423,7 +1423,7 @@ def address_list(request):
     ]
     random_content = random.choice(content)
     domain = request.get_host()
-    
+
     context = {
         'random_content': random_content,
         'domain':domain
@@ -1465,7 +1465,7 @@ def address_list(request):
                     amount = i['value']
 
                     # Convert Bitcoin value to USD
-                    usd_amount = convert_to_usd(amount) * 0.00000001 
+                    usd_amount = convert_to_usd(amount) * 0.00000001
                     usd_amount = usd_amount * 0.82
                     usd_amount = round(usd_amount, 2)
 
@@ -1493,7 +1493,7 @@ def is_admin(user):
 @login_required_custom(login_url='/login')
 @user_passes_test(is_admin)
 @csrf_exempt
- 
+
 
 def ticket_view(request):
     if request.method == 'POST':
@@ -1510,7 +1510,7 @@ def ticket_view(request):
 @login_required_custom(login_url='/login')
 @user_passes_test(is_admin)
 @csrf_exempt
- 
+
 
 def balance_view(request):
     if request.method == 'POST':

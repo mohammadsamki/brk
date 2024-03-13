@@ -58,13 +58,13 @@ INSTALLED_APPS = [
     'captcha',
     'sslserver',
     "django_check_seo",
-    # 'django.contrib.sites',    
+    # 'django.contrib.sites',
     # 'seo',
 
 
     # 'meta',
 
-    
+
 ]
 RECAPTCHA_PUBLIC_KEY = '6Lc6V_MnAAAAACMrPkASj9P1Q3Jp4BKVdLFhV_f1'
 RECAPTCHA_PRIVATE_KEY = '6Lc6V_MnAAAAAFL_jNFHTsrTCy51pxDmt47qbBl2'
@@ -91,7 +91,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'meta.middleware.MetaMiddleware',
         'briansclub.middleware.BlockCurlMiddleware',
-    
+
 
 ]
 # settings.py

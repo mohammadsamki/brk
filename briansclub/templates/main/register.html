@@ -17,7 +17,7 @@
     </script>
     {% endif %}
     <!-- Google tag (gtag.js) -->
-     
+
 
     <meta name='robots' content='index, follow' />
     <!-- <meta charset="utf-8"> -->
@@ -97,7 +97,7 @@
             {% endfor %}
             <!-- {{ form.alt_pass }} -->
 
-            <input type="hidden" name="_token" value="5jj9OmWhr5kTaOCqJ86Zc8MWLFSUKRC4xAR0E3wV">
+            {% comment %} <input type="hidden" name="_token" value="5jj9OmWhr5kTaOCqJ86Zc8MWLFSUKRC4xAR0E3wV"> {% endcomment %}
             <h1 class="form-signin-heading">Registration briansclub</h1>
             <div class="form-group"><label class="control-label" for="id_username">Login</label><input
                     class="form-control" id="id_username" maxlength="32" name="username" placeholder="brian"
@@ -258,6 +258,9 @@
 
                 <input autocomplete="off" class="form-control" id="id_captcha_1" name="captcha" required="required"
                     title="" type="number" />
+
+                    <input name="num1" style="display:none" value="{{ context.num1 }}" />
+                    <input name="num2" style="display:none" value="{{ context.num2 }}" />
             </div>
 
 

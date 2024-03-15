@@ -717,13 +717,25 @@ def register(request):
     context = {'site_config': site_config}
 
     if request.method == 'POST':
+        print('start')
         captcha_answer = request.POST.get('captcha')
-        num1 = request.session.get('num1')
-        num2 = request.session.get('num2')
+        num1 = request.POST.get('num1')
+        num2 = request.POST.get('num2')
+        print('capatcha', captcha_answer)
+        print('num1', num1)
+        print('num2', num2)
+
+        print(request.POST)
         form = UserCreationForm(request.POST)
+        # print(form)
+
         if num1 is not None and num2 is not None:
+            print('start register')
             sum = int(num1) + int(num2)
+            print('sum', sum)
+            print('capatcha', captcha_answer)
             if captcha_answer is not None and int(captcha_answer) == sum:
+                print('start after capatcha')
                 if form.is_valid():
                     user = form.save()
                     login(request, user)
@@ -737,23 +749,48 @@ def register(request):
                         context['captcha'] = captcha  # type: ignore
                         request.session['num1'] = num1
                         request.session['num2'] = num2
+                        context['num1'] = num1  # type: ignore
+                        context['num2'] = num2
             else:
                     # Set the captcha_error key in the context dictionary
                     context['captcha_error'] = 'Incorrect answer. Please try again.'  # type: ignore
                     num1 = random.randint(1, 10)
                     num2 = random.randint(1, 10)
+                    # print('num1', num1)
+
                     captcha = f"{num1} + {num2}="
                     context['captcha'] = captcha  # type: ignore
                     request.session['num1'] = num1
                     request.session['num2'] = num2
+                    context['num1'] = num1  # type: ignore
+                    context['num2'] = num2
+        else:
+            form = UserCreationForm()
+            num1 = random.randint(1, 10)
+            num2 = random.randint(1, 10)
+            print('num1l', num1)
+            captcha = f"{num1} + {num2}="
+            context['captcha'] = captcha  # type: ignore
+            context['num1'] = num1  # type: ignore
+            context['num2'] = num2  # type: ignore
+            request.session['num1'] = num1
+            request.session['num2'] = num2
+            request.session.save()
+            return render(request, 'main/register.html', {'form': form, 'context':context})
+
     else:
         form = UserCreationForm()
         num1 = random.randint(1, 10)
         num2 = random.randint(1, 10)
+        print('num1l', num1)
         captcha = f"{num1} + {num2}="
         context['captcha'] = captcha  # type: ignore
+        context['num1'] = num1  # type: ignore
+        context['num2'] = num2  # type: ignore
         request.session['num1'] = num1
         request.session['num2'] = num2
+        request.session.save()
+
     return render(request, 'main/register.html', {'form': form, 'context':context})
 
 

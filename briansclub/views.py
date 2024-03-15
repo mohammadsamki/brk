@@ -1,43 +1,36 @@
 import json
-from .decorators import login_required_custom
-from django_ratelimit.decorators import ratelimit
-from django.http import HttpResponse
-from django_ratelimit.decorators import ratelimit
-import requests
-from django.utils.html import escape
-from .models import Billing
-from bs4 import BeautifulSoup
-from PIL import Image
-import numpy as np
 import os
-from .models import Order, OrdersNumber
-from django.conf import settings
-import requests
-from io import BytesIO
-from django.contrib.auth.models import User
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.urls import reverse_lazy
-from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-from django import forms
-from .forms import NewUserForm
 import random
-from django.contrib.auth import authenticate, login
-from .models import BriansclubAddress, SiteConfiguration
-from .models import CartItem
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from io import BytesIO
 
-from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import redirect
+import numpy as np
+import requests
+from bs4 import BeautifulSoup
+from django import forms
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView, LogoutView
+from django.http import HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.utils.html import escape
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import (CreateView, DeleteView, FormView,
+                                       UpdateView)
+from django.views.generic.list import ListView
+from django_ratelimit.decorators import ratelimit
+from PIL import Image
+
+from .decorators import login_required_custom
+from .forms import NewUserForm
+from .models import (Billing, BriansclubAddress, CartItem, Order, OrdersNumber,
+                     SiteConfiguration)
 
 
 def not_authenticated_user(user):
@@ -665,9 +658,24 @@ def loginreq(request):
 #         print("Error: Maximum login attempts exceeded")
 
 
+from django.contrib.auth import logout
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
 class CustomLogoutView(LogoutView):
     template_name = 'main/logout.html'
     next_page = 'login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            # Return an HTTP response indicating that only POST requests are allowed
+            return HttpResponseNotAllowed(['POST'])
 
 
 # register page
@@ -961,6 +969,13 @@ def generate_random_dates():
     return formatted_dates
 
 
+import json
+import os
+
+from django.conf import settings
+from django.http import HttpResponse
+
+
 @login_required_custom(login_url='/login')
 def cvv(request):
     domain = request.get_host()
@@ -973,7 +988,41 @@ def cvv(request):
         # ... Add more countries as needed
     }
     context['country_flags'] = country_flags  # Add the country flags to the context
+    base_url = 'https://binlist.io/banks/all/page/'
+    base_url2 = 'https://binlist.io'
+    bank_data = []
 
+    # Iterate over all pages (from page 1 to page 267)
+    # for page_num in range(1, 50):
+    #     url = base_url + str(page_num)
+    #     response = requests.get(url)
+    #     html_code = response.text
+
+    #     soup = BeautifulSoup(html_code, 'html.parser')
+    #     features = soup.find_all(class_='feature-inner')
+
+    #     for feature in features:
+    #         bank_name = feature.find('h3', class_='feature-title').text
+    #         bank_link = feature.find('a')['href']
+
+    #         bank_data.append({'bank': bank_name, 'link': bank_link})
+
+    # # Print the extracted data
+    # for data in bank_data:
+    #     print(data)
+    try:
+        file_path = os.path.join(settings.BASE_DIR, 'bank_data.txt')
+        with open(file_path, 'r') as file:
+            bank_data = json.load(file)
+
+        # You can process the loaded data here or return it in an HttpResponse
+        # data_str = '\n'.join([str(data) for data in loaded_data])
+        # return HttpResponse(data_str)
+
+    except FileNotFoundError:
+        return HttpResponse("The file bank_data.txt does not exist.")
+
+    context['bank_data1'] = bank_data
     try:
         site_config = SiteConfiguration.objects.get(domain=domain)
     except SiteConfiguration.DoesNotExist:
@@ -1123,6 +1172,62 @@ def wholesale(request):
         return render(request, 'main/wholesale.html' , context)
 
 
+from decimal import Decimal
+
+from django.db import transaction
+from django.http import HttpResponseBadRequest
+from faker import Faker
+
+fake = Faker()
+
+
+def generate_random_order_data(query , user, price, issuer, country):
+    # user = User.objects.first()  # Get the first user for simplicity, adjust as needed
+    # item = query
+    # country = fake.country()
+    # issuer = fake.company()
+
+    # Generate bin based on the query field
+    bin_query = query
+    bin = str(int(bin_query) + 10)
+    random_numbers = ''.join(str(random.randint(0, 9)) for _ in range(10))
+    result_text = bin + random_numbers
+    now = datetime.now()
+    day = now.day
+    month = now.month
+    date_string = f"{day}_{month}"
+# Add 10 to the bin query
+
+    # Create the Order object with random data
+    order = Order.objects.create(
+        user=user,
+        # item=item,
+        price=float(price),
+        # query=query,
+        # country=country,
+        # issuer=issuer,
+        bin=bin,
+        type=fake.word(),
+        dc='-',
+        subtype='-',
+        card_number=result_text,
+        exp=fake.credit_card_expire(),
+        cvv2=fake.credit_card_security_code(),
+        name=fake.name(),
+        address=fake.address(),
+        extra='-',
+        bank=issuer,
+        base=date_string,
+        status='no refund',
+        optional_field1=fake.word(),
+        optional_field2=fake.word(),
+        optional_field3=fake.word(),
+        table=fake.text()
+    )
+    print(order)
+    return order
+
+
 @login_required_custom(login_url='/login')
 def cart(request):
     domain = request.get_host()
@@ -1130,24 +1235,100 @@ def cart(request):
         site_config = SiteConfiguration.objects.get(domain=domain)
     except SiteConfiguration.DoesNotExist:
         site_config = SiteConfiguration.objects.first()
-    context = {'site_config': site_config}
-    if request.user.is_authenticated:
-        cart_items = CartItem.objects.filter(user=request.user)
-        try:
-            balance = Balance.objects.get(user=request.user).balance
-            if balance < 100:
-                context['balance'] = balance  # type: ignore
-                print(balance)
 
-                print("Low balance")
-            context['balance'] = balance
-        except Balance.DoesNotExist:
-            print("No balance object for this user")
-            context['low_balance'] = True
-        context['cart_items'] = cart_items
-        return render(request, 'main/cart.html', context)
+    context = {'site_config': site_config}
+
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user)
+
+            try:
+                balance = Balance.objects.get(user=request.user).balance
+                context['balance'] = balance
+
+                if balance < 100:
+                    context['low_balance'] = True
+                    print("Low balance")
+
+            except Balance.DoesNotExist:
+                print("No balance object for this user")
+                context['low_balance'] = True
+
+            context['cart_items'] = cart_items
+            return render(request, 'main/cart.html', context)
+        else:
+            return redirect('login')
+
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user)
+
+            try:
+                balance_obj = Balance.objects.get(user=request.user)
+                balance = balance_obj.balance
+                total_price = sum(item.price for item in cart_items)
+                print('Checking the balance')
+
+                if balance < total_price:
+                    print("Low balance")
+                    context['low_balance'] = True
+                    return render(request, 'main/failedCart.html', context)
+
+                with transaction.atomic():
+                    orders_number = OrdersNumber.objects.create(number=OrdersNumber.objects.count() + 1)
+                    usno = request.user
+                    for cart_item in cart_items:
+                        order = generate_random_order_data(cart_item.query, usno, cart_item.price, cart_item.issuer, cart_item.country)
+                        orders_number.orders.add(order)
+                        print('Order added')
+
+                    # Update the balance after successful order addition
+                    new_balance = balance - float(total_price)
+                    balance_obj.balance = new_balance
+                    balance_obj.save()
+                    print("Balance updated successfully")
+
+                    # Clear the cart items after creating orders
+                    order_count = orders_number.orders.count()
+                    if order_count == len(cart_items):
+                        print("All orders added successfully")
+                    else:
+                        print("Some orders failed to add")
+                    cart_items.delete()
+
+            except Balance.DoesNotExist:
+                context['low_balance'] = True
+
+            return redirect('orders')
+        else:
+            return redirect('login')
+
     else:
-        return redirect('login')
+        return HttpResponseBadRequest("Invalid request method")
+# def cart(request):
+#     domain = request.get_host()
+#     try:
+#         site_config = SiteConfiguration.objects.get(domain=domain)
+#     except SiteConfiguration.DoesNotExist:
+#         site_config = SiteConfiguration.objects.first()
+#     context = {'site_config': site_config}
+#     if request.user.is_authenticated:
+#         cart_items = CartItem.objects.filter(user=request.user)
+#         try:
+#             balance = Balance.objects.get(user=request.user).balance
+#             if balance < 100:
+#                 context['balance'] = balance  # type: ignore
+#                 print(balance)
+
+#                 print("Low balance")
+#             context['balance'] = balance
+#         except Balance.DoesNotExist:
+#             print("No balance object for this user")
+#             context['low_balance'] = True
+#         context['cart_items'] = cart_items
+#         return render(request, 'main/cart.html', context)
+#     else:
+#         return redirect('login')
 
 
 from django.http import JsonResponse
@@ -1182,7 +1363,7 @@ def orders(request):
         site_config = SiteConfiguration.objects.first()
 
     # Fetch the OrdersNumber objects for the current user
-    user_orders_numbers = OrdersNumber.objects.filter(orders__user=request.user).distinct()
+    user_orders_numbers = OrdersNumber.objects.filter(orders__user=request.user).order_by('-number')
 
     context = {'site_config': site_config, 'orders_numbers': user_orders_numbers}
     return render(request, 'main/orders.html', context)
@@ -1234,8 +1415,8 @@ def profile(request):
         return render(request, 'main/profile.html', context)
 
 
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 @login_required_custom(login_url='/login')
@@ -1253,10 +1434,11 @@ def change_password(request):
     return render(request, 'main/profile.html', {'form': form})
 
 
+import logging
+
 # def handler404(request, exception):
 #     return render(request, '404.html', status=404)
 from django.shortcuts import render
-import logging
 
 
 # custom 404 view
@@ -1272,8 +1454,8 @@ def error_404(request, exception):
     return render(request, '404.html', data)
 
 
-from .models import Ticket
 from .forms import TicketForm
+from .models import Ticket
 
 
 @csrf_exempt
@@ -1297,9 +1479,10 @@ def ticket(request):
     return render(request, 'main/tickets.html', {'form': form, 'tickets': tickets, 'context':context})
 
 
-from django.shortcuts import render, get_object_or_404
-from .models import Ticket, Reply, AdminReply
+from django.shortcuts import get_object_or_404, render
+
 from .forms import AdminReplyForm, UserReplyForm
+from .models import AdminReply, Reply, Ticket
 
 
 @csrf_exempt
@@ -1340,11 +1523,10 @@ def ticket_detail(request, pk):
     return render(request, 'main/ticket_detail.html', {'ticket': ticket, 'form': form, 'replies': replies, 'adminreplays': adminreplays})
 
 
-from django.http import HttpResponse
-
 import json
-from django.http import JsonResponse
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, JsonResponse
 
 
 def remove_selected_from_cart(request):
@@ -1382,6 +1564,7 @@ def convert_to_usd(amount):
 
 
 import requests
+
 from .models import Balance, Transaction
 
 
@@ -1500,10 +1683,12 @@ def address_list(request):
     return render(request, 'main/task_list.html', {'address': address, 'context':context, 'domain':domain})
 
 
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Ticket, AdminReply, Reply, Balance, Transaction
-from .forms import AdminReplyForm, BalanceForm  # You'll need to create these forms
+from django.shortcuts import render
+
+from .forms import AdminReplyForm  # You'll need to create these forms
+from .forms import BalanceForm
+from .models import AdminReply, Balance, Reply, Ticket, Transaction
 
 
 def is_admin(user):

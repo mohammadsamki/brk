@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-37-4s(juv*056khn(-u62oqk2l$lkt^#(1r7x0l+9p$=h%k1!8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['bclubcc.mp','bclub.cc','www.briansclub.net','briansclub.net','bclub.org','briancrab.com','briansclubs.mp','brinsclub.com','brianszclub.cc','bclubs.us','brainsclubc.cm','brianscclub.com','brianclub.io',
                  'brianscleb.com','briansclub.com.cm','briansclub.fr',

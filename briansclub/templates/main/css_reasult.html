@@ -4,6 +4,10 @@
 <html lang="en">
 
 <head>
+    <!-- Add at the header section of your HTML template -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
 
     {% load google_analytics %}
 
@@ -17,7 +21,7 @@
     </script>
     {% endif %}
     <!-- Google tag (gtag.js) -->
-    
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -102,7 +106,7 @@
 
                 {% endif %}
                 <link rel="shortcut icon" type="image/png">
-<b>Crab Rating:</b> 
+<b>Crab Rating:</b>
 <a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
     {% if not user.balance or user.balance.balance is None %}
         <!-- No image for no balance -->
@@ -131,7 +135,7 @@
             <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
         {% endfor %}
     {% endif %}
-</a> 
+</a>
 [ <a href="#" class="open_cr">details</a> ]<br>
 
                 <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
@@ -219,15 +223,15 @@
                         {% csrf_token %}
                         <table class="table table-bordered">
                             <tbody>
-                                
+
                                 <tr>
                                     <td style="width:25%">
 
                                         <table class="table">
                                             <tbody >
                                                 <tr style="">
-                                                    
-                                                    
+
+
                                                     <td><label for="query">Bins</label></td>
                                                     <td>            <input type="number" pattern="[0-9]{1,6}" name="query" placeholder="Search...">
 
@@ -238,9 +242,34 @@
                                                     <td><textarea class="form-control" name="zips" id="zips"></textarea>
                                                     </td>
                                                 </tr>
+                                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+
                                                 <tr>
-                                                    <td><label for="bank_name">Bank</label></td>
-                                                    
+                                                    <td>
+                                                        <label for="bank_name">Bank</label>
+                                                    </td>
+                                                    <td>
+                                                        <!-- Input field for the search -->
+                                                        <input type="text" id="search_input" placeholder="Start typing to search...">
+
+                                                        <!-- Select element for banks -->
+                                                        <select id="select_page" style="width:150px" class="form-control">
+                                                            {% for i in bank_data1 %}
+                                                                <option value="{{ i.link }}">
+                                                                    {{ i.bank }}
+                                                                </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            //change selectboxes to selectize mode to be searchable
+                                                               $("select").select2();
+                                                            });
+                                                    </script>
+
                                                 </tr>
                                                 <tr><td>Bins (8 digit):</td>
                                                     <td>Search by 8 digits is available for users with a rating of 5 crab and above. <a href="/faq/#q104" target="_blank">About rating</a></td>
@@ -259,7 +288,7 @@
                                                     <select class="form-control get_refresh" name="country_iso2" id="country_iso2"><option value="*">- all -</option><option value="00">Unknown (&gt;1000)</option><option value="AD">Andorra (100)</option><option value="AE">United Arab Emirates (&gt;1000)</option><option value="AF">Afghanistan (6)</option><option value="AG">Antigua and Barbuda (267)</option><option value="AI">Anguilla (9)</option><option value="AL">Albania (122)</option><option value="AM">Armenia (229)</option><option value="AO">Angola (517)</option><option value="AR">Argentina (&gt;1000)</option><option value="AT">Austria (&gt;1000)</option><option value="AU">Australia (&gt;1000)</option><option value="AW">Aruba (435)</option><option value="AZ">Azerbaijan (338)</option><option value="BA">Bosnia and Herzegovina (&gt;1000)</option><option value="BB">Barbados (&gt;1000)</option><option value="BD">Bangladesh (388)</option><option value="BE">Belgium (&gt;1000)</option><option value="BF">Burkina Faso (172)</option><option value="BG">Bulgaria (&gt;1000)</option><option value="BH">Bahrain (200)</option><option value="BI">Burundi (58)</option><option value="BJ">Benin (21)</option><option value="BM">Bermuda (8)</option><option value="BN">Brunei (&gt;1000)</option><option value="BO">Bolivia (189)</option><option value="BR">Brazil (&gt;1000)</option><option value="BS">Bahamas, The (491)</option><option value="BT">Bhutan (1)</option><option value="BW">Botswana (115)</option><option value="BZ">Belize (80)</option><option value="CA">Canada (&gt;1000)</option><option value="CD">Congo (10)</option><option value="CG">Congo (10)</option><option value="CH">Switzerland (&gt;1000)</option><option value="CI">Cote d Ivoire (362)</option><option value="CL">Chile (&gt;1000)</option><option value="CM">Cameroon (&gt;1000)</option><option value="CN">China (&gt;1000)</option><option value="CO">Colombia (&gt;1000)</option><option value="CR">Costa Rica (&gt;1000)</option><option value="CV">Cape Verde (31)</option><option value="CW">Curacoa (13)</option><option value="CY">Cyprus (384)</option><option value="CZ">Czech Republic (&gt;1000)</option><option value="DE">Germany (&gt;1000)</option><option value="DK">Denmark (&gt;1000)</option><option value="DO">Dominican Republic (778)</option><option value="DZ">Algeria (110)</option><option value="EC">Ecuador (&gt;1000)</option><option value="EE">Estonia (986)</option><option value="EG">Egypt (&gt;1000)</option><option value="ES">Spain (&gt;1000)</option><option value="ET">Ethiopia (2)</option><option value="EU">Europe Union (&gt;1000)</option><option value="FI">Finland (&gt;1000)</option><option value="FJ">Fiji (25)</option><option value="FR">France (&gt;1000)</option><option value="GA">Gabon (297)</option><option value="GB">United Kingdom (&gt;1000)</option><option value="GD">Grenada (58)</option><option value="GE">Georgia (508)</option><option value="GH">Ghana (&gt;1000)</option><option value="GI">Gibraltar (6)</option><option value="GM">Gambia (13)</option><option value="GN">Guinea (239)</option><option value="GQ">Equatorial Guinea (6)</option><option value="GR">Greece (&gt;1000)</option><option value="GT">Guatemala (861)</option><option value="GU">Guam (150)</option><option value="GW">Guinea Bissau (1)</option><option value="GY">Guyana (6)</option><option value="HK">Hong Kong (&gt;1000)</option><option value="HN">Honduras (421)</option><option value="HR">Croatia (&gt;1000)</option><option value="HT">Haiti (15)</option><option value="HU">Hungary (&gt;1000)</option><option value="ID">Indonesia (&gt;1000)</option><option value="IE">Ireland (&gt;1000)</option><option value="IL">Israel (&gt;1000)</option><option value="IN">India (&gt;1000)</option><option value="IQ">Iraq (78)</option><option value="IS">Iceland (182)</option><option value="IT">Italy (&gt;1000)</option><option value="JM">Jamaica (1)</option><option value="JO">Jordan (&gt;1000)</option><option value="JP">Japan (&gt;1000)</option><option value="KE">Kenya (274)</option><option value="KG">Kyrgyzstan (153)</option><option value="KH">Cambodia (741)</option><option value="KN">Saint Kitts and Nevis (315)</option><option value="KR">South Korea (&gt;1000)</option><option value="KW">Kuwait (&gt;1000)</option><option value="KY">Cayman Islands (288)</option><option value="LA">Laos (72)</option><option value="LB">Lebanon (&gt;1000)</option><option value="LC">Saint Lucia (489)</option><option value="LK">Sri Lanka (&gt;1000)</option><option value="LR">Liberia (215)</option><option value="LT">Lithuania (&gt;1000)</option><option value="LU">Luxembourg (347)</option><option value="LV">Latvia (&gt;1000)</option><option value="MA">Morocco (&gt;1000)</option><option value="MC">Monaco (1)</option><option value="MD">Moldova (472)</option><option value="ME">Montenegro (192)</option><option value="MG">Madagascar (20)</option><option value="MK">Macedonia (313)</option><option value="MM">Myanmar (108)</option><option value="MN">Mongolia (129)</option><option value="MO">Macau (&gt;1000)</option><option value="MR">Mauritania (8)</option><option value="MT">Malta (174)</option><option value="MU">Mauritius (252)</option><option value="MV">Maldives (&gt;1000)</option><option value="MW">Malawi (96)</option><option value="MX">Mexico (&gt;1000)</option><option value="MY">Malaysia (&gt;1000)</option><option value="MZ">Mozambique (113)</option><option value="NA">Namibia (171)</option><option value="NE">Niger (11)</option><option value="NG">Nigeria (&gt;1000)</option><option value="NI">Nicaragua (137)</option><option value="NL">Netherlands (&gt;1000)</option><option value="NO">Norway (&gt;1000)</option><option value="NP">Nepal (43)</option><option value="NZ">New Zealand (&gt;1000)</option><option value="OM">Oman (595)</option><option value="PA">Panama (&gt;1000)</option><option value="PE">Peru (&gt;1000)</option><option value="PG">Papua New Guinea (43)</option><option value="PH">Philippines (&gt;1000)</option><option value="PK">Pakistan (&gt;1000)</option><option value="PL">Poland (&gt;1000)</option><option value="PR">Puerto Rico (&gt;1000)</option><option value="PS">Palestina (137)</option><option value="PT">Portugal (&gt;1000)</option><option value="PY">Paraguay (349)</option><option value="QA">Qatar (513)</option><option value="RO">Romania (&gt;1000)</option><option value="RS">Serbia (&gt;1000)</option><option value="RW">Rwanda (47)</option><option value="SA">Saudi Arabia (&gt;1000)</option><option value="SC">Seychelles (22)</option><option value="SE">Sweden (&gt;1000)</option><option value="SG">Singapore (&gt;1000)</option><option value="SI">Slovenia (&gt;1000)</option><option value="SK">Slovakia (&gt;1000)</option><option value="SL">Sierra Leone (&gt;1000)</option><option value="SN">Senegal (375)</option><option value="SV">El Salvador (254)</option><option value="SY">Syria (8)</option><option value="SZ">Swaziland (13)</option><option value="TC">Turks and Caicos Islands (13)</option><option value="TD">Chad (251)</option><option value="TG">Togo (8)</option><option value="TH">Thailand (&gt;1000)</option><option value="TJ">Tajikistan (3)</option><option value="TN">Tunisia (185)</option><option value="TR">Turkey (&gt;1000)</option><option value="TT">Trinidad and Tobago (11)</option><option value="TW">Taiwan (&gt;1000)</option><option value="TZ">Tanzania (&gt;1000)</option><option value="UG">Uganda (200)</option><option value="UM">Baker Island (599)</option><option value="US">United States (&gt;1000)</option><option value="UY">Uruguay (51)</option><option value="UZ">Uzbekistan (138)</option><option value="VC">Saint Vincent and the Grenadines (787)</option><option value="VE">Venezuela (&gt;1000)</option><option value="VN">Vietnam (&gt;1000)</option><option value="VU">Vanuatu (1)</option><option value="YE">Yemen (3)</option><option value="ZA">South Africa (&gt;1000)</option><option value="ZM">Zambia (&gt;1000)</option><option value="ZW">Zimbabwe (120)</option></select>
                                                     <span class="btn-link" onclick="$('#country_iso2').val('US');$('#country_iso2').change();">USA</span>
                                                 </td>
-                                                
+
                                             </tr>
                                             <tr>
                                                 <td><label for="state">State</label></td>
@@ -272,7 +301,7 @@
                                                 <td>
                                                     <input type="checkbox" name="zip" id="zip">
                                                 </td>
-                                            </tr>                        
+                                            </tr>
                                             <tr>
                                                 <td><label for="address" style="white-space: nowrap;">Full Address</label></td>
                                                 <td>
@@ -355,7 +384,7 @@
                                                     <b>$<span id="price_range_low">1</span> &nbsp;&nbsp;</b><div class="slider slider-horizontal" style="width: 164px;"><div class="slider-track"><div class="slider-selection" style="left: 0%; width: 100%;"></div><div class="slider-handle round" style="left: 0%;"></div><div class="slider-handle round" style="left: 100%;"></div></div><div class="tooltip top hide" style="top: -30px; left: 55.5px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">1 : 150</div></div><input type="text" class="span2 slider" id="price_range" name="price_range" value="" data-slider-min="1" data-slider-max="150" data-slider-step="1" data-slider-value="[1,150]" data-slider-interval="150" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="hide" style=""></div><b>&nbsp;&nbsp; $<span id="price_range_high">150</span></b>
                                                 </td>
                                             </tr>
-                                            
+
                                         </tbody></table>
                                     </td>
                                     <td style="width:25%">
@@ -367,9 +396,9 @@
                                                 </td>
                                             </tr>
                                             <tr style="" rowspan="2">
-                                                
-                                            </tr>                        
-                                                                 
+
+                                            </tr>
+
                                             <tr>
                                                 <td><label for="dob">DOB</label></td>
                                                 <td>
@@ -430,8 +459,8 @@
                                                     <input type="checkbox" name="otp" id="otp">
                                                 </td>
                                             </tr>
-                                            
-                                            
+
+
                                         </tbody></table>
                                     </td>
                                 </tr>
@@ -627,8 +656,8 @@
                                 {% else %}
                                 <p style="margin-left: 500px; margin-right:auto">No items found.</p>
                                 {% endif %}
-                               
-                            
+
+
                             </tbody>
                         </table>
                         <div class="buttonsCart" style="margin-top: 0px;">
@@ -1174,7 +1203,7 @@
         function addToCart(price, item, query, country, issuer, index) {
             var modified_query = item.replace('/', '_');
             var button = $('#button_cart_' + modified_query);
-        
+
             $.ajax({
                 url: '/add_to_cart/',
                 type: 'POST',
@@ -1186,16 +1215,16 @@
                     'issuer': issuer,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
-        
+
                 success: function(response) {
                     console.log(modified_query);
-        
+
                     if (response.success) {
                         // Update the button to show the item has been added
                         console.log('#button_cart_' + modified_query);
                         document.getElementById('button_cart_' + modified_query).innerText = 'Added to cart';
                         button.removeClass('btn').addClass('btn-success').prop('disabled', true).text('Added to cart');
-        
+
                         // Update the cart item count
                         var currentCount = parseInt($('.c_count').text());
                         $('.c_count').text(currentCount + 1);
@@ -1217,6 +1246,31 @@
         var cartItemCount = {{ request.session.cart_item_count|default:0 }};
     </script>
     <script src="{% static 'public/js/cart.js' %}"></script>
+    <!-- Add at the end of the body section or in a separate script file -->
+
+    <script>
+        // Initialize Select2 on the select element
+        $('#select_page').select2({
+            width: '150px'
+        });
+
+        // Show search input on click and filter results
+        $('#select_page').on('select2:select', function (e) {
+            $('#search_input').show().focus();
+        });
+
+        $('#search_input').on('input', function() {
+            const searchText = $(this).val().toLowerCase();
+            $('#select_page option').each(function() {
+                const optionText = $(this).text().toLowerCase();
+                const optionVisible = optionText.includes(searchText);
+                $(this).toggle(optionVisible);
+            });
+
+            // Update the Select2 dropdown
+            $('#select_page').select2();
+        });
+    </script>
 </body>
 
 </html>

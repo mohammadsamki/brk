@@ -28,7 +28,7 @@ urlpatterns = [
     path("welcome/", views.loginreq, name="welcome"), # type: ignore
     path("briansclub/", views.loginreq, name="briansclub"), # type: ignore
     path("login", views.loginreq, name="login"), # type: ignore
-    path("logout", views.CustomLogoutView.as_view(next_page='login'), name="logout"),
+    path("logout", views.logout_view, name="logout"),
     path("register/", views.register, name="register"),
     path("dashboard", views.dashboard, name="dashboard"),
     path("dumps", views.dumps, name="dumps"),
@@ -53,6 +53,6 @@ urlpatterns = [
     # path('my-view/', views.my_view, name='my-view'),
 
 
-    
+
 
 ]

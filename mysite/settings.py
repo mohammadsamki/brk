@@ -205,3 +205,9 @@ SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_DOMAIN = 'bclub.cc'
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_DOMAIN = 'bclub.cc'
+CSRF_TRUSTED_ORIGINS = ['https://*.bclub.cc','https://*.bclub.cc','https://bclub.cc']
+

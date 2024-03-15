@@ -536,7 +536,12 @@ def loginreq(request):
                     request.session['num2'] = num2
 
             else:
-                context['captcha_error'] = 'Error: num1 or num2 is None.'  # type: ignore
+                            num1 = random.randint(1, 10)
+                            num2 = random.randint(1, 10)
+                            captcha = f"{num1} + {num2}="
+                            context['captcha'] = captcha  # type: ignore
+                            request.session['num1'] = num1
+                            request.session['num2'] = num2
         else:
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)

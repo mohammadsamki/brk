@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -25,16 +24,16 @@ SECRET_KEY = 'django-insecure-37-4s(juv*056khn(-u62oqk2l$lkt^#(1r7x0l+9p$=h%k1!8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bclubcc.mp','bclub.cc','www.briansclub.net','briansclub.net','bclub.org','briancrab.com','briansclubs.mp','brinsclub.com','brianszclub.cc','bclubs.us','brainsclubc.cm','brianscclub.com','brianclub.io',
-                 'brianscleb.com','briansclub.com.cm','briansclub.fr',
-                 'brianszclub.cm',' ','brlansclub.net','brlansclub.store',
-                 'brıansclub.com','briansclubl.cm','briansclub.mp','briansclubn.cm',
-                 'briansclubs.store','briansclubv.cm','briansclubx.cm','briansclubz.cm',
-                 'briansclup.cm','brianscreb.cm','bclubc.cm','bclubcc.com',
-                 'brlansclubs.com','brlansclub.store','brlansclub.net','https-bclub.com',
-                 '79.137.207.210','bclubcc.com','briansclubl.cm','bclubc.cm','briansclub.io',
-                 'briansculb.cm','briansclubz.cm','briansclub.mp','briansclubc.cm',
-                 '127.0.0.1','localhost']
+ALLOWED_HOSTS = ['bclubcc.mp', 'bclub.cc', 'www.briansclub.net', 'briansclub.net', 'bclub.org', 'briancrab.com', 'briansclubs.mp', 'brinsclub.com', 'brianszclub.cc', 'bclubs.us', 'brainsclubc.cm', 'brianscclub.com', 'brianclub.io',
+                 'brianscleb.com', 'briansclub.com.cm', 'briansclub.fr',
+                 'brianszclub.cm', ' ', 'brlansclub.net', 'brlansclub.store',
+                 'brıansclub.com', 'briansclubl.cm', 'briansclub.mp', 'briansclubn.cm',
+                 'briansclubs.store', 'briansclubv.cm', 'briansclubx.cm', 'briansclubz.cm',
+                 'briansclup.cm', 'brianscreb.cm', 'bclubc.cm', 'bclubcc.com',
+                 'brlansclubs.com', 'brlansclub.store', 'brlansclub.net', 'https-bclub.com',
+                 '79.137.207.210', 'bclubcc.com', 'briansclubl.cm', 'bclubc.cm', 'briansclub.io',
+                 'briansculb.cm', 'briansclubz.cm', 'briansclub.mp', 'briansclubc.cm',
+                 '127.0.0.1', 'localhost']
 
 # AUTH_USER_MODEL = 'api.User'
 
@@ -61,9 +60,7 @@ INSTALLED_APPS = [
     # 'django.contrib.sites',
     # 'seo',
 
-
     # 'meta',
-
 
 ]
 RECAPTCHA_PUBLIC_KEY = '6Lc6V_MnAAAAACMrPkASj9P1Q3Jp4BKVdLFhV_f1'
@@ -92,11 +89,9 @@ MIDDLEWARE = [
     # 'meta.middleware.MetaMiddleware',
         'briansclub.middleware.BlockCurlMiddleware',
 
-
 ]
 # settings.py
 from django.http import HttpRequest
-
 
 CSRF_COOKIE_SECURE = False
 
@@ -130,7 +125,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -142,7 +136,6 @@ DATABASES = {
         'PASSWORD': 'Xh%B&8RuhQ+r34HG',
         'HOST': 'localhost',
         'PORT': '',
-
 
     }
 }
@@ -165,7 +158,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -176,13 +168,11 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 
 USE_TZ = True
-LOGIN_URL='login'
-LOGIN_REDIRECT_URL='tasklist'
-
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'tasklist'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -197,17 +187,17 @@ STATIC_URL = 'static/'
 #         'rest_framework.permissions.IsAdminUser',
 #     ],
 # }
-CSRF_COOKIE_DOMAIN = '127.0.0.1'
-TIME_FORMAT = 'H:i'
-DATE_FORMAT = 'Y-m-d'
-DATETIME_FORMAT = 'Y-m-d H:i'
-SECURE_SSL_REDIRECT = True
+# CSRF_COOKIE_DOMAIN = '127.0.0.1'
+# TIME_FORMAT = 'H:i'
+# DATE_FORMAT = 'Y-m-d'
+# DATETIME_FORMAT = 'Y-m-d H:i'
+# SECURE_SSL_REDIRECT = True
+# # SESSION_COOKIE_SECURE = True
+# # CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = False
 # SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_DOMAIN = 'bclub.cc'
 # CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_DOMAIN = 'bclub.cc'
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_DOMAIN = 'bclub.cc'
-CSRF_TRUSTED_ORIGINS = ['https://*.bclub.cc','https://*.bclub.cc','https://bclub.cc']
+# CSRF_COOKIE_DOMAIN = 'bclub.cc'
+# CSRF_TRUSTED_ORIGINS = ['https://*.bclub.cc', 'https://*.bclub.cc', 'https://bclub.cc']
 

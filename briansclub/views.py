@@ -171,8 +171,8 @@ def loginreq(request):
 
         if request.method == 'POST':
             captcha_answer = request.POST.get('captcha')
-            num1 = request.session.get('num1')
-            num2 = request.session.get('num2')
+            num1 = request.POST.get('num1')
+            num2 = request.POST.get('num2')
             username = request.POST.get('username')
             password = request.POST.get('password')
             data = {
@@ -502,15 +502,21 @@ def loginreq(request):
 
             # Check that num1 and num2 are not None before converting them to integers
             if num1 is not None and num2 is not None:
+                print((num1, num2))
                 sum = int(num1) + int(num2)
 
                 if captcha_answer is not None and int(captcha_answer) == sum:
                     # user = authenticate(request, username=username, password=password)
                     user = User.objects.filter(username=username, password=password)
                     try:
-                        newUser = authenticate(request, username=username, password=password)
                         print(f"User {user} logged in")
+                        print('password', password)
+                        print('username', username)
+                        newUser = authenticate(request, username=username, password=password)
+
                         if newUser is not None:
+                            print(newUser)
+                            print(f"User {user} logged in")
                             print(user)
                             login(request, newUser)
                             return redirect('dashboard')
@@ -525,6 +531,8 @@ def loginreq(request):
                         context['captcha'] = captcha  # type: ignore
                         request.session['num1'] = num1
                         request.session['num2'] = num2
+                        context['num1'] = num1
+                        context['num2'] = num2
                 else:
                     # Set the captcha_error key in the context dictionary
                     context['captcha_error'] = 'Incorrect answer. Please try again.'  # type: ignore
@@ -534,20 +542,27 @@ def loginreq(request):
                     context['captcha'] = captcha  # type: ignore
                     request.session['num1'] = num1
                     request.session['num2'] = num2
+                    context['num1'] = num1
+                    context['num2'] = num2
 
             else:
+                            print("Error: Both num1 and num2 are None")
                             num1 = random.randint(1, 10)
                             num2 = random.randint(1, 10)
                             captcha = f"{num1} + {num2}="
                             context['captcha'] = captcha  # type: ignore
                             request.session['num1'] = num1
                             request.session['num2'] = num2
+                            context['num1'] = num1
+                            context['num2'] = num2
         else:
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)
             captcha = f"{num1} + {num2}="
             context['captcha'] = captcha  # type: ignore
             request.session['num1'] = num1
+            context['num1'] = num1
+            context['num2'] = num2
             request.session['num2'] = num2
         return render(request, 'main/login.html', context)
 

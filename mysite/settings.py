@@ -128,18 +128,28 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'briancom',
+#         'USER': 'samaki',
+#         'PASSWORD': 'Xh%B&8RuhQ+r34HG',
+#         'HOST': 'localhost',
+#         'PORT': '',
+
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'briancom',
-        'USER': 'samaki',
+        'USER': 'sam',
         'PASSWORD': 'Xh%B&8RuhQ+r34HG',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'postgresql-166513-0.cloudclusters.net',
+        'PORT': '18442',
 
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 

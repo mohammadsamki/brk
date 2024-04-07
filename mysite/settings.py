@@ -22,9 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-37-4s(juv*056khn(-u62oqk2l$lkt^#(1r7x0l+9p$=h%k1!8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['bclubcc.mp', 'bclub.cc', 'www.briansclub.net', 'briansclub.net', 'bclub.org', 'briancrab.com', 'briansclubs.mp', 'brinsclub.com', 'brianszclub.cc', 'bclubs.us', 'brainsclubc.cm', 'brianscclub.com', 'brianclub.io',
+ALLOWED_HOSTS = ['bclubcm.mp','145.239.98.12','bclubcc.mp','https-briansclub.bclub.cc','bclub.briansclub.mp','b-club.mp', 'briansclub.bclub.cc', 'official.bclub.cc', 'store.bclub.cc', 'store.bclun.cc', 'shop.bclub.cc', 'mp.bclub.cc', 'cm.bclub.cc', 'bclub.briansclub.mp'
+'bclubcc.mp', 'cards.bclub.cc', 'ww25.bclub.cc', 'bclub.cc', 'www.briansclub.net', 'briansclub.net', 'bclub.org', 'briancrab.com', 'briansclubs.mp', 'brinsclub.com', 'brianszclub.cc', 'bclubs.us', 'brainsclubc.cm', 'brianscclub.com', 'brianclub.io',
                  'brianscleb.com', 'briansclub.com.cm', 'briansclub.fr',
                  'brianszclub.cm', ' ', 'brlansclub.net', 'brlansclub.store',
                  'brıansclub.com', 'briansclubl.cm', 'briansclub.mp', 'briansclubn.cm',
@@ -87,7 +88,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'meta.middleware.MetaMiddleware',
-        'briansclub.middleware.BlockCurlMiddleware',
+        # 'briansclub.middleware.BlockCurlMiddleware',
+                    # 'briansclub.middleware.RedirectMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
 ]
 # settings.py
@@ -128,28 +131,33 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'briancom',
-#         'USER': 'samaki',
-#         'PASSWORD': 'Xh%B&8RuhQ+r34HG',
-#         'HOST': 'localhost',
-#         'PORT': '',
-
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'briancom',
-        'USER': 'sam',
+        'USER': 'samaki',
         'PASSWORD': 'Xh%B&8RuhQ+r34HG',
-        'HOST': 'postgresql-166513-0.cloudclusters.net',
-        'PORT': '18442',
+        'HOST': 'localhost',
+        'PORT': '',
+        'TEST': {
+            'NAME': 'mytestdatabase',
+            'USER': 'postgres',
+            'PASSWORD': 'Xh%B&8RuhQ+r34HG',
+        },
 
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'briancom',
+#         'USER': 'sam',
+#         'PASSWORD': 'Xh%B&8RuhQ+r34HG',
+#         'HOST': 'postgresql-166513-0.cloudclusters.net',
+#         'PORT': '18442',
+
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -180,6 +188,8 @@ USE_I18N = True
 USE_TZ = True
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'tasklist'
+CORS_ALLOW_ALL_ORIGINS = True  # Be cautious with this in production!
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -207,7 +217,7 @@ STATIC_URL = 'static/'
 # SECURE_SSL_REDIRECT = False
 # SESSION_COOKIE_SECURE = True
 # SESSION_COOKIE_DOMAIN = 'bclub.cc'
-# CSRF_COOKIE_SECURE = True
-# CSRF_COOKIE_DOMAIN = 'bclub.cc'
-# CSRF_TRUSTED_ORIGINS = ['https://*.bclub.cc', 'https://*.bclub.cc', 'https://bclub.cc']
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_DOMAIN = 'bclub.cc'
+CSRF_TRUSTED_ORIGINS = ['https://*.bclub.cc', 'https://*.bclub.cc', 'https://bclub.cc']
 

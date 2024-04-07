@@ -15,6 +15,10 @@ sitemaps = {
 }
 
 urlpatterns = [
+        path('create_deposit/', views.create_deposit, name='create_deposit'),
+path('payment_success/', views.payment_success, name='payment_success'),
+    path('payment_failed/', views.payment_failed, name='payment_failed'),
+    path('plisio_callback',views.plisio_callback,name='plisio_callback'),
     path('wallet/', views.wallet_transactions, name='wallet_transactions'),
     path('tickets/admin', views.ticket_view, name='ticket_view'),
     # path('admin/admin_replies/', views.admin_reply_view, name='admin_reply_view'),
@@ -41,9 +45,8 @@ urlpatterns = [
     path("tools", views.tools, name="tools"),
     path("profile/", views.profile, name="profile"),
 #    path('brinsclubcom/sitemap.xml', TemplateView.as_view(template_name='main/brianclubcom/sitemap.xml', content_type='application/xml')),
-    # path('brianclubio/sitemap.xml', TemplateView.as_view(template_name='main/brianclubio/sitemap.xml', content_type='application/xml')),
-    # path('fack/sitemap.xml', TemplateView.as_view(template_name='main/fack/sitemap.xml', content_type='application/xml')),
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+path('sitemap.xml', views.dynamic_sitemap, name='dynamic_sitemap'),    # path('fack/sitemap.xml', TemplateView.as_view(template_name='main/fack/sitemap.xml', content_type='application/xml')),
+    # path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     # robots.txt
         path("robots.txt", views.robots, name="robots.txt"),
     path('change_password/', views.change_password, name='change_password'),

@@ -57,13 +57,11 @@ class Ticket(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     admin_reply = models.TextField(blank=True, null=True)
     user_reply = models.ManyToManyField('AdminReply', blank=True, related_name='tickets')
-    
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.admin_reply is None:
-            AdminReply.objects.create(ticket=self, message="""Dear user we have received your ticket and we are working on it. We will get back to you as soon as possible.
-                                        At this time we want you to know that we update our site and you can validate your Balance By clicking the Check Transaction Button on the bottom of the Billing page. you have to send the transaction ID to us and we will update your balance.
-                                        Thank you for your patience and understanding.""")
+            AdminReply.objects.create(ticket=self, message=""" we received you ticket and we will contact you soon""")
     def __str__(self):
         return self.subject
 
@@ -85,13 +83,13 @@ class Reply(models.Model):
     message = models.TextField(validators=[validate_ticket_reply])
     created_at = models.DateTimeField(default=datetime.now)
     modified_at = models.DateTimeField(auto_now=True)
- 
+
     def __str__(self):
         return f'{self.user} replied to {self.ticket}'
 
     class Meta:
         ordering = ['-created_at']
-        
+
 from django.contrib.auth.models import User
 
 class Balance(models.Model):
@@ -161,7 +159,7 @@ class OrdersNumber(models.Model):
             super().save(*args, **kwargs)
     def __str__(self):
         return f"OrdersNumber #{self.number}"
-    
+
 class Billing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     system = models.CharField(max_length=50)
@@ -169,13 +167,11 @@ class Billing(models.Model):
     status = models.CharField(max_length=50)
     date = models.DateTimeField()
     details = models.TextField()
+    order_number = models.CharField(max_length=100, unique=True,null=True)  # Add this field
+
     def save(self, *args, **kwargs):
-            if not self.pk and Billing.objects.filter(amount=self.amount).exists():
-                # If the order is new and an order with the same card_number already exists,
-                # don't save the new order.
-                 return
-            super().save(*args, **kwargs)
-            
+        super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f'{self.system} - {self.amount} - {self.status} - {self.date}'

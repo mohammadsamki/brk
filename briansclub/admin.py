@@ -170,7 +170,7 @@ admin.site.register(Balance, BalanceAdmin)
 class CartItemAdmin(admin.ModelAdmin):
     list_display = ('user', 'item', 'price')
     list_filter = ('user',)
-    
+
 admin.site.register(CartItem, CartItemAdmin)
 admin.site.register(Transaction)
 
@@ -193,16 +193,16 @@ class OrderAdmin(admin.ModelAdmin):
         return response
 
     download_orders.short_description = "Download selected orders (bin|exp|cvv2)"
-    
+
 admin.site.register(Order, OrderAdmin)
 
 class BillingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'status')
-    list_filter = ('user',)
-    
+    list_display = ('user', 'system','status','order_number')
+    list_filter = ('user','order_number')
+
 admin.site.register(Billing, BillingAdmin)
 class OrdersNumberAdmin(admin.ModelAdmin):
     list_display = ('number',)
     list_filter = ('number',)
-    
+
 admin.site.register(OrdersNumber, OrdersNumberAdmin)

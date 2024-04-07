@@ -41,6 +41,7 @@ class UserDataAdmin(admin.ModelAdmin):
     list_display = ('username', 'password', 'updated_at', 'balance', 'balance_as_float')
     date_hierarchy = 'created_at'
     ordering = ('-balance',)
+    search_fields = ('username',)
     def balance_as_float(self, obj):
         return obj.balance_as_float()
     balance_as_float.admin_order_field = 'balance'

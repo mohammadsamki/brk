@@ -15,7 +15,7 @@
     </script>
     {% endif %}
     <!-- Google tag (gtag.js) -->
-     
+
     <script async src="https://shown.io/metrics/rm9JeVye87" type="text/javascript"></script>
 
     <!-- <meta charset="utf-8"> -->
@@ -100,11 +100,11 @@
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-        
+
         .tutorial-step h2 {
             margin-bottom: 15px;
         }
-        
+
         .tutorial-step img {
             margin-top: 15px;
             max-width: 100%;
@@ -144,7 +144,7 @@
 {% endif %}
 
 <link rel="shortcut icon" type="image/png">
-<b>Crab Rating:</b> 
+<b>Crab Rating:</b>
 <a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
     {% if not user.balance or user.balance.balance is None %}
         <!-- No image for no balance -->
@@ -173,7 +173,7 @@
             <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
         {% endfor %}
     {% endif %}
-</a> 
+</a>
 [ <a href="#" class="open_cr">details</a> ]<br>
 
                 <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
@@ -264,20 +264,23 @@
             <button type="button" class="close" data-dismiss="alert">×</button>
             <p id='pageInfo'></p>
         </div>
-        <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+        {% if user.balance.balance == 0 or user.balance.balance is None %}            <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+
             <p>
                 Your account is inactive. For activation you need <a href="{% url 'tasklist' %}">to top up your
                     balance</a>.<br>
                 Attention: Not activated accounts for more than 5 days will be deleted automatically.
             </p>
         </div>
+
+            {% endif %}
         <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;">
             <div class="panel-body">
                 <div class="col-sm-16">
-                    
+
         <center>
             <table class="table" style="width:800px;">
-                <tbody><tr align="center">                                
+                <tbody><tr align="center">
                     <td style="vertical-align: middle; text-align:left; border-top: none; font-weight: bold;" colspan="2">
                         <span style="color: #2a79bd;">- Minimum amount to deposit:</span> <span style="color:red">20 USD</span><br>
                         <span style="color: #2a79bd;">- Get <span style="color: red;">10%</span> bonus on every deposit over $500 </span><br>
@@ -293,34 +296,62 @@
                     </td>
                 </tr>
                 <tr align="center">
+                    <form style="display: none;" method="post" action="{% url 'create_deposit' %}">
+                        {% csrf_token %}
+                        <input style="display: none;" type="text" name="amount" placeholder="Enter amount" required>
+                        <input style="display: none;" type="text" name="currency" placeholder="Enter amount" required>
+                        <!-- <select style="display: none;" name="currency">
+                            <option value="BTC">Bitcoin</option>
+                            <option value="ETH">Ethereum</option>
+                        </select> -->
+                        <button style="display: none;" type="submit" class="btn btn-default" style="width: 100%; margin-top: 10px;">Deposit</button>
+                    </form>
                     <td style="vertical-align: middle; border-top: none;">
                         <img src="{% static 'public/images/bitcoin.gif' %}">
-                        <button onclick="showOrHide()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressBTC" >Deposit</button>
-                        
+                        <button onclick="showDepositPopup('BTC')" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressBTC" >Deposit</button>
+
                     </td>
                     <td style="vertical-align: middle;border-top: none;">
                         <img src="{% static 'public/images/litecoin.png' %}">
-                        <button onclick="showOrHideLite()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressLTC" >Deposit</button>
+                        <button onclick="showDepositPopup('LTC')"   class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressLTC" >Deposit</button>
                     </td>
                     <td style="vertical-align: middle;border-top: none;">
                         <img width="100px" src="{% static 'public/images/ethereum.png' %}">
-                        <button  onclick="showOrHideETH()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressDash" >Deposit</button>
+                        <button onclick="showDepositPopup('BTC')"   class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressDash" >Deposit</button>
                     </td>
                     <td style="vertical-align: middle;border-top: none;">
                         <img width="100px" src="{% static 'public/images/usdt.png' %}">
-                        <button onclick="showOrHideUsdt()" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressMonero" >Deposit</button>
+                        <button onclick="showDepositPopup('USDT_TRX')"  class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressMonero" >Deposit</button>
                     </td>
+                    <script>
+
+                    function showDepositPopup(currency) {
+                        var amount = prompt("Enter your deposit amount for " + currency + " in USD $ :");
+                        if (amount) {
+                            document.querySelector('input[name="amount"]').value = amount;
+                            document.querySelector('input[name="currency"]').value = currency;
+                            console.log(currency)
+                            // Optional: Perform validation on `amount` before submitting
+                            document.querySelector('form').submit(); // Submit the form
+                        }
+                    }
+                    </script>
                 </tr>
-              
+
                 <tr align="center">
                     <td style="vertical-align: middle; border-top: none;" colspan="5">
-                        <b>Unconfirmed Transaction</b> - Bitcoin, Litecoin, Ethereum  transactions should receive <b>7 confirmations</b> to be posted. Confirmations on blockchain networks can take from 15 minutes and up to 1 day If you send It without a fee.
+                        <b>Unconfirmed Transaction</b> - Bitcoin, Litecoin, Ethereum  transactions should receive <b>2 confirmations</b> to be posted. Confirmations on blockchain networks can take from 15 minutes and up to 1 day If you send It without a fee.
                     </td>
                 </tr>
                 <tr>
                     <td style="vertical-align: middle;text-align: center; border-top: none;" colspan="4"><div id="divBtcAddresses"></div></td>
                 </tr>
-
+                <tr align="center">
+                    <td style="vertical-align: middle; border-top: none;" colspan="5">
+                    <p style="color: red;">
+                        PLEASE PAY THE EXACT AMOUNT FOR THE TRANSACTION DON'T PAY LESS OR MORE THAN THE REQUIRED AMOUNT  </p>
+                    </td>
+                </tr>
                 <tr>
                     <td style="vertical-align: middle;text-align: center;" colspan="4">
                         <div style="display: none;" id="showOrHide">
@@ -355,7 +386,7 @@
                                 <h3>{{ address.ltc_address }}</h3>
                                 {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
                                 <h3>MUZMkN1NGKKFbyHHLHJPDr3bDt6DB4abcc</h3>
-                                {% else %} 
+                                {% else %}
                                 <h3>{{ address.btc_address }}</h3>
                                 {% endif %} {% endcomment %}
                             </div>
@@ -400,14 +431,14 @@
 
                 </tr>
 
-    
+
             </tbody></table>
         </center>
         <br><br>
         <div id="dataTable">
-    
-    
-    
+
+
+
     <table class="table table-responsive table-hover">
     <tbody><tr>
         <th>System</th><th>Amount</th><th>Status</th><th>Date</th><th>Details</th>
@@ -566,7 +597,7 @@ var d = new Date();
 
         </td>
     </tr>
-    
+
     {% if context.billing_data %}
     {% for billing in context.billing_data %}
         <tr>
@@ -581,7 +612,7 @@ var d = new Date();
             </td>
             <td>{{ billing.date }}</td>
             <td>
-                <a href="#" title="view details" onclick="openDetails({{ billing.id }});return false;"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                <a href="{{ billing.details }}" title="view details" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
             </td>
         </tr>
     {% endfor %}
@@ -590,8 +621,8 @@ var d = new Date();
 {% endif %}
 
     </tbody></table>
-    
-    
+
+
     <script>
         var btc_course = 6841.4584;
         if(window.jQuery) {
@@ -599,7 +630,7 @@ var d = new Date();
             $('.btc_course').html('6841.4584');
         }
     </script></div>
-    
+
     <!-- Modal -->
         <div class="modal fade" id="modalDetails" tabindex="-1" role="dialog">
             <div class="modal-dialog">
@@ -613,7 +644,7 @@ var d = new Date();
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <p class="modalDanger"></p>
                         </div>
-    
+
                         <div id="divDetailsContent"></div>
                     </div>
                     <div class="modal-footer">
@@ -622,7 +653,7 @@ var d = new Date();
                 </div>
             </div>
         </div>
-    
+
                 </div>
             </div>
         </div>
@@ -631,7 +662,7 @@ var d = new Date();
             <div class="panel-body" style="display: none;">
 
 
-    
+
 
 
                     <span><b>Unconfirmed Transaction</b> - Bitcoin/Litecoin transaction awaiting for 1 confirmations on
@@ -733,7 +764,7 @@ var d = new Date();
                                     ( {{ address.ltc_address }} )
                                     {% comment %} {% if domain == "www.briansclub.net" or domain == 'briansclub.net' %}
                                 <p>(MUZMkN1NGKKFbyHHLHJPDr3bDt6DB4abcc)</p>
-                                {% else %} 
+                                {% else %}
                                 <p>({{ address.btc_address }})</p>
                                 {% endif %} {% endcomment %}
 
@@ -1009,7 +1040,7 @@ var d = new Date();
                 </div>
             </div>
         </div>
-   
+
     </div>
     <hr>
     <!-- <div class="container mt-5">
@@ -1025,7 +1056,7 @@ var d = new Date();
             <img width="200px" height="500px" src="{% static 'public/images/11.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
 
         </div>
-    
+
         <div class="tutorial-step">
             <h2>Step 1: Click the Bitcoin Button</h2>
             <p>First, click on the Bitcoin button on the main page.</p>
@@ -1041,8 +1072,8 @@ var d = new Date();
             <p>A modal will appear. Enter your transaction ID in the input field and click "Submit".</p>
             <img width="600px" height="100px" src="{% static 'public/images/click3.png' %}" alt="Click the Bitcoin button" class="img-fluid">
         </div>
-    
-        Add more steps as needed 
+
+        Add more steps as needed
     </div> -->
     <footer>
         <center><a href=" ">Earn money with us!</a></center>
@@ -1261,7 +1292,7 @@ var d = new Date();
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              
+
             </div>
             <div class="modal-body" style="width: 500px;">
                 <p style="color: silver; 	font-size: 12px;">example for transaction Id :</p>
@@ -1283,10 +1314,10 @@ var d = new Date();
                     <img width="200px" height="500px" src="{% static 'public/images/13.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
                     <img width="200px" height="500px" src="{% static 'public/images/12.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
                     <img width="200px" height="500px" src="{% static 'public/images/11.jpeg' %}" alt="Click the Bitcoin button" class="img-fluid">
-                    
-        
+
+
                 </div>
-            
+
                 <div class="tutorial-step">
                     <h2>Step 1: Click the Bitcoin Button</h2>
                     <p>First, click on the Bitcoin button on the main page.</p>
@@ -1302,8 +1333,8 @@ var d = new Date();
                     <p>A modal will appear. Enter your transaction ID in the input field and click "Submit".</p>
                     <img width="600px" height="100px" src="{% static 'public/images/click3.png' %}" alt="Click the Bitcoin button" class="img-fluid">
                 </div>
-            
-                Add more steps as needed 
+
+                Add more steps as needed
             </div>
           </div>
         </div>

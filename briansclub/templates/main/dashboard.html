@@ -80,10 +80,10 @@
                 <b>Balance:</b> {{ user.balance.balance }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
             {% else %}
             <b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
-            
-            {% endif %} 
+
+            {% endif %}
             <link rel="shortcut icon" type="image/png">
-<b>Crab Rating:</b> 
+<b>Crab Rating:</b>
 <a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
     {% if not user.balance or user.balance.balance is None %}
         <!-- No image for no balance -->
@@ -112,7 +112,7 @@
             <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
         {% endfor %}
     {% endif %}
-</a> 
+</a>
 [ <a href="#" class="open_cr">details</a> ]<br>
 
                 <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
@@ -187,18 +187,21 @@
                 Attention: Not activated accounts for more than 5 days will be deleted automatically.
             </p>
         </div> -->
-        <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+        {% if user.balance.balance == 0 or user.balance.balance is None %}            <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+
             <p>
-                Your account is inactive. For activation you need <a href=" {% url 'tasklist' %}">to top up your
+                Your account is inactive. For activation you need <a href="{% url 'tasklist' %}">to top up your
                     balance</a>.<br>
                 Attention: Not activated accounts for more than 5 days will be deleted automatically.
             </p>
         </div>
 
+            {% endif %}
+
 
         <div class="col-sm-12 panel panel-default" style="background:#86d367">
             <h3 style="text-align: center;margin-top: 10px;"><a href="#"><span style="color:black; text-transform: uppercase; font-weight: bold;" data-toggle="modal" data-target="#modalNotificationAccount">Stop visiting PHISHING domains of the shop! Use official domains!!!</span></a></h3>
-                    
+
         </div>
 
 

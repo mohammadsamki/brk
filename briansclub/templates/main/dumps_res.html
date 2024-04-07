@@ -16,7 +16,7 @@
     </script>
     {% endif %}
     <!-- Google tag (gtag.js) -->
-   
+
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -109,7 +109,7 @@
 
 {% endif %}
                 <link rel="shortcut icon" type="image/png">
-<b>Crab Rating:</b> 
+<b>Crab Rating:</b>
 <a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
     {% if not user.balance or user.balance.balance is None %}
         <!-- No image for no balance -->
@@ -138,7 +138,7 @@
             <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
         {% endfor %}
     {% endif %}
-</a> 
+</a>
 [ <a href="#" class="open_cr">details</a> ]<br>
 
                 <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
@@ -212,13 +212,16 @@
             <button type="button" class="close" data-dismiss="alert">×</button>
             <p id="pageInfo"></p>
         </div>
-        <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+        {% if user.balance.balance == 0 or user.balance.balance is None %}            <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+
             <p>
                 Your account is inactive. For activation you need <a href="{% url 'tasklist' %}">to top up your
                     balance</a>.<br>
                 Attention: Not activated accounts for more than 5 days will be deleted automatically.
             </p>
         </div>
+
+            {% endif %}
         <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;">
             <div class="panel-body">
                 <div class="col-sm-16">
@@ -500,7 +503,7 @@
                                 </li>
                             </ul>
                             <ul class="fpanel fpanel4">
-     
+
                                 <li>
                                     <span class="fpanel_name">Exp Date:</span>
                                     <span class="fpanel_value">
@@ -719,7 +722,7 @@
                                     {% endfor %}
                                     {% else %}
                                     <p style="margin-left: 500px; margin-right:auto">No items found.</p>
-                                    {% endif %}             
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>
@@ -1356,7 +1359,7 @@
         function addToCart(price, item, query, country, issuer, index) {
             var modified_query = item.replace('/', '_');
             var button = $('#button_cart_' + modified_query);
-        
+
             $.ajax({
                 url: '/add_to_cart/',
                 type: 'POST',
@@ -1368,16 +1371,16 @@
                     'issuer': issuer,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
-        
+
                 success: function(response) {
                     console.log(modified_query);
-        
+
                     if (response.success) {
                         // Update the button to show the item has been added
                         console.log('#button_cart_' + modified_query);
                         document.getElementById('button_cart_' + modified_query).innerText = 'Added to cart';
                         button.removeClass('btn').addClass('btn-success').prop('disabled', true).text('Added to cart');
-        
+
                         // Update the cart item count
                         var currentCount = parseInt($('.c_count').text());
                         $('.c_count').text(currentCount + 1);

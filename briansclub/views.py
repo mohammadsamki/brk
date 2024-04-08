@@ -2515,14 +2515,24 @@ def plisio_callback(request):
                 billing_record = Billing.objects.get(order_number=order_number)
             except Billing.DoesNotExist:
                 return HttpResponse('Billing record not found', status=400)
+            original_url = callback_data_dict.get('comment')[17:]
+
+# Find the index where the specific part ends
+            index_to_remove = original_url.find('/transactions/') + len('/transactions/')
+
+            # Create the new URL by replacing the specific part
+            new_url = 'https://plisio.net/invoice/' + original_url[index_to_remove:]
 
             # Update the Billing record's status and details
             billing_record.status = status
-            billing_record.details = callback_data_dict.get('comment')[17:]
+            billing_record.details = new_url
             billing_record.save()
 
             if status == 'completed':
                 # Update the user's balance
+                billing_record.status = 'Approved'
+                billing_record.save()
+
                 amount = float(callback_data_dict.get('source_amount', 0.0))
                 user_balance, created = Balance.objects.get_or_create(user=billing_record.user)
                 user_balance.balance += amount
@@ -2549,6 +2559,7 @@ def create_deposit(request):
     amount = request.POST.get('amount')
     currency = request.POST.get('currency')
     user_email = request.user.email  # Assuming the user is logged in and has an email
+    domain = request.get_host()
 
     # Generate a unique order number
     order_number = str(uuid.uuid4())

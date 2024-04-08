@@ -2395,18 +2395,120 @@ from django.http import HttpResponse
 import plisio
 client = plisio.PlisioClient(api_key='-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM')
 
+import hashlib
+import hmac
+
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 @csrf_exempt
+# def plisio_callback(request):
+#     if request.method == 'POST':
+#         try:
+#             # Parse the form-data from the request
+#             form_data = request.POST  # This will automatically parse the form-data as a dictionary
+
+#             # Convert the form-data dictionary to a JSON string
+#             callback_data = json.dumps(form_data)
+#             print(callback_data)
+
+#             # Add any additional processing or validations you need here
+
+#             # Handle the data as needed
+#             return HttpResponse('Received and processed JSON data successfully', status=200)
+
+#         except Exception as e:
+#             # Log the error
+#             print(e)
+#             return HttpResponse('An error occurred', status=500)
+#     else:
+#         return HttpResponse('Invalid request method', status=405)
+
+# def plisio_callback(request):
+#     if request.method == 'POST':
+#         try:
+#             # Parse the form-data from the request body
+#             form_data = request.body.decode('utf-8').split('--------------------------')
+#             callback_data = {}
+
+#             for data in form_data:
+#                 if 'Content-Disposition: form-data; name="' in data:
+#                     key = data.split('Content-Disposition: form-data; name="')[1].split('"\n')[0]
+#                     value = data.split('\n\n')[1].replace('\n','')
+#                     callback_data[key] = value
+#                     print(callback_data)
+
+#             # Verify the callback data using the verify_hash
+#             verify_hash = callback_data.get('verify_hash')
+#             secret_key = '-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM'
+
+#             # Prepare the data for verification
+#             post_data = callback_data.copy()
+#             post_data.pop('verify_hash', None)
+#             sorted_data = sorted(post_data.items())
+#             message = ''.join([f"{key}{value}" for key, value in sorted_data])
+
+#             # Create a new HMAC "hash" and compare it with the verify_hash
+#             hmac_hash = hmac.new(secret_key.encode(), message.encode(), hashlib.sha1).hexdigest()
+
+#             if hmac_hash != verify_hash:
+#                 return HttpResponse('Invalid verify hash', status=400)
+
+#             # Check the status of the transaction
+#             status = callback_data.get('status')
+#             order_number = callback_data.get('order_number')
+
+#             # Retrieve the Billing record using the order_number
+#             try:
+#                 billing_record = Billing.objects.get(order_number=order_number)
+#             except Billing.DoesNotExist:
+#                 return HttpResponse('Billing record not found', status=400)
+
+#             # Update the Billing record's status and details
+#             billing_record.status = status
+#             billing_record.details = str(callback_data)
+#             billing_record.save()
+
+#             if status == 'completed':
+#                 # Update the user's balance
+#                 amount = float(callback_data.get('amount'))
+#                 user_balance, _ = Balance.objects.get_or_create(user=billing_record.user)
+#                 user_balance.balance += amount
+#                 user_balance.save()
+
+#                 return HttpResponse(f'Balance updated: {user_balance.balance}', status=200)
+#             else:
+#                 # Handle other statuses if necessary
+#                 return HttpResponse('Payment not completed', status=200)
+
+#         except Exception as e:
+#             # Log the error
+#             print(e)
+#             return HttpResponse('An error occurred', status=500)
+#     else:
+#         return HttpResponse('Invalid request method', status=405)
+
 
 
 def plisio_callback(request):
     if request.method == 'POST':
         try:
             # Load the JSON data from the POST request
-            callback_data = json.loads(request.body)
+            form_data = request.POST  # This will automatically parse the form-data as a dictionary
+
+            # Convert the form-data dictionary to a JSON string
+            callback_data = json.dumps(form_data)
+            print(callback_data)
+
+            # Load the JSON data
+            callback_data_dict = json.loads(callback_data)
 
             # Check the status of the transaction
-            status = callback_data.get('status')
-            order_number = callback_data.get('order_number')
+            status = callback_data_dict.get('status')
+            order_number = callback_data_dict.get('order_number')
+
+            if not status or not order_number:
+                return HttpResponse('Missing transaction status or order number', status=400)
 
             # Retrieve the Billing record using the order_number
             try:
@@ -2416,19 +2518,20 @@ def plisio_callback(request):
 
             # Update the Billing record's status and details
             billing_record.status = status
-            billing_record.details = json.dumps(callback_data)
+            billing_record.details = callback_data_dict.get('comment')[17:]
             billing_record.save()
 
             if status == 'completed':
                 # Update the user's balance
-                amount = float(callback_data.get('amount'))
+                amount = float(callback_data_dict.get('source_amount', 0.0))
                 user_balance, created = Balance.objects.get_or_create(user=billing_record.user)
                 user_balance.balance += amount
                 user_balance.save()
 
-                return HttpResponse(f'Balance updated {user_balance.balance}', status=200)
+                return HttpResponse(f'Balance updated: {user_balance.balance}', status=200)
             else:
                 # Handle other statuses if necessary
+                print('Payment not completed')
                 return HttpResponse('Payment not completed', status=200)
 
         except json.JSONDecodeError:

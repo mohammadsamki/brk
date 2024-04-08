@@ -34,24 +34,24 @@ class RequestLoggerMiddleware:
 
         # Determine if the request is coming from a browser or an API client
         user_agent = request.META.get('HTTP_USER_AGENT', '')
+        api_client = None
+
         if 'curl' in user_agent.lower():
             api_client = 'curl'
         elif 'postman' in user_agent.lower():
             api_client = 'Postman'
         elif 'googlebot' in user_agent.lower():
             api_client = 'Googlebot'
-        else:
-            api_client = re.findall(r'^\w+', user_agent)[0]
+        elif user_agent:
+            api_client_match = re.findall(r'^\w+', user_agent)
+            if api_client_match:
+                api_client = api_client_match[0]
 
         # Extract the user information from the request
-        user = None
-        if request.user.is_authenticated:
-            user = request.user.username
+        user = request.user.username if request.user.is_authenticated else None
 
         # Extract the URL of the API endpoint from the request
-        api_url = None
-        if request.path.startswith('/api/'):
-            api_url = request.build_absolute_uri()
+        api_url = request.build_absolute_uri() if request.path.startswith('/api/') else None
 
         # Save the log to the database
         log = LogEntry(
@@ -70,6 +70,7 @@ class RequestLoggerMiddleware:
         response = self.get_response(request)
 
         return response
+
 from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseForbidden
 

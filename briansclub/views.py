@@ -2212,6 +2212,7 @@ def ticket_view(request):
     tickets = Ticket.objects.all().order_by('-created_at', '-updated_at')
     return render(request, 'main/admin_tickets.html', {'tickets': tickets, 'form': form})
 
+from .models import DomainAPIKey
 
 @login_required_custom(login_url='/login')
 @user_passes_test(is_admin)
@@ -2226,56 +2227,7 @@ def balance_view(request):
         form = BalanceForm()
     balances = Balance.objects.all()
     return render(request, 'main/admin_balances.html', {'balances': balances, 'form': form})
-@csrf_exempt
-def plisio_callback(request):
-    if request.method == 'POST':
-        try:
-            # Load the JSON data from the POST request
-            callback_data = json.loads(request.body)
 
-            # Verify the callback data using the verify_hash
-            verify_hash = callback_data.get('verify_hash')
-            secret_key = '-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM'  # Replace with your actual Plisio secret key
-
-            # Prepare the data for verification
-            post_data = callback_data.copy()
-            post_data.pop('verify_hash', None)
-            sorted_data = sorted(post_data.items())
-            message = json.dumps(sorted_data, separators=(',', ':'))
-
-            # Create a new HMAC "hash" and compare it with the verify_hash
-            hmac_hash = hmac.new(secret_key.encode(), message.encode(), hashlib.sha1).hexdigest()
-            if hmac_hash != verify_hash:
-                return HttpResponse('Invalid verify hash', status=400)
-
-            # Check the status of the transaction
-            status = callback_data.get('status')
-            if status == 'completed':
-                # Update the user's balance
-                order_number = callback_data.get('order_number')
-                amount = float(callback_data.get('amount'))
-                # You need to implement the logic to find the user and their balance based on the order_number
-                # For example:
-                # user_balance = Balance.objects.get(order_number=order_number)
-                # user_balance.balance += amount
-                # user_balance.save()
-
-                return HttpResponse('Balance updated', status=200)
-            else:
-                # Handle other statuses if necessary
-                return HttpResponse('Payment not completed', status=200)
-
-        except json.JSONDecodeError:
-            return HttpResponse('Invalid JSON', status=400)
-        except Balance.DoesNotExist:
-            return HttpResponse('Order not found', status=400)
-        except Exception as e:
-            # Log the error
-            print(e)
-            return HttpResponse('An error occurred', status=500)
-    else:
-        return HttpResponse('Invalid request method', status=405)
-# views.py
 
 import requests
 from django.shortcuts import redirect
@@ -2283,113 +2235,49 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.utils import timezone
 
-@require_http_methods(["POST"])
-def create_deposit(request):
-    # Collect the necessary information from the form or user session
-    amount = request.POST.get('amount')
-    currency = request.POST.get('currency')
-    user_email = request.user.email  # Assuming the user is logged in and has an email
+# @require_http_methods(["POST"])
+# def create_deposit(request):
+#     # Collect the necessary information from the form or user session
+#     amount = request.POST.get('amount')
+#     currency = request.POST.get('currency')
+#     user_email = request.user.email  # Assuming the user is logged in and has an email
 
-    # Set up the parameters for the invoice
-    params = {
-        'source_currency': 'USD',
-        'source_amount': amount,
-        'order_number': 'unique_order_number',  # Generate a unique order number
-        'currency': currency,
-        'email': user_email,
-        'order_name': 'Deposit',
-        'callback_url': request.build_absolute_uri(reverse('plisio_callback')),
-        'api_key': '-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM',  # Replace with your actual Plisio secret key
-    }
+#     # Set up the parameters for the invoice
+#     params = {
+#         'source_currency': 'USD',
+#         'source_amount': amount,
+#         'order_number': 'unique_order_number',  # Generate a unique order number
+#         'currency': currency,
+#         'email': user_email,
+#         'order_name': 'Deposit',
+#         'callback_url': request.build_absolute_uri(reverse('plisio_callback')),
+#         'api_key': '-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM',  # Replace with your actual Plisio secret key
+#     }
 
-    # Plisio API endpoint for creating an invoice
-    url = 'https://api.plisio.net/api/v1/invoices/new'
+#     # Plisio API endpoint for creating an invoice
+#     url = 'https://api.plisio.net/api/v1/invoices/new'
 
-    # Send the GET request to Plisio to create an invoice
-    response = requests.get(url, params=params)
+#     # Send the GET request to Plisio to create an invoice
+#     response = requests.get(url, params=params)
 
-    if response.status_code == 200:
-        invoice_data = response.json()
-        if invoice_data.get('status') == 'success':
-            # Redirect the user to the Plisio invoice page
-            return redirect(invoice_data['data']['invoice_url'])
-        else:
-            return HttpResponse('An error occurred', status=500)
-
-            # Handle the error response from Plisio
-            # Redirect to an error page or display an error message
-    else:
-        # return HttpResponse('An error occurred', status=500)
-        # Handle the error if the request was not successful
-        # Redirect to an error page or display an error message
-
-    # Redirect back to the deposit page with an error message if the invoice was not created
-        return redirect('deposit_page')  # Replace 'deposit_page' with the name of your deposit page URL
-# views.py
-
-# ... (other imports)
-
-# def plisio_callback(request):
-#     if request.method == 'POST':
-#         try:
-#             # Load the JSON data from the POST request
-#             callback_data = json.loads(request.body)
-
-#             # Verify the callback data using the verify_hash
-#             verify_hash = callback_data.get('verify_hash')
-#             secret_key = '-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM'
-
-#             # Prepare the data for verification
-#             post_data = callback_data.copy()
-#             post_data.pop('verify_hash', None)
-#             sorted_data = sorted(post_data.items())
-#             message = json.dumps(sorted_data, separators=(',', ':'))
-
-#             # Create a new HMAC "hash" and compare it with the verify_hash
-#             hmac_hash = hmac.new(secret_key.encode(), message.encode(), hashlib.sha1).hexdigest()
-#             if hmac_hash != verify_hash:
-#                 return HttpResponse('Invalid verify hash', status=400)
-
-#             # Check the status of the transaction
-#             status = callback_data.get('status')
-#             order_number = callback_data.get('order_number')
-
-#             # Retrieve the Billing record using the order_number
-#             try:
-#                 billing_record = Billing.objects.get(order_number=order_number)
-#             except Billing.DoesNotExist:
-#                 return HttpResponse('Billing record not found', status=400)
-
-#             # Update the Billing record's status and details
-#             billing_record.status = status
-#             billing_record.details = json.dumps(callback_data)
-#             billing_record.save()
-
-#             if status == 'completed':
-#                 # Update the user's balance
-#                 amount = float(callback_data.get('amount'))
-#                 userOrder= Billing.objects.get_or_create(order_number=order_number)
-#                 # print('userorder',userOrder.user)
-#                 print('amount',amount)
-#                 user_balance, created = Balance.objects.get_or_create(user=billing_record.user)
-#                 user_balance.balance += amount
-#                 print('user balance',user_balance.balance)
-
-#                 user_balance.save()
-
-#                 return HttpResponse('Balance updated {user_balance.balance}', status=200)
-#             else:
-#                 # Handle other statuses if necessary
-#                 return HttpResponse('Payment not completed', status=200)
-
-#         except json.JSONDecodeError:
-#             return HttpResponse('Invalid JSON', status=400)
-#         except Exception as e:
-#             # Log the error
-#             print(e)
+#     if response.status_code == 200:
+#         invoice_data = response.json()
+#         if invoice_data.get('status') == 'success':
+#             # Redirect the user to the Plisio invoice page
+#             return redirect(invoice_data['data']['invoice_url'])
+#         else:
 #             return HttpResponse('An error occurred', status=500)
+
+#             # Handle the error response from Plisio
+#             # Redirect to an error page or display an error message
 #     else:
-#         return HttpResponse('Invalid request method', status=405)
+#         # return HttpResponse('An error occurred', status=500)
+#         # Handle the error if the request was not successful
+#         # Redirect to an error page or display an error message
+
+#     # Redirect back to the deposit page with an error message if the invoice was not created
+#         return redirect('deposit_page')  # Replace 'deposit_page' with the name of your deposit page URL
+
 import json
 from django.http import HttpResponse
 import plisio
@@ -2402,97 +2290,13 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-# def plisio_callback(request):
-#     if request.method == 'POST':
-#         try:
-#             # Parse the form-data from the request
-#             form_data = request.POST  # This will automatically parse the form-data as a dictionary
-
-#             # Convert the form-data dictionary to a JSON string
-#             callback_data = json.dumps(form_data)
-#             print(callback_data)
-
-#             # Add any additional processing or validations you need here
-
-#             # Handle the data as needed
-#             return HttpResponse('Received and processed JSON data successfully', status=200)
-
-#         except Exception as e:
-#             # Log the error
-#             print(e)
-#             return HttpResponse('An error occurred', status=500)
-#     else:
-#         return HttpResponse('Invalid request method', status=405)
-
-# def plisio_callback(request):
-#     if request.method == 'POST':
-#         try:
-#             # Parse the form-data from the request body
-#             form_data = request.body.decode('utf-8').split('--------------------------')
-#             callback_data = {}
-
-#             for data in form_data:
-#                 if 'Content-Disposition: form-data; name="' in data:
-#                     key = data.split('Content-Disposition: form-data; name="')[1].split('"\n')[0]
-#                     value = data.split('\n\n')[1].replace('\n','')
-#                     callback_data[key] = value
-#                     print(callback_data)
-
-#             # Verify the callback data using the verify_hash
-#             verify_hash = callback_data.get('verify_hash')
-#             secret_key = '-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM'
-
-#             # Prepare the data for verification
-#             post_data = callback_data.copy()
-#             post_data.pop('verify_hash', None)
-#             sorted_data = sorted(post_data.items())
-#             message = ''.join([f"{key}{value}" for key, value in sorted_data])
-
-#             # Create a new HMAC "hash" and compare it with the verify_hash
-#             hmac_hash = hmac.new(secret_key.encode(), message.encode(), hashlib.sha1).hexdigest()
-
-#             if hmac_hash != verify_hash:
-#                 return HttpResponse('Invalid verify hash', status=400)
-
-#             # Check the status of the transaction
-#             status = callback_data.get('status')
-#             order_number = callback_data.get('order_number')
-
-#             # Retrieve the Billing record using the order_number
-#             try:
-#                 billing_record = Billing.objects.get(order_number=order_number)
-#             except Billing.DoesNotExist:
-#                 return HttpResponse('Billing record not found', status=400)
-
-#             # Update the Billing record's status and details
-#             billing_record.status = status
-#             billing_record.details = str(callback_data)
-#             billing_record.save()
-
-#             if status == 'completed':
-#                 # Update the user's balance
-#                 amount = float(callback_data.get('amount'))
-#                 user_balance, _ = Balance.objects.get_or_create(user=billing_record.user)
-#                 user_balance.balance += amount
-#                 user_balance.save()
-
-#                 return HttpResponse(f'Balance updated: {user_balance.balance}', status=200)
-#             else:
-#                 # Handle other statuses if necessary
-#                 return HttpResponse('Payment not completed', status=200)
-
-#         except Exception as e:
-#             # Log the error
-#             print(e)
-#             return HttpResponse('An error occurred', status=500)
-#     else:
-#         return HttpResponse('Invalid request method', status=405)
-
 
 
 def plisio_callback(request):
     if request.method == 'POST':
         try:
+            domain = request.get_host()
+
             # Load the JSON data from the POST request
             form_data = request.POST  # This will automatically parse the form-data as a dictionary
 
@@ -2552,9 +2356,10 @@ def plisio_callback(request):
             return HttpResponse('An error occurred', status=500)
     else:
         return HttpResponse('Invalid request method', status=405)
-
 @require_http_methods(["POST"])
 def create_deposit(request):
+    domain = request.get_host()
+    print(domain)
     # Collect the necessary information from the form or user session
     amount = request.POST.get('amount')
     currency = request.POST.get('currency')
@@ -2568,6 +2373,12 @@ def create_deposit(request):
 
     # Create a Billing record
 
+    try:
+        domain_api_key = DomainAPIKey.objects.get(domain=domain)
+        api_key = domain_api_key.api_key
+    except DomainAPIKey.DoesNotExist:
+        return HttpResponse('API key not found for this domain', status=400)
+    callback_url = 'https://' + request.get_host() + reverse('plisio_callback')
 
     # Set up the parameters for the invoice
     params = {
@@ -2577,9 +2388,10 @@ def create_deposit(request):
         'currency': currency,
         'email': 'billing@bclub.cc',
         'order_name': 'Deposit',
-        'callback_url': request.build_absolute_uri(reverse('plisio_callback')),
-        'api_key': '-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM',
+        'callback_url': callback_url,
+        'api_key': api_key,
     }
+    print('paramds : ',params)
 
     # Plisio API endpoint for creating an invoice
     url = 'https://api.plisio.net/api/v1/invoices/new'

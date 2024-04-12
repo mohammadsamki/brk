@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 
 from briansclub.widgets import UserSelect
-from .models import BriansclubAddress,SiteConfiguration,Balance,CartItem,Transaction,Order,Billing,OrdersNumber
+from .models import BriansclubAddress,SiteConfiguration,Balance,CartItem,Transaction,Order,Billing,OrdersNumber,DomainAPIKey
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
@@ -206,3 +206,4 @@ class OrdersNumberAdmin(admin.ModelAdmin):
     list_filter = ('number',)
 
 admin.site.register(OrdersNumber, OrdersNumberAdmin)
+admin.site.register(DomainAPIKey)

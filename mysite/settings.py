@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-37-4s(juv*056khn(-u62oqk2l$lkt^#(1r7x0l+9p$=h%k1!8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['185.177.59.47','www.bclub.cc','bclubcm.mp','145.239.98.12','bclubcc.mp','https-briansclub.bclub.cc','bclub.briansclub.mp','b-club.mp', 'briansclub.bclub.cc', 'official.bclub.cc', 'store.bclub.cc', 'store.bclun.cc', 'shop.bclub.cc', 'mp.bclub.cc', 'cm.bclub.cc', 'bclub.briansclub.mp'
 'bclubcc.mp', 'cards.bclub.cc', 'ww25.bclub.cc', 'bclub.cc', 'www.briansclub.net', 'briansclub.net', 'bclub.org', 'briancrab.com', 'briansclubs.mp', 'brinsclub.com', 'brianszclub.cc', 'bclubs.us', 'brainsclubc.cm', 'brianscclub.com', 'brianclub.io',
@@ -137,7 +137,7 @@ DATABASES = {
         'NAME': 'briancom',
         'USER': 'samaki',
         'PASSWORD': 'Xh%B&8RuhQ+r34HG',
-        'HOST': '145.239.98.12',
+        'HOST': 'localhost',
         'PORT': '',
 
     }

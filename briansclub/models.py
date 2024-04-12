@@ -159,7 +159,11 @@ class OrdersNumber(models.Model):
             super().save(*args, **kwargs)
     def __str__(self):
         return f"OrdersNumber #{self.number}"
-
+class DomainAPIKey(models.Model):
+    domain = models.CharField(max_length=255)
+    api_key = models.CharField(max_length=255)
+    def __str__(self) :
+        return self.domain
 class Billing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     system = models.CharField(max_length=50)

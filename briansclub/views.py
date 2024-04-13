@@ -1682,131 +1682,153 @@ from faker import Faker
 fake = Faker()
 
 
-def generate_random_order_data(query , user, price, issuer, country):
-    # user = User.objects.first()  # Get the first user for simplicity, adjust as needed
-    # item = query
-    # country = fake.country()
-    # issuer = fake.company()
+# def generate_random_order_data(query , user, price, issuer, country):
+#     # user = User.objects.first()  # Get the first user for simplicity, adjust as needed
+#     # item = query
+#     # country = fake.country()
+#     # issuer = fake.company()
 
-    # Generate bin based on the query field
-    bin_query = query
-    bin = str(int(bin_query) + 10)
-    random_numbers = ''.join(str(random.randint(0, 9)) for _ in range(10))
-    result_text = bin + random_numbers
-    now = datetime.now()
-    day = now.day
-    month = now.month
-    date_string = f"{day}_{month}"
-# Add 10 to the bin query
+#     # Generate bin based on the query field
+#     bin_query = query
+#     bin = str(int(bin_query) + 10)
+#     random_numbers = ''.join(str(random.randint(0, 9)) for _ in range(10))
+#     result_text = bin + random_numbers
+#     now = datetime.now()
+#     day = now.day
+#     month = now.month
+#     date_string = f"{day}_{month}"
+# # Add 10 to the bin query
 
-    # Create the Order object with random data
-    order = Order.objects.create(
-        user=user,
-        # item=item,
-        price=float(price),
-        # query=query,
-        # country=country,
-        # issuer=issuer,
-        bin=bin,
-        type=fake.word(),
-        dc='-',
-        subtype='-',
-        card_number=result_text,
-        exp=fake.credit_card_expire(),
-        cvv2=fake.credit_card_security_code(),
-        name=fake.name(),
-        address=fake.address(),
-        extra='-',
-        bank=issuer,
-        base=date_string,
-        status='no refund',
-        optional_field1=fake.word(),
-        optional_field2=fake.word(),
-        optional_field3=fake.word(),
-        table=fake.text()
-    )
-    print(order)
-    return order
+#     # Create the Order object with random data
+#     order = Order.objects.create(
+#         user=user,
+#         # item=item,
+#         price=float(price),
+#         # query=query,
+#         # country=country,
+#         # issuer=issuer,
+#         bin=bin,
+#         type=fake.word(),
+#         dc='-',
+#         subtype='-',
+#         card_number=result_text,
+#         exp=fake.credit_card_expire(),
+#         cvv2=fake.credit_card_security_code(),
+#         name=fake.name(),
+#         address=fake.address(),
+#         extra='-',
+#         bank=issuer,
+#         base=date_string,
+#         status='no refund',
+#         optional_field1=fake.word(),
+#         optional_field2=fake.word(),
+#         optional_field3=fake.word(),
+#         table=fake.text()
+#     )
+#     print(order)
+#     return order
+def luhn_checksum(card_number):
+    def digits_of(n):
+        return [int(d) for d in str(n)]
+    digits = digits_of(card_number)
+    odd_digits = digits[-1::-2]
+    even_digits = digits[-2::-2]
+    checksum = sum(odd_digits)
+    for d in even_digits:
+        checksum += sum(digits_of(d*2))
+    return checksum % 10
+def generate_card_number(issuer):
+    print('issuer', issuer)
+    bin_start = {
+        'Visa': '4',
+        'Mastercard': '5',
+        'American Express': '34',
+        'Discover': '6011',
+        # Add more issuer specific BIN starts if needed
+    }
+    bin_prefix = bin_start.get(issuer, '4')  # Default to Visa if issuer unknown
+    print('bin_prefix', bin_prefix)
 
+    while True:
+        random_part = ''.join([str(random.randint(0, 9)) for _ in range(16 - len(issuer))])
+        card_number = issuer + random_part
+        print('card_number', card_number)
+        if luhn_checksum(card_number) == 0:  # Check if valid per Luhn
+            print('Valid card number:', card_number)
+            return card_number
+def generate_random_order_data(query, user, price, issuer, country):
+    """Simulate generating random order data."""
+    card_number = generate_card_number(query)
+    expiry_date = f"{random.randint(1, 12):02}/{random.randint(datetime.now().year+1, datetime.now().year+7)}"
+    cvv2 = f"{random.randint(100, 999)}"  # Adjust for Amex if needed
 
-@login_required_custom(login_url='/login')
+    return {
+        'user': user,
+        'price': price,
+        'bin': query,  # Assuming query is your BIN input
+        'bank': issuer,
+        'extra': country,
+        'type': fake.word(),
+        'card_number': card_number,
+        'exp': expiry_date,
+        'cvv2': cvv2,
+        'name': fake.name(),
+        'address': fake.address(),
+        'status': 'no refund',
+        # Add other fields if necessary
+    }
+
+@login_required(login_url='/login')
 def cart(request):
-    domain = request.get_host()
+    """View to handle cart operations."""
     try:
-        site_config = SiteConfiguration.objects.get(domain=domain)
+        site_config = SiteConfiguration.objects.get(domain=request.get_host())
     except SiteConfiguration.DoesNotExist:
-        site_config = SiteConfiguration.objects.first()
+        site_config = None  # Using None to handle missing configurations gracefully
 
     context = {'site_config': site_config}
 
     if request.method == 'GET':
-        if request.user.is_authenticated:
-            cart_items = CartItem.objects.filter(user=request.user)
+        cart_items = CartItem.objects.filter(user=request.user)
 
-            try:
-                balance = Balance.objects.get(user=request.user).balance
-                context['balance'] = balance
+        balance, _ = Balance.objects.get_or_create(user=request.user, defaults={'balance': 0})
+        context={
+            'balance': balance.balance,
+            'low_balance': balance.balance < 100,
+            'cart_items': cart_items
+        }
 
-                if balance < 100:
-                    context['low_balance'] = True
-                    print("Low balance")
-
-            except Balance.DoesNotExist:
-                print("No balance object for this user")
-                context['low_balance'] = True
-
-            context['cart_items'] = cart_items
-            return render(request, 'main/cart.html', context)
-        else:
-            return redirect('login')
+        return render(request, 'main/cart.html', context)
 
     elif request.method == 'POST':
-        if request.user.is_authenticated:
-            cart_items = CartItem.objects.filter(user=request.user)
+        cart_items = CartItem.objects.filter(user=request.user)
 
-            try:
-                balance_obj = Balance.objects.get(user=request.user)
-                balance = balance_obj.balance
-                total_price = sum(item.price for item in cart_items)
-                print('Checking the balance')
+        balance_obj, _ = Balance.objects.get_or_create(user=request.user)
+        total_price = sum(item.price for item in cart_items)
+        if balance_obj.balance < total_price:
+            context={
+                'low_balance': True,
+                'balance': balance_obj.balance,
+            }
+            return render(request, 'main/failedCart.html', context)
 
-                if balance < total_price:
-                    print("Low balance")
-                    context['low_balance'] = True
-                    return render(request, 'main/failedCart.html', context)
+        with transaction.atomic():
+            orders_number = OrdersNumber.objects.create(number=OrdersNumber.objects.count() + 1)
 
-                with transaction.atomic():
-                    orders_number = OrdersNumber.objects.create(number=OrdersNumber.objects.count() + 1)
-                    usno = request.user
-                    for cart_item in cart_items:
-                        order = generate_random_order_data(cart_item.query, usno, cart_item.price, cart_item.issuer, cart_item.country)
-                        orders_number.orders.add(order)
-                        print('Order added')
+            for cart_item in cart_items:
+                order_data = generate_random_order_data(cart_item.query, request.user, cart_item.price, cart_item.issuer, cart_item.country)
+                order = Order.objects.create(**order_data)
+                orders_number.orders.add(order)
 
-                    # Update the balance after successful order addition
-                    new_balance = balance - float(total_price)
-                    balance_obj.balance = new_balance
-                    balance_obj.save()
-                    print("Balance updated successfully")
+            balance_obj.balance -= float(total_price)
+            balance_obj.save()
 
-                    # Clear the cart items after creating orders
-                    order_count = orders_number.orders.count()
-                    if order_count == len(cart_items):
-                        print("All orders added successfully")
-                    else:
-                        print("Some orders failed to add")
-                    cart_items.delete()
+            cart_items.delete()
 
-            except Balance.DoesNotExist:
-                context['low_balance'] = True
-
-            return redirect('orders')
-        else:
-            return redirect('login')
+        return redirect('orders')
 
     else:
-        return HttpResponseBadRequest("Invalid request method")
-# def cart(request):
+        return HttpResponseBadRequest("Invalid request method")# def cart(request):
 #     domain = request.get_host()
 #     try:
 #         site_config = SiteConfiguration.objects.get(domain=domain)

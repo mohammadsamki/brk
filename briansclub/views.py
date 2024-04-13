@@ -1824,6 +1824,7 @@ def cart(request):
             balance_obj.save()
 
             cart_items.delete()
+            request.session['cart_item_count'] = 0
 
         return redirect('orders')
 

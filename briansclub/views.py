@@ -1136,7 +1136,7 @@ def generate_random_dates():
     # Generate 10 random dates between January 1, 1022 and December 31, 1022
     start_date = datetime(2025, 1, 1)
     end_date = datetime(2029, 12, 31)
-    random_dates = [start_date + (end_date - start_date) * random.random() for i in range(20)]
+    random_dates = [start_date + (end_date - start_date) * random.random() for i in range(200)]
 
     # Format the dates as MM/DD or DD/MM
     formatted_dates = []

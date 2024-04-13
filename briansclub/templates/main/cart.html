@@ -231,8 +231,14 @@
 
     <div class="buttonsCCCart" style="margin-bottom: 10px;">
         <button class="btn btn-danger" id="remove-selected-btn">Remove selected item(s)</button>
-        <button class="btn btn-success" onclick="errorPayment()" ><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" ></span> Buy selected cvv2 </button>  &nbsp;
+        <form id="complete_order_form" method="post" >
+            {% csrf_token %}
+            {% comment %} <input type="hidden" name="action" value="/cart"> {% endcomment %}
+            {% comment %} <button type='submit'>Complete Order</button> {% endcomment %}
+        &nbsp; &nbsp;
+        <button class="btn btn-success" onclick="completeOrder()" ><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" ></span> Buy selected cvv2 </button>  &nbsp;
 
+        </form>
 
     </div>
     <table class="table table-bordered table-responsive table-striped table-hover">
@@ -317,8 +323,15 @@
     <div class="buttonsCCCart" style="">
         <span class="batchRemoveCCDiv" style="display: none;">
             <button class="btn btn-danger" id="remove-selected-btn">Remove selected item(s)</button>
-            <button class="btn btn-success" onclick="errorPayment()" ><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" ></span> Buy selected cvv2 </button>  &nbsp;
+            <form id="complete_order_form" method="post" >
+                {% csrf_token %}
+                {% comment %} <input type="hidden" name="action" value="/cart"> {% endcomment %}
+                {% comment %} <button type='submit'>Complete Order</button> {% endcomment %}
+                <a href="/cvv" class="btn btn-default">Continue Shopping</a>
+            &nbsp; &nbsp;
+            <button class="btn btn-success" onclick="completeOrder()" ><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" ></span> Buy selected cvv2 </button>  &nbsp;
 
+            </form>
         </span>
     </div>
 <form method="post" action="/Billing" id="selectedCCForm">

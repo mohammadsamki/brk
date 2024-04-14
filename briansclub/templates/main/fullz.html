@@ -24,7 +24,7 @@
     </script>
     {% endif %}
     <!-- Google tag (gtag.js) -->
-     
+
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -101,7 +101,7 @@
 {% endif %}
 
                 <link rel="shortcut icon" type="image/png">
-<b>Crab Rating:</b> 
+<b>Crab Rating:</b>
 <a href="#" class="open_cr" title="{{ user.balance.balance }} crab">
     {% if not user.balance or user.balance.balance is None %}
         <!-- No image for no balance -->
@@ -130,7 +130,7 @@
             <img src="{% static 'public/images/crab_rate.png' %}" alt="super crab">
         {% endfor %}
     {% endif %}
-</a> 
+</a>
 [ <a href="#" class="open_cr">details</a> ]<br>
 
 
@@ -220,8 +220,8 @@
             <div class="panel-body">
                 <div class="col-sm-16">
 
-                    <form onclick="myFunction()" id="searchForm">
-                        <table class="table table-bordered" onclick="myFunction()">
+                    <form  id="searchForm">
+                        <table class="table table-bordered" >
                             <tbody>
                                 <tr>
                                     <td style="width:25%">
@@ -331,10 +331,10 @@
                                             </tbody>
                                         </table>
                                     </td>
-                                    <!-- 
+                                    <!--
                 <td style="width:25%">
                     <table class="table">
-                        
+
                     </table>
                 </td>
                 -->
@@ -376,10 +376,10 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: center;">
-                                        <button type="button" onclick="myFunction()" id="makeReset"
+                                        <button type="button"  id="makeReset"
                                             class="btn btn-default">Clear</button>
                                         &nbsp;
-                                        <button class="btn btn-primary" onclick="myFunction()" type="button"><span
+                                        <button class="btn btn-primary"  type="button"><span
                                                 class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
                                         </button>
                                     </td>

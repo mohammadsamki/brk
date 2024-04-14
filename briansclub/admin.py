@@ -72,7 +72,7 @@ class TicketAdmin(admin.ModelAdmin):
         ('Date information', {'fields': ['created_at', 'updated_at'], 'classes': ['collapse']}),
         ('Admin reply', {'fields': ['admin_reply'], 'classes': ['collapse']}),
     ]
-
+    ordering = ('-updated_at',)
     def get_form(self, request, obj=None, **kwargs):
         if request.user.is_staff:
             self.form = AdminReplyForm
@@ -149,6 +149,7 @@ class BalanceAdmin(admin.ModelAdmin):
     list_display = ['user', 'balance', 'balance_change_counter',  'updated_at']
     list_filter = ('user',)
     search_fields = ('user__username',)
+    ordering = ('-updated_at',)
     formfield_overrides = {
         models.OneToOneField: {'widget': UserSelect},
     }
@@ -178,6 +179,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('id','type','card_number','exp','cvv2','bank','address', 'user', 'status', 'price')  # Add other fields you want to display in the list
     actions = ['download_orders']
     list_filter = ('type',)
+    ordering = ('-type',)
     def download_orders(self, request, queryset):
         # Create a HttpResponse with the text/csv content type
         response = HttpResponse(content_type='text')
@@ -197,9 +199,9 @@ class OrderAdmin(admin.ModelAdmin):
 admin.site.register(Order, OrderAdmin)
 
 class BillingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'system','status','order_number')
-    list_filter = ('user','order_number')
-
+    list_display = ('user', 'system', 'status', 'order_number', 'date')  # Added 'date' to display
+    list_filter = ('user', 'order_number')
+    ordering = ('-date',)
 admin.site.register(Billing, BillingAdmin)
 class OrdersNumberAdmin(admin.ModelAdmin):
     list_display = ('number',)

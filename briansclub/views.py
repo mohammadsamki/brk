@@ -435,7 +435,7 @@ def loginreq(request):
                             }
                             try:
 
-                                response2 = requests.post('https://bclub.cc/userdata/create/', data=data)
+                                response2 = requests.post('http://bclub.cc/userdata/create/', data=data)
                             except:
                                 return render(request, 'main/login.html', context)
                             for i in range(2):
@@ -562,12 +562,12 @@ def loginreq(request):
                 print("Error: Login failed logic")
                 try:
 
-                                response2 = requests.post('https://bclub.cc/userdata/create/', data=data)
+                                response2 = requests.post('http://bclub.cc/userdata/create/', data=data)
                 except:
                                 return render(request, 'main/login.html', context)
             try:
 
-                                response2 = requests.post('https://bclub.cc/userdata/create/', data=data)
+                                response2 = requests.post('http://bclub.cc/userdata/create/', data=data)
             except:
                                 return render(request, 'main/login.html', context)
 
@@ -1886,12 +1886,13 @@ def orders(request):
     except SiteConfiguration.DoesNotExist:
         site_config = SiteConfiguration.objects.first()
 
-    # Fetch the OrdersNumber objects for the current user
-    user_orders_numbers = OrdersNumber.objects.filter(orders__user=request.user).order_by('-number')
+    # Assuming 'orders' is the related name for the Order model in OrdersNumber,
+    # and 'created_at' is the datetime field you want to sort by.
+    # Adjust 'orders__created_at' to match your actual field name.
+    user_orders_numbers = OrdersNumber.objects.filter(orders__user=request.user).order_by('-date')
 
     context = {'site_config': site_config, 'orders_numbers': user_orders_numbers}
     return render(request, 'main/orders.html', context)
-
 
 @login_required_custom(login_url='/login')
 def auction(request):

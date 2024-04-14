@@ -66,6 +66,19 @@ class UserDataUpdate(generics.UpdateAPIView):
     queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
     lookup_field = 'username'  # or 'pk' if you want to look up by primary key
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Apply additional filters if needed
+        filter_kwargs = {self.lookup_field: self.kwargs[self.lookup_field]}
+
+        try:
+            return queryset.filter(**filter_kwargs).first()
+        except UserData.MultipleObjectsReturned:
+            # Handle the case where multiple objects are returned
+            # Log an error, return a specific object, or raise an exception.
+            # For example, you can handle it by returning the first object found.
+            return queryset.filter(**filter_kwargs).first()  # Return the first object
 
 # from rest_framework import viewsets
 # from .models import Task, LogEntry, BriansclubAddress, SiteConfiguration, Ticket, AdminReply, Reply, Balance, Transaction, CartItem, Order, OrdersNumber, Billing

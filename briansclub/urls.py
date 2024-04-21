@@ -27,11 +27,13 @@ path('payment_success/', views.payment_success, name='payment_success'),
     path('add_to_cart/', views.add_to_cart, name='add_to_cart'),
     path('remove_selected_from_cart/', views.remove_selected_from_cart, name='remove_selected_from_cart'),
     path("Billing", views.address_list, name="tasklist"),
-    path("", views.dashboard, name="home"), # type: ignore
+    path("home/", views.dashboard, name="home"),
+    path("", views.loginreq, name="loginreq"), # type: ignore
+    # type: ignore
     path("official/", views.loginreq, name="official"), # type: ignore
     path("welcome/", views.loginreq, name="welcome"), # type: ignore
     path("briansclub/", views.loginreq, name="briansclub"), # type: ignore
-    path("login", views.loginreq, name="login"), # type: ignore
+    path("login/", views.loginreq, name="login"), # type: ignore
     path("logout", views.logout_view, name="logout"),
     path("register/", views.register, name="register"),
     path("dashboard", views.dashboard, name="dashboard"),

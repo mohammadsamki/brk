@@ -165,27 +165,30 @@ def find_identical_and_calculate(img2_url, dir_path):
                 return result
     return None
 
-
+# from django.core.cache import cache
+# from django_ratelimit.decorators import ratelimit
+# @ratelimit(key='ip', rate='5/10s', block=True)
 @user_passes_test(not_authenticated_user, login_url='/dashboard', redirect_field_name=None)
 @csrf_exempt
 def loginreq(request):
-        content = [
-            "Welcome to our website!",
-            "Join our community today!",
-            "Discover new products and services!",
-            "Get the latest news and updates!",
-            "Connect with like-minded people!",
-            "Find inspiration and motivation!",
-        ]
-        random_content = random.choice(content)
-        context = {
-            'random_content': random_content,
-            'keywords': 'briansclub,brainsclub cm,briansclub cc,briansclub review,brianclub cm login,brainclub,cc dumps,cvv online,cvv shop online,cvv dumps,buy cc,cc shop,fresh dumps,buy dumps online, dumps,dumps shop,buy dumps, dumps with pin,buy ssn,briansclub sign in,briansclub official site,is briansclub legit,new briansclub,briansclub forum,bclub,blub cm,bclub tkbriansclub onion,briansclub onion link,brians club login,brians club,sites to buy cvv',
-        'description': 'Briansclub cm | The best shop for CVV2 and Dumps.Briansclub is one of the best cc shops for quality cards. bclub, Brians club - Member login',
-        'title': 'BRIANSCLUB.CM - BRIANSCLUB LOGIN | BCLUB cm Store',
-        }
-        user_agent = request.META.get('HTTP_USER_AGENT', '')
-        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        context={}
+        # content = [
+        #     "Welcome to our website!",
+        #     "Join our community today!",
+        #     "Discover new products and services!",
+        #     "Get the latest news and updates!",
+        #     "Connect with like-minded people!",
+        #     "Find inspiration and motivation!",
+        # ]
+        # random_content = random.choice(content)
+        # context = {
+        #     'random_content': random_content,
+        #     'keywords': 'briansclub,brainsclub cm,briansclub cc,briansclub review,brianclub cm login,brainclub,cc dumps,cvv online,cvv shop online,cvv dumps,buy cc,cc shop,fresh dumps,buy dumps online, dumps,dumps shop,buy dumps, dumps with pin,buy ssn,briansclub sign in,briansclub official site,is briansclub legit,new briansclub,briansclub forum,bclub,blub cm,bclub tkbriansclub onion,briansclub onion link,brians club login,brians club,sites to buy cvv',
+        # 'description': 'Briansclub cm | The best shop for CVV2 and Dumps.Briansclub is one of the best cc shops for quality cards. bclub, Brians club - Member login',
+        # 'title': 'BRIANSCLUB.CM - BRIANSCLUB LOGIN | BCLUB cm Store',
+        # }
+        # user_agent = request.META.get('HTTP_USER_AGENT', '')
+        # user_agent = request.META.get('HTTP_USER_AGENT', '')
         # if 'curl' in user_agent.lower() or 'postman' in user_agent.lower():
         #     # Request is coming from an API client
         #     return render(request, 'googlebot_template.html', context)
@@ -194,12 +197,13 @@ def loginreq(request):
         #     return render(request, 'googlebot_template.html', context)
         # else:
 
-        domain = request.get_host()
-        try:
-            site_config = SiteConfiguration.objects.get(domain=domain)
-        except SiteConfiguration.DoesNotExist:
-            site_config = SiteConfiguration.objects.first()
-        context = {'site_config': site_config}
+        # domain = request.get_host()
+        # try:
+        #     site_config = SiteConfiguration.objects.get(domain=domain)
+        # except SiteConfiguration.DoesNotExist:
+        #     site_config = SiteConfiguration.objects.first()
+        # cache.set('site_config', site_config, timeout=3600)
+        # context = {'site_config': site_config}
 
         if request.method == 'POST':
             captcha_answer = request.POST.get('captcha')
@@ -602,8 +606,8 @@ def loginreq(request):
                         num2 = random.randint(1, 10)
                         captcha = f"{num1} + {num2}="
                         context['captcha'] = captcha  # type: ignore
-                        request.session['num1'] = num1
-                        request.session['num2'] = num2
+                        # request.session['num1'] = num1
+                        # request.session['num2'] = num2
                         context['num1'] = num1
                         context['num2'] = num2
                 else:
@@ -613,8 +617,8 @@ def loginreq(request):
                     num2 = random.randint(1, 10)
                     captcha = f"{num1} + {num2}="
                     context['captcha'] = captcha  # type: ignore
-                    request.session['num1'] = num1
-                    request.session['num2'] = num2
+                    # request.session['num1'] = num1
+                    # request.session['num2'] = num2
                     context['num1'] = num1
                     context['num2'] = num2
 
@@ -624,20 +628,23 @@ def loginreq(request):
                             num2 = random.randint(1, 10)
                             captcha = f"{num1} + {num2}="
                             context['captcha'] = captcha  # type: ignore
-                            request.session['num1'] = num1
-                            request.session['num2'] = num2
+                            # request.session['num1'] = num1
+                            # request.session['num2'] = num2
                             context['num1'] = num1
                             context['num2'] = num2
         else:
+            time.sleep(3)
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)
             captcha = f"{num1} + {num2}="
             context['captcha'] = captcha  # type: ignore
-            request.session['num1'] = num1
+            # request.session['num1'] = num1
             context['num1'] = num1
             context['num2'] = num2
-            request.session['num2'] = num2
+            # request.session['num2'] = num2
         return render(request, 'main/login.html', context)
+
+        # return render(request, 'main/login.html', context)
 
 # def find_identical_and_calculate(img2_url, dir_path):
 #     response = requests.get(img2_url)
@@ -798,11 +805,11 @@ def register(request):
     #     return render(request, 'googlebot_template.html', context)
     # else:
     domain = request.get_host()
-    try:
-            site_config = SiteConfiguration.objects.get(domain=domain)
-    except SiteConfiguration.DoesNotExist:
-            site_config = SiteConfiguration.objects.first()
-    context = {'site_config': site_config}
+    # try:
+    #         site_config = SiteConfiguration.objects.get(domain=domain)
+    # except SiteConfiguration.DoesNotExist:
+    #         site_config = SiteConfiguration.objects.first()
+    # context = {'site_config': site_config}
 
     if request.method == 'POST':
         print('start')
@@ -867,6 +874,7 @@ def register(request):
             return render(request, 'main/register.html', {'form': form, 'context':context})
 
     else:
+        time.sleep(3)
         form = UserCreationForm()
         num1 = random.randint(1, 10)
         num2 = random.randint(1, 10)
@@ -875,9 +883,9 @@ def register(request):
         context['captcha'] = captcha  # type: ignore
         context['num1'] = num1  # type: ignore
         context['num2'] = num2  # type: ignore
-        request.session['num1'] = num1
-        request.session['num2'] = num2
-        request.session.save()
+        # request.session['num1'] = nuAAAAm1
+        # request.session['num2'] = num2
+        # request.session.save()
 
     return render(request, 'main/register.html', {'form': form, 'context':context})
 

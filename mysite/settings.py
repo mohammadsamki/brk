@@ -136,7 +136,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'briancom',
         'USER': 'samaki',
-        'PASSWORD': 'Xh%B&8RuhQ+r34HG',
+        'PASSWORD': 'Xh%B&8RuhQ+r34HG1',
         'HOST': '128.140.116.14',
         'PORT': '',
 

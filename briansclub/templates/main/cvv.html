@@ -166,9 +166,7 @@
                     <li id="menu-cc-search" class=" active"><a href="{% url 'cvv' %}"
                             style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
                     </li>
-                    <li id="menu-fullz-search"><a href="{% url 'fullz' %}"
-                            style="background-image: -webkit-linear-gradient(top, #bbfcff 0%, #bbfcff 100%);">Fullz</a>
-                    </li>
+                     
                     <li id="menu-wholesale" style="min-width:110px;"><a href="{% url 'wholesale' %}">Wholesale</a></li>
                     <li id="menu-cart">
                         <a href="{% url 'cart' %}">Cart <span class="badge" id="count_cart_items">{{ request.session.cart_item_count|default:0 }}</span></a>

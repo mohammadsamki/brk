@@ -4,19 +4,15 @@
 <html lang="en">
 
 <head>
-    {% load google_analytics %}
+   <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NHXD4CVL37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    {% if context.site_config.google_analytics_id %}
-    <script async
-        src="https://www.googletagmanager.com/gtag/js?id={{ context.site_config.google_analytics_id }}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { { dataLayer.push(arguments); } }
-        gtag('js', new Date());
-        gtag('config', '{{ context.site_config.google_analytics_id }}');
-    </script>
-    {% endif %}
-    <!-- Google tag (gtag.js) -->
+  gtag('config', 'G-NHXD4CVL37');
+</script>
 
 
     <meta name='robots' content='index, follow' />

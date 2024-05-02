@@ -104,6 +104,12 @@ class Balance(models.Model):
             if orig.balance != self.balance:
                 self.balance_change_counter += 1
         super().save(*args, **kwargs)
+    @classmethod
+    def update_user_balance(cls, user_id, new_balance):
+            balance, created = cls.objects.get_or_create(user_id=user_id)
+            balance.balance = new_balance
+            balance.save()
+            print(f"Balance updated: {balance.balance}")
 
 class Transaction(models.Model):
     balance = models.ForeignKey(Balance, related_name='transactions', on_delete=models.CASCADE)

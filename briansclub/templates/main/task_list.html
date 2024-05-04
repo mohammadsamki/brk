@@ -214,7 +214,7 @@
                         <a href="{% url 'cvv' %}"
                             style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
                     </li>
-                     
+
                     <li id="menu-wholesale" style="min-width:110px;">
                         <a href="{% url 'wholesale' %}">Wholesale</a>
                     </li>
@@ -597,7 +597,7 @@ var d = new Date();
     </tr>
 
     {% if context.billing_data %}
-    {% for billing in context.billing_data %}
+    {% for billing in context.billing_data%}
         <tr>
             <td>{{ billing.system }}</td>
             <td>{{ billing.amount }} USD</td>
@@ -610,7 +610,8 @@ var d = new Date();
             </td>
             <td>{{ billing.date }}</td>
             <td>
-                <a href="{{ billing.details }}" title="view details" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                {{ billing.wallet_address }}
+                {% comment %} <a href="{{ billing.details }}" title="view details" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a> {% endcomment %}
             </td>
         </tr>
     {% endfor %}
@@ -682,13 +683,19 @@ var d = new Date();
         </thead>
         <tbody>
             {% for transaction in transactions %}
-                <tr>
-                    <td>{{ transaction.system }}</td>
-                    <td>{{ usd_amount }}</td>
-                    <td>{{ transaction.status }}</td>
-                    <td>{{ transaction.date }}</td>
-                    <td>{{ transaction.details }}</td>
-                </tr>
+            <tr>
+                <td>{{ transaction.system }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.status }}</td>
+                <td>{{ transaction.date }}</td>
+                <td>
+                    {{ transaction.details }}
+                    {% if transaction.wallet_address %}
+                        <br>
+                        Wallet Address: {{ transaction.wallet_address }}
+                    {% endif %}
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
         {% else %}

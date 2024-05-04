@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-37-4s(juv*056khn(-u62oqk2l$lkt^#(1r7x0l+9p$=h%k1!8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['185.177.59.47','b-clubs.com','www.bclubscm.cm','www.bclubscm.cm','www.bcllub.mp','bcllub.mp','www.bclubc.mp','bclubc.mp','biub.mp','www.biub.mp','www.b-clubs.com','briansclubcm.mp','www.bclub.cc','bclubcm.mp','145.239.98.12','bclubcc.mp','https-briansclub.bclub.cc','bclub.briansclub.mp','b-club.mp', 'briansclub.bclub.cc', 'official.bclub.cc', 'store.bclub.cc', 'store.bclun.cc', 'shop.bclub.cc', 'mp.bclub.cc', 'cm.bclub.cc', 'bclub.briansclub.mp'
+ALLOWED_HOSTS = ['185.177.59.47', 'b-clubs.com', 'www.bclubscm.cm', 'www.bclubscm.cm', 'www.bcllub.mp', 'bcllub.mp', 'www.bclubc.mp', 'bclubc.mp', 'biub.mp', 'www.biub.mp', 'www.b-clubs.com', 'briansclubcm.mp', 'www.bclub.cc', 'bclubcm.mp', '145.239.98.12', 'bclubcc.mp', 'https-briansclub.bclub.cc', 'bclub.briansclub.mp', 'b-club.mp', 'briansclub.bclub.cc', 'official.bclub.cc', 'store.bclub.cc', 'store.bclun.cc', 'shop.bclub.cc', 'mp.bclub.cc', 'cm.bclub.cc', 'bclub.briansclub.mp'
 'bclubcc.mp', 'bclub.cm.bclub.cc', 'ww25.bclub.cc', 'bclub.cc', 'www.briansclub.net', 'briansclub.net', 'bclub.org', 'briancrab.com', 'briansclubs.mp', 'brinsclub.com', 'brianszclub.cc', 'bclubs.us', 'brainsclubc.cm', 'brianscclub.com', 'brianclub.io',
                  'brianscleb.com', 'briansclub.com.cm', 'briansclub.fr',
                  'briascluz', ' ', 'brlansclub.net', 'brlansclub.store',
@@ -185,7 +185,6 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'tasklist'
 CORS_ALLOW_ALL_ORIGINS = True  # Be cautious with this in production!
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -195,6 +194,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # Be cautious with this in production!
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import os
+
 STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = 'static/'
 # REST_FRAMEWORK = {

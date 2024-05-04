@@ -2548,15 +2548,19 @@ def balance_view(request):
     return render(request, 'main/admin_balances.html', {'balances': balances, 'form': form})
 
 
+import hashlib
+import hmac
 import json
+import uuid
 
 import plisio
 import requests
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods, require_POST
 
 # @require_http_methods(["POST"])
 # def create_deposit(request):
@@ -2601,13 +2605,7 @@ from django.views.decorators.http import require_http_methods
 #     # Redirect back to the deposit page with an error message if the invoice was not created
 #         return redirect('deposit_page')  # Replace 'deposit_page' with the name of your deposit page URL
 
-client = plisio.PlisioClient(api_key='-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM')
-
-import hashlib
-import hmac
-
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+# client = plisio.PlisioClient(api_key='-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM')
 
 
 @csrf_exempt
@@ -2724,6 +2722,8 @@ def create_deposit(request):
         invoice_data = response.json()
         if invoice_data.get('status') == 'success':
             # Redirect the user to the Plisio invoice page
+            wallet_address = invoice_data['data'].get('wallet_hash')
+            print('wallet_address', wallet_address)
             billing_record = Billing.objects.create(
             user=request.user,
             system=currency,
@@ -2731,12 +2731,13 @@ def create_deposit(request):
             status='pending',
             date=timezone.now(),
             details=invoice_data['data']['invoice_url'],
-            order_number=order_number  # Make sure to add this field to your Billing model
+            order_number=order_number,  # Make sure to add this field to your Billing model
+            wallet_address=wallet_address
             )
             print(billing_record)
             print('test')
             print(currency)
-            return redirect(invoice_data['data']['invoice_url'])
+            return redirect('tasklist')
         else:
             # Handle the error response from Plisio
             return HttpResponse('An error occurred', status=500)
@@ -2753,3 +2754,136 @@ def payment_success(request):
 def payment_failed(request):
     # You can pass additional context or retrieve session data if needed
     return render(request, 'main/payment_failed.html')
+# views.py
+
+# Your existing imports...
+
+# @csrf_exempt
+# @require_POST
+# def plisio_callback(request):
+#     try:
+#         # Ensure request comes from Plisio by verifying IP or signature
+#         # Validate request data to prevent tampering
+#         callback_data = json.loads(request.body.decode('utf-8'))
+
+#         status = callback_data.get('status')
+#         order_number = callback_data.get('order_number')
+
+#         if not (status and order_number):
+#             return HttpResponse('Missing transaction status or order number', status=400)
+
+#         # Retrieve the Billing record using the order_number
+#         billing_record = Billing.objects.filter(order_number=order_number).first()
+#         if not billing_record:
+#             return HttpResponse('Billing record not found', status=400)
+
+#         # Update the Billing record's status and details
+#         billing_record.status = status
+#         billing_record.save()
+
+#         if status == 'completed':
+#             # Update the user's balance
+#             billing_record.status = 'Approved'
+#             billing_record.save()
+
+#             amount = float(callback_data.get('source_amount', 0.0))
+#             user_balance, created = Balance.objects.get_or_create(user=billing_record.user)
+#             user_balance.balance += amount
+#             user_balance.save()
+
+#             return HttpResponse(f'Balance updated: {user_balance.balance}', status=200)
+#         else:
+#             # Handle other statuses if necessary
+#             print('Payment not completed')
+#             return HttpResponse('Payment not completed', status=200)
+
+#     except json.JSONDecodeError:
+#         return HttpResponse('Invalid JSON', status=400)
+#     except Exception as e:
+#         # Log the error
+#         print(e)
+#         return HttpResponse('An error occurred', status=500)
+
+# @require_POST
+# def create_deposit(request):
+#     print("Entering create_deposit view")
+
+#     # Validate user authentication and authorization
+#     if not request.user.is_authenticated:
+#         print("User not authenticated")
+#         return HttpResponse('Unauthorized', status=401)
+
+#     domain = request.get_host()
+#     # Collect the necessary information from the form or user session
+#     amount = request.POST.get('amount')
+#     currency = request.POST.get('currency')
+
+#     if not (amount and currency):
+#         print("Missing amount or currency")
+#         return HttpResponse('Missing amount or currency', status=400)
+
+#     user_email = request.user.email
+
+#     # Generate a unique order number
+#     order_number = str(uuid.uuid4())
+
+#     try:
+#         domain_api_key = DomainAPIKey.objects.get(domain=domain)
+#         api_key = domain_api_key.api_key
+#     except DomainAPIKey.DoesNotExist:
+#         print("API key not found for this domain")
+#         return HttpResponse('API key not found for this domain', status=400)
+
+#     # White Label Activation
+#     white_label_enabled = True  # Set this to False if White Label is not enabled
+#     if white_label_enabled:
+#         callback_url = 'https://' + request.get_host() + reverse('plisio_callback')
+#     else:
+#         callback_url = 'https://' + request.get_host() + reverse('plisio_callback')  # Your default callback URL if White Label is not enabled
+
+#     # Set up the parameters for the invoice
+#     params = {
+#         'source_currency': 'USD',
+#         'source_amount': amount,
+#         'order_number': order_number,
+#         'currency': currency,
+#         'email': user_email,
+#         'order_name': 'Deposit',
+#         'callback_url': callback_url,
+#         'api_key': api_key,
+#     }
+
+#     # Plisio API endpoint for creating an invoice
+#     url = 'https://api.plisio.net/api/v1/invoices/new'
+
+#     # Send the POST request to Plisio to create an invoice
+#     response = requests.post(url, json=params)
+#     print("Plisio API request status code:", response.status_code)
+
+#     if response.status_code == 200:
+#         invoice_data = response.json()
+#         if invoice_data.get('status') == 'success':
+#             # Redirect the user to the Plisio invoice page
+#             print("Invoice creation successful")
+#             wallet_address = invoice_data['data'].get('wallet_address')
+#             print("Wallet address:", wallet_address)
+#             billing_record = Billing.objects.create(
+#                 user=request.user,
+#                 system=currency,
+#                 amount=amount,
+#                 status='pending',
+#                 date=timezone.now(),
+#                 details=invoice_data['data']['invoice_url'],
+#                 order_number=order_number,
+#                 wallet_address=wallet_address
+#             )
+#             print("Billing record created:", billing_record)
+#             return redirect(invoice_data['data']['invoice_url'])
+#         else:
+#             # Handle the error response from Plisio
+#             print("Invoice creation failed:", invoice_data.get('message'))
+#             return HttpResponse('An error occurred', status=500)
+#     else:
+#         # Handle the error if the request was not successful
+#         print("Plisio API request failed")
+#         return redirect('tasklist')  # Redirect to a page where the user can see the error or try again

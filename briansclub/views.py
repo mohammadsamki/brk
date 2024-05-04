@@ -2724,13 +2724,14 @@ def create_deposit(request):
             # Redirect the user to the Plisio invoice page
             wallet_address = invoice_data['data'].get('wallet_hash')
             amount_btc = float(invoice_data['data'].get('amount'))
-            pinding_ammount = float(invoice_data['data'].get('pending_amount'))
+            print(invoice_data['data'])
+            pinding_ammount = invoice_data['data'].get('pending_amount')
             print('wallet_address', wallet_address)
             billing_record = Billing.objects.create(
             user=request.user,
             system=currency,
             amount=amount,
-            status='pending',
+            status='new',
             date=timezone.now(),
             details=invoice_data['data']['invoice_url'],
             order_number=order_number,  # Make sure to add this field to your Billing model

@@ -199,14 +199,14 @@ class DomainAPIKey(models.Model):
 class Billing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     system = models.CharField(max_length=50)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.FloatField(null=True)
     status = models.CharField(max_length=50)
     date = models.DateTimeField()
     details = models.TextField()
     order_number = models.CharField(max_length=100, unique=True, null=True)  # Add this field
     wallet_address = models.CharField(max_length=100, null=True, default='')
-    amount_btc = models.DecimalField(max_digits=10, decimal_places=10, null=True)
-    pinding_ammount = models.DecimalField(max_digits=10, decimal_places=10, null=True)
+    amount_btc = models.FloatField(null=True)
+    pinding_ammount = models.FloatField(null=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

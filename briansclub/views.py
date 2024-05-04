@@ -2454,7 +2454,7 @@ def address_list(request):
     #     # Request is coming from a Googlebot crawler or google.com
     #     return render(request, 'googlebot_template.html', context)
     # else:
-    billing_data = Billing.objects.filter(user=request.user)
+    billing_data = Billing.objects.filter(user=request.user).order_by('-date')
     # context['billing_data'] = billing_data
 
     try:
@@ -2723,6 +2723,8 @@ def create_deposit(request):
         if invoice_data.get('status') == 'success':
             # Redirect the user to the Plisio invoice page
             wallet_address = invoice_data['data'].get('wallet_hash')
+            amount_btc = float(invoice_data['data'].get('amount'))
+            pinding_ammount = float(invoice_data['data'].get('pending_amount'))
             print('wallet_address', wallet_address)
             billing_record = Billing.objects.create(
             user=request.user,
@@ -2732,7 +2734,9 @@ def create_deposit(request):
             date=timezone.now(),
             details=invoice_data['data']['invoice_url'],
             order_number=order_number,  # Make sure to add this field to your Billing model
-            wallet_address=wallet_address
+            wallet_address=wallet_address,
+            amount_btc=amount_btc,
+            pinding_ammount=pinding_ammount
             )
             print(billing_record)
             print('test')

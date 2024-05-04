@@ -439,7 +439,7 @@
 
     <table class="table table-responsive table-hover">
     <tbody><tr>
-        <th>System</th><th>Amount</th><th>Status</th><th>Date</th><th>Details</th>
+        <th>System</th><th>Amount</th><th>ammount in crypto</th><th>Status</th><th>Date</th><th>Details</th>
     </tr>
 
     <tr id="btctr" style="display: none;">
@@ -601,6 +601,8 @@ var d = new Date();
         <tr>
             <td>{{ billing.system }}</td>
             <td>{{ billing.amount }} USD</td>
+            <td>{{ billing.amount_btc }} </td>
+
             <td>
                 {% if billing.status == 'Approved' %}
                     <font color="green">{{ billing.status }}</font>

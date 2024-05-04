@@ -205,6 +205,8 @@ class Billing(models.Model):
     details = models.TextField()
     order_number = models.CharField(max_length=100, unique=True, null=True)  # Add this field
     wallet_address = models.CharField(max_length=100, null=True, default='')
+    amount_btc = models.DecimalField(max_digits=10, decimal_places=10, null=True)
+    pinding_ammount = models.DecimalField(max_digits=10, decimal_places=10, null=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

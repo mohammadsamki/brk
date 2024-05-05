@@ -304,6 +304,10 @@
                         </select> -->
                         <button style="display: none;" type="submit" class="btn btn-default" style="width: 100%; margin-top: 10px;">Deposit</button>
                     </form>
+                    <td style="vertical-align: middle;border-top: none;">
+                        <img width="100px" src="{% static 'public/images/usdt.png' %}">
+                        <button onclick="showDepositPopup('USDT_TRX')"  class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressMonero" >Deposit</button>
+                    </td>
                     <td style="vertical-align: middle; border-top: none;">
                         <img src="{% static 'public/images/bitcoin.gif' %}">
                         <button onclick="showDepositPopup('BTC')" class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressBTC" >Deposit</button>
@@ -317,10 +321,7 @@
                         <img width="100px" src="{% static 'public/images/ethereum.png' %}">
                         <button onclick="showDepositPopup('BTC')"   class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressDash" >Deposit</button>
                     </td>
-                    <td style="vertical-align: middle;border-top: none;">
-                        <img width="100px" src="{% static 'public/images/usdt.png' %}">
-                        <button onclick="showDepositPopup('USDT_TRX')"  class="btn btn-default" style="width: 100%;margin-top: 10px;" id="getBtcAddressMonero" >Deposit</button>
-                    </td>
+
                     <script>
 
                     function showDepositPopup(currency) {

@@ -96,7 +96,7 @@
                 style="margin-top: -20px;padding-bottom:10px;float: none;width: auto;overflow: visible;">
                 <h3 class="text-muted">Welcome <i>{{ request.user }}</i> <span style="font-size: 16px;">[<a href="/profile/">profile</a>]</span></h3>
 {% if user.is_authenticated %}
-    <b>Balance:</b> {{ user.balance.balance }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+<b>Balance:</b> {{ user.balance.balance|floatformat:2 }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
 {% else %}
 <b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
 
@@ -166,7 +166,7 @@
                     <li id="menu-cc-search" class=" active"><a href="{% url 'cvv' %}"
                             style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
                     </li>
-                     
+
                     <li id="menu-wholesale" style="min-width:110px;"><a href="{% url 'wholesale' %}">Wholesale</a></li>
                     <li id="menu-cart">
                         <a href="{% url 'cart' %}">Cart <span class="badge" id="count_cart_items">{{ request.session.cart_item_count|default:0 }}</span></a>

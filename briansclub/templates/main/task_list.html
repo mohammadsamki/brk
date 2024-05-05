@@ -137,7 +137,7 @@
                 style="margin-top: -20px;padding-bottom:10px;float: none;width: auto;overflow: visible;">
                 <h3 class="text-muted">Welcome <i>{{ request.user }}</i> <span style="font-size: 16px;">[<a href="/profile/">profile</a>]</span></h3>
                 {% if user.is_authenticated %}
-    <b>Balance:</b> {{ user.balance.balance }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
+    <b>Balance:</b> {{ user.balance.balance|floatformat:2 }}  USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
 {% else %}
 <b>Balance:</b> <span id="user_balance">0.00</span> USD [ <a href="{% url 'tasklist' %}">add funds</a>]<br>
 
@@ -605,7 +605,7 @@ var d = new Date();
             {% if billing.amount == 0.0 %}
             <td style="color:red">Not Received Yet</td>
         {% else %}
-            <td>{{ billing.amount }} USD</td>
+            <td>{{ billing.amount|floatformat:2 }} USD</td>
         {% endif %}
 
 
@@ -622,7 +622,21 @@ var d = new Date();
             <td>
 
                 {% if billing.tx_urls != ''  %}
-            <td><a href="{{ billing.tx_urls }}" title="view details" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span>View Transaction</a></td>
+
+                    <a href="#" id="transactionLink" data-url="{{ billing.tx_urls }}" title="View details" target="_blank">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>View Transaction
+                    </a>
+
+                <script>
+                    window.onload = function() {
+                        var link = document.getElementById('transactionLink');
+                        var rawUrl = link.getAttribute('data-url');
+                        // Assuming the URL is inside an array format and escaped
+                        var urls = JSON.parse(rawUrl);
+                        // Set the first URL as the href, unescaping it
+                        link.href = urls[0];
+                    };
+                </script>
 
 
                 {% else %}

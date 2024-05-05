@@ -324,7 +324,7 @@
                     <script>
 
                     function showDepositPopup(currency) {
-                        var amount = prompt("Enter your deposit amount for " + currency + " in USD $ :");
+                        var amount = 10;
                         if (amount) {
                             document.querySelector('input[name="amount"]').value = amount;
                             document.querySelector('input[name="currency"]').value = currency;
@@ -439,7 +439,7 @@
 
     <table class="table table-responsive table-hover">
     <tbody><tr>
-        <th>System</th><th>Amount</th><th>ammount in crypto</th><th>Status</th><th>Date</th><th>Details</th>
+        <th>System</th><th>Amount</th><th>ammount in crypto</th><th>Status</th><th>Date</th><th>Wallet Address</th>
     </tr>
 
     <tr id="btctr" style="display: none;">
@@ -600,7 +600,13 @@ var d = new Date();
     {% for billing in context.billing_data%}
         <tr>
             <td>{{ billing.system }}</td>
+            {% if billing.amount == 0.0 %}
+            <td>not received yet</td>
+        {% else %}
             <td>{{ billing.amount }} USD</td>
+        {% endif %}
+
+
             <td>{{ billing.amount_btc }} </td>
 
             <td>
@@ -680,7 +686,7 @@ var d = new Date();
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Date</th>
-                <th>Details</th>
+                <th>Wallet Address</th>
             </tr>
         </thead>
         <tbody>
@@ -706,14 +712,14 @@ var d = new Date();
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Date</th>
-                                <th>Details</th>
+                                <th>Wallet Address</th>
                             </tr>
                             <tr id="tableresnew" style="display: none;">
                                 <th>System</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Date</th>
-                                <th>Details</th>
+                                <th>Wallet Address</th>
                             </tr>
 
 

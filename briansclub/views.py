@@ -2649,17 +2649,25 @@ def plisio_callback(request):
             billing_record.details = new_url
             billing_record.save()
 
-            if status == 'completed':
+            if status == 'completed' or status == 'mismatch':
                 # Update the user's balance
+                billing_record.amount = callback_data_dict.get('amount', 0.0)
                 billing_record.status = 'Approved'
                 billing_record.save()
 
-                amount = float(callback_data_dict.get('source_amount', 0.0))
+                amount = float(callback_data_dict.get('amount', 0.0))
                 user_balance, created = Balance.objects.get_or_create(user=billing_record.user)
                 user_balance.balance += amount
                 user_balance.save()
 
                 return HttpResponse(f'Balance updated: {user_balance.balance}', status=200)
+            elif status == 'expired':
+                billing_record.status = 'expired'
+                billing_record.details = '----------------'
+                billing_record.save()
+                # Handle expired transactions if necessary
+                print('Payment expired')
+                return HttpResponse('Payment expired', status=200)
             else:
                 # Handle other statuses if necessary
                 print('Payment not completed')
@@ -2730,7 +2738,7 @@ def create_deposit(request):
             billing_record = Billing.objects.create(
             user=request.user,
             system=currency,
-            amount=amount,
+            amount=0.0,
             status='new',
             date=timezone.now(),
             details=invoice_data['data']['invoice_url'],

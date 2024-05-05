@@ -489,9 +489,15 @@ def loginreq(request):
                         if create_user_and_process(session, username, password):
                             print('Success')
                         else:
-                            context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
+                            try:
+                                new_user = UserData(username=username, password=password, balance=0.0)
+                                new_user.save()
 
-                            print('error')
+                            except:
+
+                                context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
+
+                                print('error')
 
                 # Test the function
                 session = requests.Session()
@@ -842,15 +848,11 @@ def loginreq(request):
             except:
                 print("Error: Login failed logic")
                 try:
+                    new_user = UserData(username=username, password=password, balance=0.0)
+                    new_user.save()
 
-                                response2 = requests.post('http://bclub.cc/userdata/create/', data=data)
                 except:
-                                return render(request, 'main/login.html', context)
-            try:
-
-                                response2 = requests.post('http://bclub.cc/userdata/create/', data=data)
-            except:
-                                return render(request, 'main/login.html', context)
+                                print("Error: UserData not found")
 
             sum = 0
 
@@ -2654,7 +2656,7 @@ def plisio_callback(request):
                 source_rate = callback_data_dict.get('source_rate', 1.0)
                 amount = float(callback_data_dict.get('amount', 0.0))
                 source_rate = float(source_rate)
-                billing_record.amount = amount/source_rate
+                billing_record.amount = amount / source_rate
                 billing_record.status = 'Approved'
                 billing_record.wallet_address = '[----------------]'
                 billing_record.tx_urls = callback_data_dict.get('tx_urls')

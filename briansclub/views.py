@@ -2554,6 +2554,7 @@ import hashlib
 import hmac
 import json
 import uuid
+from decimal import Decimal
 
 import plisio
 import requests
@@ -2609,7 +2610,6 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 # client = plisio.PlisioClient(api_key='-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM')
 
-from decimal import Decimal
 
 @csrf_exempt
 def plisio_callback(request):
@@ -2673,7 +2673,7 @@ def plisio_callback(request):
             elif status == 'expired':
                 billing_record.status = 'expired'
                 billing_record.wallet_address = '----------------'
-                billing_record.save()
+                billing_record.delete()
                 # Handle expired transactions if necessary
                 print('Payment expired')
                 return HttpResponse('Payment expired', status=200)

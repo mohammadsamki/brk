@@ -207,6 +207,7 @@ class Billing(models.Model):
     wallet_address = models.CharField(max_length=100, null=True, default='')
     amount_btc = models.FloatField(null=True)
     pinding_ammount = models.FloatField(null=True)
+    tx_urls = models.CharField(max_length=1000, null=True, default='')
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

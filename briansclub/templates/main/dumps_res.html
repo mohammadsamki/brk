@@ -173,7 +173,7 @@
                     <li id="menu-cc-search" class=" active"><a href="{% url 'cvv' %}"
                             style="background-image: -webkit-linear-gradient(top, #C8F6C8 0%, #C8F6C8 100%);">CVV2</a>
                     </li>
-                     
+
                     <li id="menu-wholesale" style="min-width:110px;"><a href="{% url 'wholesale' %}">Wholesale</a></li>
                     <li id="menu-cart">
                         <a href="{% url 'cart' %}">Cart <span class="badge" id="count_cart_items">{{ request.session.cart_item_count|default:0 }}</span></a>
@@ -740,18 +740,7 @@
                                     (summary: <span class="o_summary">0.00</span>$)</button>
                             </span>
                         </div>
-                        <nav class="pull-right">
-                            <ul class="pagination" test="1">
-                                <li class="active"><a onclick="myFunction1()" href="{% url 'tasklist' %}">1</a></li>
-                                <li><a onclick="myFunction1()" href="{% url 'tasklist' %}">2</a></li>
-                                <li><a href="{% url 'tasklist' %}" onclick="myFunction1()">3</a></li>
-                                <li><a onclick="myFunction1()" href="{% url 'tasklist' %}">4</a></li>
-                                <li><a href="{% url 'tasklist' %}" title="next"><span aria-hidden="true">»</span><span
-                                            class="sr-only">next</span></a></li>
-                                <li><a href="{% url 'tasklist' %}" onclick="myFunction1()" title="last"><span
-                                            aria-hidden="true">»»</span><span class="sr-only">last</span></a></li>
-                            </ul>
-                        </nav>
+
                         <script>
 
                             var csrf = 'TWXCtntphziA8JBWLFYVxSpjunWwUdQ1';

@@ -2651,9 +2651,10 @@ def plisio_callback(request):
 
             if status == 'completed' or status == 'mismatch':
                 # Update the user's balance
-                billing_record.amount = callback_data_dict.get('amount', 0.0)
+                billing_record.amount = callback_data_dict.get('amount', 0.0)/callback_data_dict.get('source_rate')
                 billing_record.status = 'Approved'
                 billing_record.wallet_address = '[----------------]'
+                billing_record.tx_urls = callback_data_dict.get('tx_urls')
 
                 billing_record.save()
 

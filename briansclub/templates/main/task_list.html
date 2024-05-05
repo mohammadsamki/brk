@@ -620,7 +620,15 @@ var d = new Date();
             </td>
             <td>{{ billing.date }}</td>
             <td>
+
+                {% if billing.tx_urls != ''  %}
+            <td><a href="{{ billing.tx_urls }}" title="view details" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span>View Transaction</a></td>
+
+
+                {% else %}
                 {{ billing.wallet_address }}
+
+                {% endif %}
                 {% comment %} <a href="{{ billing.details }}" title="view details" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a> {% endcomment %}
             </td>
         </tr>

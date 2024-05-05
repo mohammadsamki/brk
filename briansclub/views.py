@@ -2646,13 +2646,15 @@ def plisio_callback(request):
 
             # Update the Billing record's status and details
             billing_record.status = status
-            billing_record.details = new_url
+            # billing_record.details = new_url
             billing_record.save()
 
             if status == 'completed' or status == 'mismatch':
                 # Update the user's balance
                 billing_record.amount = callback_data_dict.get('amount', 0.0)
                 billing_record.status = 'Approved'
+                billing_record.details = '[----------------]'
+
                 billing_record.save()
 
                 amount = float(callback_data_dict.get('amount', 0.0))
@@ -2732,9 +2734,9 @@ def create_deposit(request):
             # Redirect the user to the Plisio invoice page
             wallet_address = invoice_data['data'].get('wallet_hash')
             amount_btc = float(invoice_data['data'].get('amount'))
-            print(invoice_data['data'])
+            # print(invoice_data['data'])
             pinding_ammount = invoice_data['data'].get('pending_amount')
-            print('wallet_address', wallet_address)
+            # print('wallet_address', wallet_address)
             billing_record = Billing.objects.create(
             user=request.user,
             system=currency,

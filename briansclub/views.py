@@ -2646,14 +2646,14 @@ def plisio_callback(request):
 
             # Update the Billing record's status and details
             billing_record.status = status
-            # billing_record.details = new_url
+            billing_record.details = new_url
             billing_record.save()
 
             if status == 'completed' or status == 'mismatch':
                 # Update the user's balance
                 billing_record.amount = callback_data_dict.get('amount', 0.0)
                 billing_record.status = 'Approved'
-                billing_record.details = '[----------------]'
+                billing_record.wallet_address = '[----------------]'
 
                 billing_record.save()
 
@@ -2665,7 +2665,7 @@ def plisio_callback(request):
                 return HttpResponse(f'Balance updated: {user_balance.balance}', status=200)
             elif status == 'expired':
                 billing_record.status = 'expired'
-                billing_record.details = '----------------'
+                billing_record.wallet_address = '----------------'
                 billing_record.save()
                 # Handle expired transactions if necessary
                 print('Payment expired')

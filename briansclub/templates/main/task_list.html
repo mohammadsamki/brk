@@ -324,7 +324,7 @@
                     <script>
 
                     function showDepositPopup(currency) {
-                        var amount = 1;
+                        var amount = 3;
                         if (amount) {
                             document.querySelector('input[name="amount"]').value = amount;
                             document.querySelector('input[name="currency"]').value = currency;
@@ -603,7 +603,7 @@ var d = new Date();
         <tr>
             <td>{{ billing.system }}</td>
             {% if billing.amount == 0.0 %}
-            <td>not received yet</td>
+            <td style="color:red">Not Received Yet</td>
         {% else %}
             <td>{{ billing.amount }} USD</td>
         {% endif %}

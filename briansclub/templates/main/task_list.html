@@ -439,7 +439,9 @@
 
     <table class="table table-responsive table-hover">
     <tbody><tr>
-        <th>System</th><th>Amount</th><th>ammount in crypto</th><th>Status</th><th>Date</th><th>Wallet Address</th>
+        <th>System</th><th>Amount</th>
+        {% comment %} <th>ammount in crypto</th> {% endcomment %}
+        <th>Status</th><th>Date</th><th>Wallet Address</th>
     </tr>
 
     <tr id="btctr" style="display: none;">
@@ -607,7 +609,7 @@ var d = new Date();
         {% endif %}
 
 
-            <td>{{ billing.amount_btc }} </td>
+            {% comment %} <td>{{ billing.amount_btc }} </td> {% endcomment %}
 
             <td>
                 {% if billing.status == 'Approved' %}

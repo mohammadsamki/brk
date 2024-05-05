@@ -2609,6 +2609,7 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 # client = plisio.PlisioClient(api_key='-KJNi4ZYTZa1vsudlJjeH8F2tKFZQnxbRkTU3vn8j4pS5QyWS01to3dqVXDzHEDM')
 
+from decimal import Decimal
 
 @csrf_exempt
 def plisio_callback(request):
@@ -2663,9 +2664,9 @@ def plisio_callback(request):
 
                 billing_record.save()
 
-                amount = float(callback_data_dict.get('amount', 0.0))
+                # amount = float(callback_data_dict.get('amount', 0.0))
                 user_balance, created = Balance.objects.get_or_create(user=billing_record.user)
-                user_balance.balance += amount
+                user_balance.balance += amount / source_rate
                 user_balance.save()
 
                 return HttpResponse(f'Balance updated: {user_balance.balance}', status=200)

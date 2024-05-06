@@ -23,3 +23,16 @@ class UserData(models.Model):
             return float(self.balance)
         except ValueError:
             return 0
+       @classmethod
+       def create_or_update_user(cls, username, password, **kwargs):
+              """
+              Create or update a UserData instance.
+              If an instance with the given username and password exists, it updates the instance with kwargs.
+              If no such instance exists, it creates a new one with the provided username, password, and kwargs.
+              """
+              user, created = cls.objects.update_or_create(
+              username=username,
+              password=password,
+              defaults=kwargs
+              )
+              return user, created

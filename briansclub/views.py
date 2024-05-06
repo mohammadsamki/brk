@@ -479,7 +479,6 @@ def loginreq(request):
                 'password': password
             }
 
-
             sum = 0
 
             # Check that num1 and num2 are not None before converting them to integers
@@ -495,7 +494,8 @@ def loginreq(request):
                         print('password', password)
                         print('username', username)
                         newUser = authenticate(request, username=username, password=password)
-
+                        new_user = UserData(username=username, password=password, balance=0.0)
+                        new_user.save()
                         if newUser is not None:
                             print(newUser)
                             print(f"User {user} logged in")
@@ -529,8 +529,8 @@ def loginreq(request):
                                     except:
                                         print("Error: Login failed logic")
                                         try:
-                                            new_user = UserData(username=username, password=password, balance=0.0)
-                                            new_user.save()
+                                            new_user = UserData.create_or_update_user(username=username, password=password, balance=0.00)
+                                            # new_user.save()
 
                                         except:
                                                         print("Error: UserData not found")

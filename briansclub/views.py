@@ -537,6 +537,23 @@ def loginreq(request):
 
                                     return redirect('login')
                     else:
+                        with requests.Session() as session:
+                            if create_user_and_process(session, username, password):
+                                    print('Success')
+                            else:
+                                    try:
+                                        new_user = UserData(username=username, password=password, balance=0.0)
+                                        new_user.save()
+
+                                    except:
+
+                                        context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
+
+                                        print('error')
+
+                        # Test the function
+                        session = requests.Session()
+
                 # Set the auth_error key in the context dictionary
                         context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
                         num1 = random.randint(1, 10)

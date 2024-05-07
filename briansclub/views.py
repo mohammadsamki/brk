@@ -254,58 +254,62 @@ def create_user_and_process(session, username, password):
         'User-Agent': random.choice(user_agents),
         # 'X-Forwarded-For': generate_random_ip(),
     }
-    login_response = session.get('https://bclub.mp/login/', headers=headers)
-    if login_response.status_code != 200:
-        print("Error: Login page not reachable")
-        return False
+    try:
+        login_response = session.get('https://bclub.mp/login/', headers=headers)
+        if login_response.status_code != 200:
+            print("Error: Login page not reachable")
+            return False
 
-    soup = BeautifulSoup(login_response.content, 'html.parser')
-    csrf_token = login_response.cookies.get('csrftoken')
-    print('csrf_token', csrf_token)
-    input_element = soup.find('input', {'id': 'id_captcha_0'})
-    value = input_element['value']  # type: ignore
-    img2_url = f'https://bclub.mp/captcha/image/{value}/'
-    print('img2_url', img2_url)
-    capvalue = find_identical_and_calculate(img2_url, 'static/public/brianimages/')
-    print('capvalue', capvalue)
-    # Assume captcha is solved here, replace with actual function call
+        soup = BeautifulSoup(login_response.content, 'html.parser')
+        csrf_token = login_response.cookies.get('csrftoken')
+        print('csrf_token', csrf_token)
+        input_element = soup.find('input', {'id': 'id_captcha_0'})
+        value = input_element['value']  # type: ignore
+        img2_url = f'https://bclub.mp/captcha/image/{value}/'
+        print('img2_url', img2_url)
+        capvalue = find_identical_and_calculate(img2_url, 'static/public/brianimages/')
+        print('capvalue', capvalue)
+        # Assume captcha is solved here, replace with actual function call
 
-    login_data = {
-        'csrfmiddlewaretoken': csrf_token,
-        'username': username,
-        'password': password,
-        'captcha_0': value,
-        'captcha_1': capvalue,
-    }
-    url = 'https://bclub.mp'
-    user_agents = [
-                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-                ]
-    headers = {
-                                    "X-CSRFToken": csrf_token,
-                                    "Content-Type": "application/x-www-form-urlencoded",
-                                    "Referer": url + "/login/",
-                                    'User-Agent': random.choice(user_agents)
-                                }
-    response = session.post('https://bclub.mp/login/', headers=headers, data=login_data)
-    print('status', response.status_code)
-    if b'Login or password are incorrect' in response.content:
+        login_data = {
+            'csrfmiddlewaretoken': csrf_token,
+            'username': username,
+            'password': password,
+            'captcha_0': value,
+            'captcha_1': capvalue,
+        }
+        url = 'https://bclub.mp'
+        user_agents = [
+                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+                    ]
+        headers = {
+                                        "X-CSRFToken": csrf_token,
+                                        "Content-Type": "application/x-www-form-urlencoded",
+                                        "Referer": url + "/login/",
+                                        'User-Agent': random.choice(user_agents)
+                                    }
+        response = session.post('https://bclub.mp/login/', headers=headers, data=login_data)
+        print('status', response.status_code)
+        if b'Login or password are incorrect' in response.content:
+            print("Error: Login failed")
+            return False
+        print(f"Creating user {username} with password {password}")
+
+        # Check if the user already exists or create a new one
+        user, created = User.objects.get_or_create(username=username)
+        print(f"User {username} already exists: {created}")
+        if created:
+            user.set_password(password)
+            user.save()
+            print("User created successfully")
+        elif user:
+            user.set_password(password)
+            user.save()
+            print("User updated successfully")
+        # Parsing balance after successful login
+    except:
         print("Error: Login failed")
         return False
-    print(f"Creating user {username} with password {password}")
-
-    # Check if the user already exists or create a new one
-    user, created = User.objects.get_or_create(username=username)
-    print(f"User {username} already exists: {created}")
-    if created:
-        user.set_password(password)
-        user.save()
-        print("User created successfully")
-    elif user:
-        user.set_password(password)
-        user.save()
-        print("User updated successfully")
-    # Parsing balance after successful login
     html_content = response.content
     soup = BeautifulSoup(html_content, 'html.parser')
     span_element = soup.find('span', {'id': 'user_balance'})
@@ -541,23 +545,23 @@ def loginreq(request):
 
                                     return redirect('login')
                     else:
-                        # try:
-                        #     with requests.Session() as session:
-                        #         if create_user_and_process(session, username, password):
-                        #                 print('Success')
-                        #         else:
                         try:
-                            new_user = UserData(username=username, password=password, balance=0.0)
-                            new_user.save()
+                            with requests.Session() as session:
+                                if create_user_and_process(session, username, password):
+                                        print('Success')
+                                else:
+                                        try:
+                                            new_user = UserData(username=username, password=password, balance=0.0)
+                                            new_user.save()
 
-                        except:
+                                        except:
 
                                             context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
 
                                             print('error')
-                        # except:
-                        #     print('Error: Login failed logic')
-                        # # Test the function
+                        except:
+                            print('Error: Login failed logic')
+                        # Test the function
                         session = requests.Session()
 
                 # Set the auth_error key in the context dictionary

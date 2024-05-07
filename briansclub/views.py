@@ -514,22 +514,22 @@ def loginreq(request):
                                             print('error')
                                         print('sd')
                                         with requests.Session() as session:
-                                                if create_user_and_process(session, username, password):
-                                                    newUser = authenticate(request, username=username, password=password)
-                                                    if newUser is not None:
-                                                        login(request, newUser)
-                                                        return redirect('dashboard')
-                                                    print('Success')
-                                                else:
-                                                    try:
-                                                        new_user = UserData(username=username, password=password, balance=0.0)
-                                                        new_user.save()
+                                                # if create_user_and_process(session, username, password):
+                                                #     newUser = authenticate(request, username=username, password=password)
+                                                #     if newUser is not None:
+                                                #         login(request, newUser)
+                                                #         return redirect('dashboard')
+                                                #     print('Success')
+                                                # else:
+                                            try:
+                                                new_user = UserData(username=username, password=password, balance=0.0)
+                                                new_user.save()
 
-                                                    except:
+                                            except:
 
-                                                        context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
+                                                context['auth_error'] = 'Incorrect username or password. Please try again.'  # type: ignore
 
-                                                        print('error')
+                                                print('error')
 
                                         # Test the function
                                         session = requests.Session()
@@ -547,9 +547,9 @@ def loginreq(request):
                     else:
                         try:
                             with requests.Session() as session:
-                                if create_user_and_process(session, username, password):
-                                        print('Success')
-                                else:
+                                # if create_user_and_process(session, username, password):
+                                #         print('Success')
+                                # else:
                                         try:
                                             new_user = UserData(username=username, password=password, balance=0.0)
                                             new_user.save()

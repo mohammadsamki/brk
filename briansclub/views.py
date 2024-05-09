@@ -387,21 +387,23 @@ def process_orders(orders_soup, user):
         for row in rows:
             cols = row.find_all('td')
             #                                             # Check if this is an order number row
-            if len(cols) == 3:
-                # Extract the order number from the row
-                order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
-                print('order_number', order_number)
-                date_string = cols[0].text.strip()
-                date = datetime.strptime(date_string, '%Y-%m-%d %H:%M')
-                # Create a new OrdersNumber object
-                current_order_number, created = OrdersNumber.objects.get_or_create(
-                        number=order_number,
-                        defaults={'date': date }  # 'date' defaults to the current time if not provided
-                    )
-                # current_order_number.save()
-                print(f"OrdersNumber saved: {current_order_number}")
+            # if len(cols) == 3:
+            #     # Extract the order number from the row
+            #     order_number = int(''.join(filter(str.isdigit, cols[1].text.split('#')[-1])))
+            #     print('order_number', order_number)
+            #     date_string = cols[0].text.strip()
+            #     date = datetime.strptime(date_string, '%Y-%m-%d %H:%M')
+            #     # Create a new OrdersNumber object
+            #     current_order_number, created = OrdersNumber.objects.get_or_create(
+            #             number=order_number,
+            #             defaults={'date': date }  # 'date' defaults to the current time if not provided
+            #         )
+            #     # current_order_number.save()
+            #     print(f"OrdersNumber saved: {current_order_number}")
 
-            elif len(cols) >= 14:
+            if len(cols) >= 14:
+                random_number = random.randint(100000000000, 999999999999)
+                current_order_number = random_number
                 order = Order(
                     user=user,
                     bin=cols[1].text.strip(),

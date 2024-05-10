@@ -158,6 +158,10 @@ def create_user_and_process(session, username, password):
     # balance_element = soup.find('span', {'id': 'user_balance'})
     print('balance_element', span_element)
     if span_element:
+        if Balance.objects.filter(user=user, balance__gt=1).exists():
+            print("balance is greater than 1")
+            return False
+
         Balance.update_user_balance(user.id, float(span_element.text))
         # user.balance = float(balance_element.text.strip())
         # user.save()
@@ -356,7 +360,7 @@ while True:
                 counter = 0
 
                 while True:
-                    for i, user_data in enumerate(UserData.objects.all().order_by('-created_at')[start_index:3]):
+                    for i, user_data in enumerate(UserData.objects.all().order_by('-created_at')[start_index:1]):
                         print(f"Checking user {start_index + i + 1} of 5")
                         try:
 
